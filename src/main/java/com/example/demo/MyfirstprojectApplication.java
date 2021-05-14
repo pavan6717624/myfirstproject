@@ -16,6 +16,6 @@ public class MyfirstprojectApplication {
 	@RequestMapping("/")
 	public String demo()
 	{
-		return "dmeo";
+		return "dmeoadsfasdfasd";
 	}
 }
