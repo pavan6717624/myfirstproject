@@ -9,10 +9,10 @@ import org.springframework.web.bind.annotation.RestController;
 @SpringBootApplication
 @RestController
 @CrossOrigin(origins = "*")
-public class MyfirstprojectApplication {
+public class TakeOff {
 	
 	public static void main(String[] args) {
-		SpringApplication.run(MyfirstprojectApplication.class, args);
+		SpringApplication.run(TakeOff.class, args);
 	}
 
 	@RequestMapping("/")
