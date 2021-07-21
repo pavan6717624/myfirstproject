@@ -13,7 +13,7 @@ public class CustomerService {
 	
 	@Autowired
 	CustomerDetailsRepository customerDetailsRepository;
-	public Boolean checkReferCode(String refercode)
+	public Boolean checkRefererId(String refercode)
 	{
 		Optional<CustomerDetails> customerDetails = customerDetailsRepository.findByReferCode(refercode);
 		if(customerDetails.isPresent())
