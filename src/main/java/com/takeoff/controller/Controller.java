@@ -82,7 +82,7 @@ public class Controller {
 		}
 		}
 		
-		response.sendRedirect("https://https://takeoff-angular.herokuapp.com/paymentStatus");
+		response.sendRedirect("https://takeoff-angular.herokuapp.com/paymentStatus");
 		
 		//response.sendRedirect("http://localhost:4200/paymentStatus");
 	}
