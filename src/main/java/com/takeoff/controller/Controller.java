@@ -3,27 +3,24 @@ package com.takeoff.controller;
 
 
 import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.stream.Collectors;
 
-import javax.servlet.http.HttpServletResponse;
-
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.razorpay.Order;
-import com.razorpay.Payment;
-import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
-import com.razorpay.Utils;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RefererCodeDTO;
+import com.takeoff.model.StatusDTO;
+import com.takeoff.model.StructureDTO;
+import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.service.CustomerService;
+import com.takeoff.service.DisplayService;
+import com.takeoff.service.LoginService;
+import com.takeoff.service.RazorpayService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -32,10 +29,36 @@ public class Controller {
 	@Autowired
 	CustomerService customerService;
 	
+	@Autowired
+	RazorpayService razorpayService;
+	
+	
+	@Autowired
+	LoginService loginService;
+	
+	
+	@Autowired
+	DisplayService displayService;
+	
+	
 	@RequestMapping("/user")
 	public String checkProject()
 	{
+		
 		return "Checked and Worked";
+		
+	}
+	
+	@RequestMapping("/getTreeStructure")
+	public StructureDTO getTreeStructure(@RequestParam("type") String type)
+	{
+	return displayService.getTreeStructure(Integer.parseInt(type));
+	}
+	@RequestMapping("/login")
+	public Boolean login(@RequestParam("userid") String userid, @RequestParam("password") String password)
+	{
+		return loginService.login(userid,password);
+		
 	}
 	
 	@RequestMapping("/checkRefererId")
@@ -48,65 +71,46 @@ public class Controller {
 	}
 	
 	
-	@RequestMapping("/callBackUrl")
-	public void callBackUrl(@RequestParam("razorpay_payment_id") String razorpay_payment_id, @RequestParam("razorpay_order_id") String razorpay_order_id, @RequestParam("razorpay_signature") String razorpay_signature,HttpServletResponse response ) throws RazorpayException, IOException
+	@RequestMapping("/subscribe")
+	public StatusDTO subscribe(@RequestBody SubscriptionDTO subscription)
 	{
-		RazorpayClient razorpayClient = new RazorpayClient("rzp_test_tqgJ9eimxluVhi", "xaOlf2KK1hTOS7yotlzCn7qs");
-
-		List<Payment> payments = razorpayClient.Orders.fetchPayments(razorpay_order_id);
 		
+		StatusDTO statusDto = new StatusDTO();
 		
-		String statusStr="Failed";
-		
-		
-		List<Payment> pay = payments.stream().filter(o-> {JSONObject jsonObject = new JSONObject(String.valueOf(o));
-		Boolean captured = jsonObject.getBoolean("captured"); return captured; }).collect(Collectors.toList());
-
-		
-		if(pay.size() > 0)
+		try
 		{
-		Payment payment = pay.get(0);
-		System.out.println(payments);
-		JSONObject jsonObject = new JSONObject(String.valueOf(payment));
-		String id = jsonObject.getString("id");
-		int amount = (jsonObject.getInt("amount")/100);
-		System.out.println(amount+" "+id+" "+razorpay_payment_id);
-		JSONObject options = new JSONObject();
-		options.put("razorpay_order_id", razorpay_order_id);
-		options.put("razorpay_payment_id", razorpay_payment_id);
-		options.put("razorpay_signature", razorpay_signature);
-		Boolean paymentStatus = Utils.verifyPaymentSignature(options, "xaOlf2KK1hTOS7yotlzCn7qs");
-		if(amount == 1199 && paymentStatus)
+		Boolean paymentStatus =razorpayService.subscribe(subscription);	
+		
+		
+		if(paymentStatus)
 		{
-			statusStr="Success";	
+			statusDto = customerService.createCustomer(subscription);
+		 if(!statusDto.getStatus())
+		 {
+			 statusDto.setCustomerId(0L);
+			 statusDto.setReferCode("0");
+			 statusDto.setMessage(" Mapping Failed. If Amount Debited, it will be refunded in 5 Business Days. ");
+		 }
+		}
+		else
+		{
+			statusDto=new StatusDTO(subscription);
 		}
 		}
+		catch(RazorpayException | IOException ex)
+		{
+			statusDto=new StatusDTO(subscription);
+			statusDto.setMessage(" User Creation Failed. If Amount Debited, it will be refunded in 5 Business Days. ");
+		}
 		
-		response.sendRedirect("https://takeoff-angular.herokuapp.com/paymentStatus");
-		
-		//response.sendRedirect("http://localhost:4200/paymentStatus");
+		return statusDto;
 	}
 	
 	@RequestMapping(value="/getOrderId")
 	public OrderDTO getOrderId() throws RazorpayException
 	{
-		RazorpayClient razorpayClient = new RazorpayClient("rzp_test_tqgJ9eimxluVhi", "xaOlf2KK1hTOS7yotlzCn7qs");
-
-		 
-        Timestamp ts = new Timestamp(new java.util.Date().getTime());
-        String txnid = ts.toString().replace(":","").replace(" ","").replace("-","").replace(".","");
-
-	JSONObject options = new JSONObject();
-options.put("amount", 119900);
-options.put("currency", "INR");
-options.put("receipt", "txn_"+txnid);
-Order order = razorpayClient.Orders.create(options);
-
-JSONObject jsonObject = new JSONObject(String.valueOf(order));
-String orderid = jsonObject.getString("id");
-
+		String orderid=razorpayService.getOrderId();
 OrderDTO sendOrder = new OrderDTO(orderid);
-
 return sendOrder;
 
 
