@@ -66,7 +66,7 @@ public class DisplayService {
 		if(type == 0) 
 			structure = "<ul>"+parse(root1)+"</ul><br/>";
 		else
-			structure = "["+parse1(root1)+"]";
+			structure = ("["+parse1(root1)+"]").replace(",]","]");
 		
 		System.out.println(structure);
 		

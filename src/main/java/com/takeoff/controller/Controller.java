@@ -3,20 +3,27 @@ package com.takeoff.controller;
 
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.util.List;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.razorpay.RazorpayException;
+import com.takeoff.model.ImageStatusDTO;
+import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubscriptionDTO;
+import com.takeoff.service.CouponService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.LoginService;
@@ -41,11 +48,37 @@ public class Controller {
 	DisplayService displayService;
 	
 	
-	@RequestMapping("/user")
-	public String checkProject()
+	@Autowired
+	CouponService couponService;
+	
+	
+
+	@RequestMapping("/getImage")
+	public ImageStatusDTO getImage(@RequestParam("file") MultipartFile file) throws IOException
+	{
+	
+		ImageStatusDTO imageStatus=new ImageStatusDTO();
+		
+		String image =   new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
+		
+		imageStatus.setImage(image);
+		imageStatus.setStatus(true);
+		
+		
+		return imageStatus;
+	}
+	
+	@RequestMapping("/getImages")
+	public List<ImageStatusDTO> getImages() throws UnsupportedEncodingException 
+	{
+		return couponService.getImages();
+	}
+	
+	@RequestMapping("/uploadCoupon")
+	public ImageStatusDTO uploadCoupon(@RequestParam("file") MultipartFile file) throws IOException
 	{
 		
-		return "Checked and Worked";
+		return couponService.uploadCoupon(file);
 		
 	}
 	
@@ -55,8 +88,9 @@ public class Controller {
 	return displayService.getTreeStructure(Integer.parseInt(type));
 	}
 	@RequestMapping("/login")
-	public Boolean login(@RequestParam("userid") String userid, @RequestParam("password") String password)
+	public LoginStatusDTO login(@RequestParam("userid") String userid, @RequestParam("password") String password)
 	{
+		
 		return loginService.login(userid,password);
 		
 	}
