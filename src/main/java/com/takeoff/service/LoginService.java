@@ -5,10 +5,10 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.takeoff.domain.CustomerDetails;
-import com.takeoff.domain.VendorDetails;
+import com.takeoff.domain.UserDetails;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
+import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorDetailsRepository;
 
 @Service
@@ -18,37 +18,33 @@ public class LoginService {
 	CustomerDetailsRepository customerDetailsRepository;
 	
 	@Autowired
+	UserDetailsRepository userDetailsRepository;
+	
+	@Autowired
 	VendorDetailsRepository vendorDetailsRepository;
 
 	public LoginStatusDTO login(String userid,String password) {
 		
-		Long customerId=0l;
-		String vendorId=userid;
+		Long id=Long.valueOf(userid);
 		
 		LoginStatusDTO loginStatus=new LoginStatusDTO();
 		
 		
 		
 		Boolean status=false;
-		try
-		{
-			customerId = Long.valueOf(userid);
-			Optional<CustomerDetails> customer = customerDetailsRepository.findByCustomerIdAndPassword(customerId, password);
-			 status =  customer.isPresent();
+		
+			
+			Optional<UserDetails> user = userDetailsRepository.findByUserIdAndPassword(id, password);
+			 status =  user.isPresent();
 			 loginStatus.setUserId(userid);
-				loginStatus.setUserType("Customer");
+			
 				loginStatus.setLoginStatus(status);
+				
+				if(status)
+				loginStatus.setUserType(user.get().getUserType());
 			
 			
-		}
-		catch( NumberFormatException exception)
-		{
-			Optional<VendorDetails> vendor = vendorDetailsRepository.findByVendorIdAndPassword(vendorId, password);
-			 status =  vendor.isPresent();
-			 loginStatus.setUserId(userid);
-				loginStatus.setUserType("Vendor");
-				loginStatus.setLoginStatus(status);
-		}
+		
 		
 		
 		return loginStatus;

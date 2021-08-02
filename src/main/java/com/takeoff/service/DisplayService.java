@@ -52,8 +52,8 @@ public class DisplayService {
 	
 	public StructureDTO getTreeStructure(Integer type)
 	{
-		Long rootCustomerId=customerMappingRepository.getRootCustomerId();
-		Double amount = customerDetailsRepository.findByCustomerId(rootCustomerId).get().getWalletAmount();
+		Long rootCustomerId=customerMappingRepository.getRootUserId();
+		Double amount = customerDetailsRepository.findByUserId(rootCustomerId).get().getWalletAmount();
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("D"+rootCustomerId+" ("+amount+")");
 		getTreeStructure(root);
 		
@@ -116,7 +116,7 @@ public class DisplayService {
 		Long refererId=children.get(i).getRefererId();
 		Long parentId=children.get(i).getParentId();
 		
-		Double amount = customerDetailsRepository.findByCustomerId(customerId).get().getWalletAmount();
+		Double amount = customerDetailsRepository.findByUserId(customerId).get().getWalletAmount();
 		
 		String status="I";
 		if(rootCustomerId.equals(refererId))

@@ -1,54 +1,66 @@
 package com.takeoff.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.takeoff.model.SubscriptionDTO;
 
 @Entity
-public class CustomerDetails {
+public class CustomerDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6555219717640930459L;
+
+
 	public CustomerDetails()
 	{
 	
 	}
 	
-	public CustomerDetails(SubscriptionDTO subscription)
+	public CustomerDetails(SubscriptionDTO subscription, UserDetails user)
 	{
-		this.city=subscription.getCity();
-		this.password=subscription.getPassword();
-
-		this.name=subscription.getName();
-		this.contact=subscription.getContact();
-		this.email=subscription.getEmail();
+		
 		this.profession=subscription.getProfession();
 		this.gender=subscription.getGender();
+		this.user=user;
 	
 		this.razorpay_payment_id=subscription.getRazorpay_payment_id();
 		this.razorpay_order_id=subscription.getRazorpay_order_id();
 		this.razorpay_signature=subscription.getRazorpay_signature();
-		this.message=subscription.getMessage();
 		
 		this.refererId=subscription.getRefererid();
 	}
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long customerId;
-	String password="";
+	
+	public Long getCustomerId() {
+		return customerId;
+	}
 
-	String name="";
-	String contact="";
-	String email="";
+	public void setCustomerId(Long customerId) {
+		this.customerId = customerId;
+	}
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "userId")
+	UserDetails user;
+	
 	String profession="";
 	String gender="";
-	String city="";;
+	
 	String razorpay_payment_id="";
 	String razorpay_order_id="";
 	String razorpay_signature="";
-	String message="";
+	
 	
 	String refererId="";
 	String referCode="";
@@ -60,45 +72,14 @@ public class CustomerDetails {
 	
 	Double walletAmount=0d;
 	
-	
-	public Long getCustomerId() {
-		return customerId;
+
+
+	public UserDetails getUser() {
+		return user;
 	}
 
-	public void setCustomerId(Long customerId) {
-		this.customerId = customerId;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getContact() {
-		return contact;
-	}
-
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
+	public void setUser(UserDetails user) {
+		this.user = user;
 	}
 
 	public String getProfession() {
@@ -115,14 +96,6 @@ public class CustomerDetails {
 
 	public void setGender(String gender) {
 		this.gender = gender;
-	}
-
-	public String getCity() {
-		return city;
-	}
-
-	public void setCity(String city) {
-		this.city = city;
 	}
 
 	public String getRazorpay_payment_id() {
@@ -149,14 +122,7 @@ public class CustomerDetails {
 		this.razorpay_signature = razorpay_signature;
 	}
 
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
+	
 	public String getRefererId() {
 		return refererId;
 	}
@@ -197,6 +163,7 @@ public class CustomerDetails {
 		this.walletAmount = walletAmount;
 	}
 
+	
 	
 	
 

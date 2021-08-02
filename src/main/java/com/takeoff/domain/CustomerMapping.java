@@ -1,5 +1,7 @@
 package com.takeoff.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -9,16 +11,20 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 
 @Entity
-public class CustomerMapping{
+public class CustomerMapping implements Serializable{
 	
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5658610914797452087L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long mappingId;
 	
 	 @OneToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "customerId")
-	CustomerDetails customer;
+	 @JoinColumn(name = "user_id")
+	UserDetails customer;
 	Long refererId;
 	Long parentId;
 

@@ -20,15 +20,14 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	
 	  @Modifying
 	  @Transactional
-	    @Query( nativeQuery = true, value = "insert into customer_mapping(customer_id,referer_id,parent_id) select (:customerId) as customer_id,  (:refererId) as referer_id,(case when (count(*) > 0 && (count(*)=1 || count(*) = 3 || count(*) = 5 ||(count(*)-5)%5=0)) then (select parent_id from customer_mapping where customer_id like (:refererId)) else (:refererId) end)  as parent_id from customer_mapping where referer_id like (:refererId)")
-	    public int customerMapping(@Param("customerId") Long customerId, @Param("refererId") Long refererId);
+	    @Query( nativeQuery = true, value = "insert into customer_mapping(user_id,referer_id,parent_id) select (:userId) as user_id,  (:refererId) as referer_id,(case when (count(*) > 0 && (count(*)=1 || count(*) = 3 || count(*) = 5 ||(count(*)-5)%5=0)) then (select parent_id from customer_mapping where user_id like (:refererId)) else (:refererId) end)  as parent_id from customer_mapping where referer_id like (:refererId)")
+	    public int customerMapping(@Param("userId") Long userId, @Param("refererId") Long refererId);
 	  
 	  
 	
-	  
-		Optional<CustomerDetails> findByCustomerIdAndPassword(@Param("customerId") Long customerId, @Param("password") String password);
 
-		Optional<CustomerDetails> findByCustomerId(@Param("customerId") Long customerId);
+	  @Query("select c from CustomerDetails c where c.user.userId=(:userId)")
+		Optional<CustomerDetails> findByUserId(@Param("userId") Long userId);
 
 
 }

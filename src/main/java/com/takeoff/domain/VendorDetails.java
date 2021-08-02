@@ -1,80 +1,66 @@
 package com.takeoff.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
-public class VendorDetails {
+public class VendorDetails implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 5491900298840802606L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String vendorId="";
-	String password="";
-
-	String name="";
-	String contact="";
-	String email="";
-	String profession="";
-	String gender="";
-	String city="";
+	Long vendorid;
 	
-	public Long getId() {
-		return id;
+	String address="";
+	String logo="";
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "userId")
+	UserDetails user;
+	
+	public Long getVendorid() {
+		return vendorid;
 	}
-	public void setId(Long id) {
-		this.id = id;
+
+	public void setVendorid(Long vendorid) {
+		this.vendorid = vendorid;
 	}
-	public String getVendorId() {
-		return vendorId;
+
+	public String getAddress() {
+		return address;
 	}
-	public void setVendorId(String vendorId) {
-		this.vendorId = vendorId;
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
-	public String getPassword() {
-		return password;
+
+	public String getLogo() {
+		return logo;
 	}
-	public void setPassword(String password) {
-		this.password = password;
+
+	public void setLogo(String logo) {
+		this.logo = logo;
 	}
-	public String getName() {
-		return name;
+
+	public UserDetails getUser() {
+		return user;
 	}
-	public void setName(String name) {
-		this.name = name;
+
+	public void setUser(UserDetails user) {
+		this.user = user;
 	}
-	public String getContact() {
-		return contact;
-	}
-	public void setContact(String contact) {
-		this.contact = contact;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getProfession() {
-		return profession;
-	}
-	public void setProfession(String profession) {
-		this.profession = profession;
-	}
-	public String getGender() {
-		return gender;
-	}
-	public void setGender(String gender) {
-		this.gender = gender;
-	}
-	public String getCity() {
-		return city;
-	}
-	public void setCity(String city) {
-		this.city = city;
-	}
+
+	
 	
 	
 	

@@ -6,11 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.CustomerDetails;
-import com.takeoff.domain.CustomerMapping;
+import com.takeoff.domain.UserDetails;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.CustomerMappingRepository;
+import com.takeoff.repository.UserDetailsRepository;
 
 @Service
 public class CustomerService {
@@ -19,6 +20,9 @@ public class CustomerService {
 	CustomerDetailsRepository customerDetailsRepository;
 	@Autowired
 	CustomerMappingRepository customerMappingRepository;
+	
+	@Autowired
+	UserDetailsRepository userDetailsRepository;
 	public Boolean checkRefererId(String refercode)
 	{
 		Optional<CustomerDetails> customerDetails = customerDetailsRepository.findByReferCode(refercode);
@@ -31,27 +35,33 @@ public class CustomerService {
 	
 	public StatusDTO createCustomer(SubscriptionDTO subscription)
 	{
-		CustomerDetails customer=new CustomerDetails(subscription);
+		
+		UserDetails user=new UserDetails(subscription);
+		
+		user = userDetailsRepository.save(user);
+		
+		
+		CustomerDetails customer=new CustomerDetails(subscription,user);
 		customer.setMappingStatus(false);
 		customer.setPaymentStatus(true);
-		customer.setMessage("Payment Successful");
+		customer.getUser().setMessage("Payment Successful");
 		customerDetailsRepository.save(customer);
 		
-		int rows = customerDetailsRepository.customerMapping(customer.getCustomerId(), 
-				customerDetailsRepository.findByReferCode(customer.getRefererId()).get().getCustomerId());
+		int rows = customerDetailsRepository.customerMapping(customer.getUser().getUserId(), 
+				customerDetailsRepository.findByReferCode(customer.getRefererId()).get().getUser().getUserId());
 		
 		if(rows == 1)
 		{
-		Long customerId = customer.getCustomerId();
+		Long customerId = customer.getUser().getUserId();
 		customer.setReferCode("TO"+customerId);
 		customer.setMappingStatus(true);
-		customer.setMessage("Mapping Successful");
+		customer.getUser().setMessage("Mapping Successful");
 		customerDetailsRepository.save(customer);
 		
 		
-		Long parentId = customerMappingRepository.getParentIdForCustomerId(customer.getCustomerId());
+		Long parentId = customerMappingRepository.getParentIdForUserId(customer.getUser().getUserId());
 		
-		CustomerDetails parent=customerDetailsRepository.findByCustomerId(parentId).get();
+		CustomerDetails parent=customerDetailsRepository.findByUserId(parentId).get();
 		
 		parent.setWalletAmount(parent.getWalletAmount()+500);
 		customerDetailsRepository.save(parent);

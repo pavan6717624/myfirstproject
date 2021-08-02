@@ -1,7 +1,6 @@
 package com.takeoff.controller;
 
 
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
@@ -23,11 +22,13 @@ import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubscriptionDTO;
+import com.takeoff.model.VendorDetailsDTO;
 import com.takeoff.service.CouponService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.LoginService;
 import com.takeoff.service.RazorpayService;
+import com.takeoff.service.VendorService;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -51,6 +52,15 @@ public class Controller {
 	@Autowired
 	CouponService couponService;
 	
+	@Autowired
+	VendorService vendorService;
+	
+	
+	@RequestMapping("/getVendorDetails")
+	public VendorDetailsDTO getVendorDetails(@RequestParam("vendorId") String vendorId) 
+	{
+		return vendorService.getVendorService(Long.valueOf(vendorId));
+	}   
 	
 
 	@RequestMapping("/getImage")
@@ -69,18 +79,28 @@ public class Controller {
 	}
 	
 	@RequestMapping("/getImages")
-	public List<ImageStatusDTO> getImages() throws UnsupportedEncodingException 
+	public List<ImageStatusDTO> getImages(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
 	{
-		return couponService.getImages();
+		System.out.println(vendorId);
+		return couponService.getImages(Long.valueOf(vendorId));
 	}
 	
 	@RequestMapping("/uploadCoupon")
-	public ImageStatusDTO uploadCoupon(@RequestParam("file") MultipartFile file) throws IOException
+	public ImageStatusDTO uploadCoupon(@RequestParam("file") MultipartFile file,@RequestParam("vendorId") String vendorId) throws IOException
 	{
 		
-		return couponService.uploadCoupon(file);
+		return couponService.uploadCoupon(file, Long.valueOf(vendorId));
 		
 	}
+	
+	@RequestMapping("/uploadLogo")
+	public ImageStatusDTO uploadLogo(@RequestParam("file") MultipartFile file,@RequestParam("vendorId") String vendorId) throws IOException
+	{
+		
+		return couponService.uploadLogo(file, Long.valueOf(vendorId));
+		
+	}
+	
 	
 	@RequestMapping("/getTreeStructure")
 	public StructureDTO getTreeStructure(@RequestParam("type") String type)

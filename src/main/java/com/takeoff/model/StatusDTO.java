@@ -41,9 +41,9 @@ public class StatusDTO {
 		this.status = customer.getMappingStatus() && customer.getPaymentStatus();
 		this.orderId = customer.getRazorpay_order_id();
 		this.paymentId=customer.getRazorpay_payment_id();
-		this.customerId=customer.getCustomerId();
+		this.customerId=customer.getUser().getUserId();
 		this.referCode=customer.getReferCode();
-		this.message = customer.getMessage();
+		this.message = customer.getUser().getMessage();
 	}
 
 	public String getMessage() {

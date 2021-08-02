@@ -10,22 +10,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.takeoff.domain.CouponDetails;
+import com.takeoff.domain.ImageDetails;
+import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.ImageStatusDTO;
-import com.takeoff.repository.CouponDetailsRepository;
+import com.takeoff.repository.ImageCouponDetailsRepository;
+import com.takeoff.repository.UserDetailsRepository;
+import com.takeoff.repository.VendorDetailsRepository;
 
 @Service
 public class CouponService {
 	
 	@Autowired
 	
-	CouponDetailsRepository couponDetailsRepository;
+	ImageCouponDetailsRepository couponDetailsRepository;
+	
+	@Autowired
+	
+	VendorDetailsRepository vendorDetailsRepository;
 	
 	
+	@Autowired
 	
-	public List<ImageStatusDTO> getImages() throws UnsupportedEncodingException
+	UserDetailsRepository userDetailsRepository;
+	
+	public List<ImageStatusDTO> getImages(Long vendorId) throws UnsupportedEncodingException
 	{
-		List<CouponDetails> coupons = couponDetailsRepository.findAll();
+		List<ImageDetails> coupons = couponDetailsRepository.findByLatest(vendorId);
 		List<ImageStatusDTO> images = new ArrayList<>();
 		
 		for(int i=0;i<coupons.size();i++)
@@ -36,22 +46,23 @@ public class CouponService {
 			images.add(image);
 		}
 		
-		
+		System.out.println(images);
 		return images;
 	}
 
-	public ImageStatusDTO uploadCoupon(MultipartFile file) throws UnsupportedEncodingException, IOException {
+	public ImageStatusDTO uploadCoupon(MultipartFile file, Long vendorId) throws UnsupportedEncodingException, IOException {
 		
 		
 		String image = new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
 		
 		ImageStatusDTO imageStatus=new ImageStatusDTO();
 		
-		CouponDetails coupon = new CouponDetails();
+		ImageDetails coupon = new ImageDetails();
 		
 		coupon.setImage(image);
+		coupon.setUser(userDetailsRepository.findById(vendorId).get());
 		
-		CouponDetails couponSaved = couponDetailsRepository.save(coupon);
+		ImageDetails couponSaved = couponDetailsRepository.save(coupon);
 		if(couponSaved!= null)
 		{
 			imageStatus.setStatus(true);
@@ -65,5 +76,35 @@ public class CouponService {
 		
 		return imageStatus;
 	}
+	
+public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws UnsupportedEncodingException, IOException {
+		
+		
+		String image = new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
+		
+		ImageStatusDTO imageStatus=new ImageStatusDTO();
+		
+		System.out.println(vendorId);
+		
+		VendorDetails vendor=vendorDetailsRepository.findByUserId(vendorId).get();
+		
+		
+		vendor.setLogo(image);
+		
+		VendorDetails vendorSaved = vendorDetailsRepository.save(vendor);
+		if(vendorSaved!= null)
+		{
+			imageStatus.setStatus(true);
+			imageStatus.setMessage("Logo Uploaded Successfully.");
+		}
+		else
+		{
+			imageStatus.setStatus(false);
+			imageStatus.setMessage("Logo Upload Failed. Try Again");
+		}
+		
+		return imageStatus;
+	}
+
 
 }
