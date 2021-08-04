@@ -2,6 +2,7 @@ package com.takeoff.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -20,10 +21,37 @@ public class ImageDetails implements Serializable{
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
+	@Column(length = 100000)
 	String image;
+	String keywords = "";
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "userId")
 	UserDetails user;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "subCategoryId")
+	SubCategory subCateogry;
+	
+	
+	public SubCategory getSubCateogry() {
+		return subCateogry;
+	}
+
+	public void setSubCateogry(SubCategory subCateogry) {
+		this.subCateogry = subCateogry;
+	}
+
+	public String getKeywords() {
+		return keywords;
+	}
+
+	public void setKeywords(String keywords) {
+		this.keywords = keywords;
+	}
+
+
+	
+	
 	public UserDetails getUser() {
 		return user;
 	}

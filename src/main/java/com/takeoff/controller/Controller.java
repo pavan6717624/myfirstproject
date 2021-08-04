@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.razorpay.RazorpayException;
+import com.takeoff.domain.Category;
+import com.takeoff.domain.CouponType;
+import com.takeoff.domain.SubCategory;
+import com.takeoff.domain.VendorCoupons;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
@@ -22,8 +26,11 @@ import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubscriptionDTO;
+import com.takeoff.model.VendorCouponsDTO;
 import com.takeoff.model.VendorDetailsDTO;
+import com.takeoff.service.CategoryService;
 import com.takeoff.service.CouponService;
+import com.takeoff.service.CouponTypeService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.LoginService;
@@ -53,13 +60,25 @@ public class Controller {
 	CouponService couponService;
 	
 	@Autowired
+	CouponTypeService couponTypeService;
+	
+	@Autowired
 	VendorService vendorService;
+	
+	@Autowired
+	CategoryService categoryService;
 	
 	
 	@RequestMapping("/getVendorDetails")
 	public VendorDetailsDTO getVendorDetails(@RequestParam("vendorId") String vendorId) 
 	{
-		return vendorService.getVendorService(Long.valueOf(vendorId));
+		return vendorService.getVendorDetails(Long.valueOf(vendorId));
+	}   
+	
+	@RequestMapping("/getDesignerDetails")
+	public VendorDetailsDTO getDesignerDetails(@RequestParam("vendorId") String vendorId) 
+	{
+		return vendorService.getDesignerDetails(Long.valueOf(vendorId));
 	}   
 	
 
@@ -85,11 +104,84 @@ public class Controller {
 		return couponService.getImages(Long.valueOf(vendorId));
 	}
 	
+	@RequestMapping("/getCoupons")
+	public List<VendorCouponsDTO> getCoupons(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
+	{
+	
+		return couponService.getCoupons(Long.valueOf(vendorId));
+	}
+	
+	
+	@RequestMapping("/getCategories")
+	public List<Category> getCategories() 
+	{
+		return categoryService.getCategories();
+	}
+	
+	
+	@RequestMapping("/getCouponTypes")
+	public List<CouponType> getCouponTypes() 
+	{
+		return couponTypeService.getCouponTypes();
+	}
+	
+	@RequestMapping("/getSubCategories")
+	public List<SubCategory> getSubCategories(@RequestParam("category") String category) 
+	{
+		return categoryService.getSubCategories(category);
+	}
+	
+	@RequestMapping("/saveCoupon")
+	public Boolean saveCoupon(@RequestBody VendorCouponsDTO coupon) 
+	{
+		VendorCoupons vendorCoupon = new VendorCoupons();
+		
+		vendorCoupon.setHeader(coupon.getHeader());
+		vendorCoupon.setBody(coupon.getBody());
+		vendorCoupon.setFooter(coupon.getFooter());
+		vendorCoupon.setHeader_color(coupon.getHeader_color());
+		vendorCoupon.setBody_color(coupon.getBody_color());
+		vendorCoupon.setFooter_color(coupon.getFooter_color());
+		vendorCoupon.setHeader_align(coupon.getHeader_align());
+		vendorCoupon.setBody_align(coupon.getBody_align());
+		vendorCoupon.setFooter_align(coupon.getFooter_align());
+		vendorCoupon.setHeader_size(coupon.getHeader_size());
+		vendorCoupon.setBody_size(coupon.getBody_size());
+		vendorCoupon.setFooter_size(coupon.getFooter_size());
+		vendorCoupon.setFooter_font(coupon.getFooter_font());
+		vendorCoupon.setHeader_font(coupon.getHeader_font());
+		vendorCoupon.setBody_font(coupon.getBody_font());
+		vendorCoupon.setFooter_bold(coupon.getFooter_bold());
+		vendorCoupon.setHeader_bold(coupon.getHeader_bold());
+		vendorCoupon.setBody_bold(coupon.getBody_bold());
+		vendorCoupon.setFooter_style(coupon.getFooter_style());
+		vendorCoupon.setHeader_style(coupon.getHeader_style());
+		vendorCoupon.setBody_style(coupon.getBody_style());
+		vendorCoupon.setImage_align(coupon.getImage_align());
+		vendorCoupon.setFooter_decoration(coupon.getFooter_decoration());
+		vendorCoupon.setHeader_decoration(coupon.getHeader_decoration());
+		vendorCoupon.setBody_decoration(coupon.getBody_decoration());
+		vendorCoupon.setProfession(coupon.getProfession());
+		vendorCoupon.setGender(coupon.getGender());
+		
+		
+		vendorCoupon.setFromDate(coupon.getFromDate());
+		vendorCoupon.setToDate(coupon.getToDate());
+		
+		vendorCoupon.setImage(couponService.getImageDetails(coupon.getImageId()));
+		vendorCoupon.setCouponType(couponTypeService.getCouponType(coupon.getCouponType()));
+
+		vendorCoupon.setKeywords(coupon.getKeywords());
+		
+		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
+		return couponService.saveCoupon(vendorCoupon);
+	}
+	
 	@RequestMapping("/uploadCoupon")
-	public ImageStatusDTO uploadCoupon(@RequestParam("file") MultipartFile file,@RequestParam("vendorId") String vendorId) throws IOException
+	public ImageStatusDTO uploadCoupon(@RequestParam("file") MultipartFile file,@RequestParam("vendorId") String vendorId, @RequestParam("subCategory") String subCategory, @RequestParam("keywords") String keywords) throws IOException
 	{
 		
-		return couponService.uploadCoupon(file, Long.valueOf(vendorId));
+		return couponService.uploadCoupon(file, Long.valueOf(vendorId),subCategory,keywords);
 		
 	}
 	

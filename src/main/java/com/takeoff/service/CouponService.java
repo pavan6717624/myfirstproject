@@ -2,8 +2,12 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +15,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.takeoff.domain.ImageDetails;
+import com.takeoff.domain.VendorCoupons;
 import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.ImageStatusDTO;
-import com.takeoff.repository.ImageCouponDetailsRepository;
+import com.takeoff.model.VendorCouponsDTO;
+import com.takeoff.repository.CategoryRepository;
+import com.takeoff.repository.ImageDetailsRepository;
+import com.takeoff.repository.SubCategoryRepository;
 import com.takeoff.repository.UserDetailsRepository;
+import com.takeoff.repository.VendorCouponsRepository;
 import com.takeoff.repository.VendorDetailsRepository;
 
 @Service
@@ -22,16 +31,44 @@ public class CouponService {
 	
 	@Autowired
 	
-	ImageCouponDetailsRepository couponDetailsRepository;
+	ImageDetailsRepository couponDetailsRepository;
 	
 	@Autowired
 	
 	VendorDetailsRepository vendorDetailsRepository;
 	
+	@Autowired
+	
+	SubCategoryRepository subCategoryRepository;
+	
+	@Autowired
+	
+	CategoryRepository categoryRepository;
+	
 	
 	@Autowired
 	
 	UserDetailsRepository userDetailsRepository;
+	
+@Autowired
+	
+	VendorCouponsRepository vendorCouponsRepository;
+	
+
+public ImageDetails getImageDetails(Long id)
+{
+	return couponDetailsRepository.findById(id).get();
+}
+	@Transactional
+	public Boolean saveCoupon(VendorCoupons coupon) 
+	{
+		coupon =  vendorCouponsRepository.save(coupon);
+		
+		if(coupon.getId() == null)
+		return false;
+		else
+			return true;
+	}
 	
 	public List<ImageStatusDTO> getImages(Long vendorId) throws UnsupportedEncodingException
 	{
@@ -43,14 +80,74 @@ public class CouponService {
 			ImageStatusDTO image=new ImageStatusDTO();
 			String img = "data:image/jpeg;base64," +coupons.get(i).getImage();
 			image.setImage(img);
+			image.setId(coupons.get(i).getId());
 			images.add(image);
+		
 		}
 		
 		System.out.println(images);
 		return images;
 	}
+	
+	public List<VendorCouponsDTO> getCoupons(Long vendorId) throws UnsupportedEncodingException
+	{
+		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId);
+		List<VendorCouponsDTO> vendorCoupons = new ArrayList<>();
+		
+		for(int i=0;i<coupons.size();i++)
+		{
+			VendorCoupons coupon = coupons.get(i);
+			VendorCouponsDTO vendorCoupon= new VendorCouponsDTO();
+			
+			vendorCoupon.setHeader(coupon.getHeader());
+			vendorCoupon.setBody(coupon.getBody());
+			vendorCoupon.setFooter(coupon.getFooter());
+			vendorCoupon.setHeader_color(coupon.getHeader_color());
+			vendorCoupon.setBody_color(coupon.getBody_color());
+			vendorCoupon.setFooter_color(coupon.getFooter_color());
+			vendorCoupon.setHeader_align(coupon.getHeader_align());
+			vendorCoupon.setBody_align(coupon.getBody_align());
+			vendorCoupon.setFooter_align(coupon.getFooter_align());
+			vendorCoupon.setHeader_size(coupon.getHeader_size());
+			vendorCoupon.setBody_size(coupon.getBody_size());
+			vendorCoupon.setFooter_size(coupon.getFooter_size());
+			vendorCoupon.setFooter_font(coupon.getFooter_font());
+			vendorCoupon.setHeader_font(coupon.getHeader_font());
+			vendorCoupon.setBody_font(coupon.getBody_font());
+			vendorCoupon.setFooter_bold(coupon.getFooter_bold());
+			vendorCoupon.setHeader_bold(coupon.getHeader_bold());
+			vendorCoupon.setBody_bold(coupon.getBody_bold());
+			vendorCoupon.setFooter_style(coupon.getFooter_style());
+			vendorCoupon.setHeader_style(coupon.getHeader_style());
+			vendorCoupon.setBody_style(coupon.getBody_style());
+			vendorCoupon.setImage_align(coupon.getImage_align());
+			vendorCoupon.setFooter_decoration(coupon.getFooter_decoration());
+			vendorCoupon.setHeader_decoration(coupon.getHeader_decoration());
+			vendorCoupon.setBody_decoration(coupon.getBody_decoration());
+			vendorCoupon.setProfession(coupon.getProfession());
+			vendorCoupon.setGender(coupon.getGender());
+			
+			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());;
+			vendorCoupon.setFromDate(dateFormatter.format(coupon.getFromDate()));
+			vendorCoupon.setToDate(dateFormatter.format(coupon.getToDate()));
+			
+			vendorCoupon.setImageId(coupon.getImage().getId());
+			vendorCoupon.setImage("data:image/jpeg;base64,"+coupon.getImage().getImage());
+			vendorCoupon.setLogo("data:image/jpeg;base64,"+coupon.getImage().getImage());
+			vendorCoupon.setCouponType(coupon.getCouponType().getCouponType());
 
-	public ImageStatusDTO uploadCoupon(MultipartFile file, Long vendorId) throws UnsupportedEncodingException, IOException {
+			vendorCoupon.setKeywords(coupon.getKeywords());
+			
+			vendorCoupon.setVendorId(coupon.getVendor().getUser().getUserId());
+			vendorCoupon.setLogo("data:image/jpeg;base64,"+coupon.getVendor().getLogo());
+			vendorCoupons.add(vendorCoupon);
+		}
+
+		return vendorCoupons;
+	}
+	
+	@Transactional
+	public ImageStatusDTO uploadCoupon(MultipartFile file, Long vendorId, String subCategory, String keywords) throws UnsupportedEncodingException, IOException {
 		
 		
 		String image = new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
@@ -61,6 +158,8 @@ public class CouponService {
 		
 		coupon.setImage(image);
 		coupon.setUser(userDetailsRepository.findById(vendorId).get());
+		coupon.setKeywords(keywords);
+		coupon.setSubCateogry(subCategoryRepository.findBySubCategoryName(subCategory).get());
 		
 		ImageDetails couponSaved = couponDetailsRepository.save(coupon);
 		if(couponSaved!= null)
@@ -76,7 +175,7 @@ public class CouponService {
 		
 		return imageStatus;
 	}
-	
+	@Transactional
 public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws UnsupportedEncodingException, IOException {
 		
 		

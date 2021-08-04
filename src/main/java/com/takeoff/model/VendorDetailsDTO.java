@@ -1,5 +1,6 @@
 package com.takeoff.model;
 
+import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorDetails;
 
 public class VendorDetailsDTO {
@@ -22,6 +23,17 @@ public class VendorDetailsDTO {
 		this.logo="data:image/jpeg;base64,"+vendorDetails.getLogo();
 	}
 	
+	public VendorDetailsDTO(UserDetails userDetails)
+	{
+		this.vendorId=userDetails.getUserId();
+		this.name=userDetails.getName();
+		this.contact=userDetails.getContact();
+		this.email=userDetails.getEmail();
+		
+		this.details=userDetails.getMessage();
+		this.city=userDetails.getCity();
+		
+	}
 	
 
 

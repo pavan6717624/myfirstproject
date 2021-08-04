@@ -2,6 +2,7 @@ package com.takeoff.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,6 +23,7 @@ public class VendorDetails implements Serializable{
 	Long vendorid;
 	
 	String address="";
+	@Column(length = 100000)
 	String logo="";
 	
 	@OneToOne(fetch = FetchType.LAZY)

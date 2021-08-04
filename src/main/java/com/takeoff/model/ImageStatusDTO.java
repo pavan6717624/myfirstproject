@@ -9,6 +9,16 @@ public class ImageStatusDTO {
 	
 	String message;
 	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	Long id;
+	
 	public String getImage() {
 		return image;
 	}
