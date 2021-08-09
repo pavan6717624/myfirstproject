@@ -25,6 +25,7 @@ import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
+import com.takeoff.model.SubCategoryDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.model.VendorCouponsDTO;
 import com.takeoff.model.VendorDetailsDTO;
@@ -75,12 +76,27 @@ public class Controller {
 		return vendorService.getVendorDetails(Long.valueOf(vendorId));
 	}   
 	
+	@RequestMapping("/editCategory")
+	public Boolean editCategory(@RequestParam("categoryId") String categoryId,@RequestParam("categoryName") String categoryName) 
+	{
+		return categoryService.editCategory(Long.valueOf(categoryId),categoryName);
+	}  
+	
+	
+	@RequestMapping("/editSubCategory")
+	public Boolean editSubCategory(@RequestParam("subCategoryId") String subCategoryId,@RequestParam("subCategoryName") String subCategoryName) 
+	{
+		return categoryService.editSubCategory(Long.valueOf(subCategoryId),subCategoryName);
+	}  
+	
+	
 	@RequestMapping("/getDesignerDetails")
 	public VendorDetailsDTO getDesignerDetails(@RequestParam("vendorId") String vendorId) 
 	{
 		return vendorService.getDesignerDetails(Long.valueOf(vendorId));
 	}   
 	
+
 
 	@RequestMapping("/getImage")
 	public ImageStatusDTO getImage(@RequestParam("file") MultipartFile file) throws IOException
@@ -112,11 +128,62 @@ public class Controller {
 	}
 	
 	
+	@RequestMapping("/getAllSubCategories")
+	public List<SubCategoryDTO> getAllSubCategories() 
+	{
+		return categoryService.getAllSubCategories();
+	}
+	
+	@RequestMapping("/addCategory")
+	public Boolean addCategory(@RequestParam("category") String category) 
+	{
+		return categoryService.addCategory(category);
+	}
+	
+	
+	@RequestMapping("/addSubCategory")
+	public Boolean addSubCategory(@RequestParam("categoryId") String categoryId,@RequestParam("subcategory") String subcategory) 
+	{
+		return categoryService.addSubCategory(Long.valueOf(categoryId),subcategory);
+	}
+	
+	@RequestMapping("/deleteSubCategory")
+	public Boolean deleteSubCategory(@RequestParam("subCategoryId") String subCategoryId) 
+	{
+		return categoryService.deleteSubCategory(Long.valueOf(subCategoryId));
+	}
+	
+	@RequestMapping("/deleteCategory")
+	public Boolean deleteCategory(@RequestParam("categoryId") String categoryId) 
+	{
+		return categoryService.deleteCategory(Long.valueOf(categoryId));
+	}
+	
+	@RequestMapping("/visibleSubCategory")
+	public Boolean visibleSubCategory(@RequestParam("subCategoryId") String subCategoryId) 
+	{
+		return categoryService.visibleSubCategory(Long.valueOf(subCategoryId));
+	}
+	
+	@RequestMapping("/visibleCategory")
+	public Boolean visibleCategory(@RequestParam("categoryId") String categoryId) 
+	{
+		return categoryService.visibleCategory(Long.valueOf(categoryId));
+	}
+	
+	@RequestMapping("/mandatoryComplimentaryChange")
+	public Boolean mandatoryComplimentaryChange(@RequestParam("subCategoryId") String subCategoryId) 
+	{
+		return categoryService.mandatoryComplimentaryChange(Long.valueOf(subCategoryId));
+	}
+	
+	
 	@RequestMapping("/getCategories")
 	public List<Category> getCategories() 
 	{
 		return categoryService.getCategories();
 	}
+	
 	
 	
 	@RequestMapping("/getCouponTypes")

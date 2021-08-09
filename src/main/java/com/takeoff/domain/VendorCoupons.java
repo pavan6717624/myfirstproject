@@ -61,7 +61,7 @@ public class VendorCoupons implements Serializable {
 
 	String   profession;
 	String   gender;
-
+	
 	Instant   fromDate;
 	Instant   toDate;
 	

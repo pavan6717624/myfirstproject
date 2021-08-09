@@ -22,12 +22,44 @@ public class SubCategory implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	
-	@OneToOne(fetch = FetchType.LAZY)
+	@OneToOne
 	 @JoinColumn(name = "category_id")
 	Category category;
 	
 	String subCategoryName;
 	
+	Boolean subCategoryVisibility=true;
+	
+	Boolean isDeleted=false;	
+	
+
+	Boolean mandatoryComplimentary = true;
+	
+	
+	public Boolean getMandatoryComplimentary() {
+		return mandatoryComplimentary;
+	}
+
+	public void setMandatoryComplimentary(Boolean mandatoryComplimentary) {
+		this.mandatoryComplimentary = mandatoryComplimentary;
+	}
+	
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Boolean getSubCategoryVisibility() {
+		return subCategoryVisibility;
+	}
+
+	public void setSubCategoryVisibility(Boolean subCategoryVisibility) {
+		this.subCategoryVisibility = subCategoryVisibility;
+	}
+
 	public Long getId() {
 		return id;
 	}

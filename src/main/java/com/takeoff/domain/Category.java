@@ -6,6 +6,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 @Entity
 public class Category  implements Serializable
@@ -19,6 +21,25 @@ public class Category  implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	String categoryName;
+	Boolean categoryVisibility=true;
+	Boolean isDeleted = false;	
+	
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	
+	public Boolean getCategoryVisibility() {
+		return categoryVisibility;
+	}
+
+	public void setCategoryVisibility(Boolean categoryVisibility) {
+		this.categoryVisibility = categoryVisibility;
+	}
+
 	public Long getId() {
 		return id;
 	}
