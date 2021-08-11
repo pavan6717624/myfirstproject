@@ -83,7 +83,7 @@ public Boolean addDesginer(VendorDetailsDTO designer) throws NoSuchAlgorithmExce
 
      utilService.sendMessage(designer.getEmail(), "TakeOff Designer Account", text);
      
-     //utilService.sendSMS("+91"+designer.getContact(),text);
+     utilService.sendSMS("+91"+designer.getContact(),text);
      return true;
 	}
 	else
