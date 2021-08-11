@@ -3,9 +3,12 @@ package com.takeoff.domain;
 import java.io.Serializable;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 
 import com.takeoff.model.SubscriptionDTO;
 
@@ -25,8 +28,37 @@ public class UserDetails implements Serializable {
 	String email="";
 	String city="";
 	String message="";
-	String userType="";
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "roleId")
+	Roles role;
 	
+	
+	Boolean isDisabled;
+	Boolean isDeleted;
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+
+	public Boolean getIsDisabled() {
+		return isDisabled;
+	}
+
+	public void setIsDisabled(Boolean isDisabled) {
+		this.isDisabled = isDisabled;
+	}
+
+	public Roles getRole() {
+		return role;
+	}
+
+	public void setRole(Roles role) {
+		this.role = role;
+	}
+
 	public UserDetails()
 	{
 		
@@ -40,16 +72,9 @@ public class UserDetails implements Serializable {
 		this.  email=subscription.getEmail();
 		this.  city=subscription.getCity();
 		this.  message=subscription.getMessage();
-		this.  userType="Customer";
+		this.  role=subscription.getRole();
 	}
 	
-	public String getUserType() {
-		return userType;
-	}
-
-	public void setUserType(String userType) {
-		this.userType = userType;
-	}
 
 	public Long getUserId() {
 		return userId;

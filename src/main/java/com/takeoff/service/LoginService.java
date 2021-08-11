@@ -41,7 +41,7 @@ public class LoginService {
 				loginStatus.setLoginStatus(status);
 				
 				if(status)
-				loginStatus.setUserType(user.get().getUserType());
+				loginStatus.setUserType(user.get().getRole().getRoleName());
 			
 			
 		

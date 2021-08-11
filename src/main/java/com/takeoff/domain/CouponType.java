@@ -19,6 +19,23 @@ public class CouponType implements Serializable
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	Long id;
 	String couponType;
+	Boolean couponTypeVisibility=true;
+	Boolean isDeleted=false;
+	
+	
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
+	}
+	public Boolean getCouponTypeVisibility() {
+		return couponTypeVisibility;
+	}
+	public void setCouponTypeVisibility(Boolean couponTypeVisibility) {
+		this.couponTypeVisibility = couponTypeVisibility;
+	}
+	
 	
 	public Long getId() {
 		return id;

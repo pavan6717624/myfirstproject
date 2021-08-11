@@ -3,6 +3,7 @@ package com.takeoff.controller;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.apache.commons.codec.binary.Base64;
@@ -29,6 +30,7 @@ import com.takeoff.model.SubCategoryDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.model.VendorCouponsDTO;
 import com.takeoff.model.VendorDetailsDTO;
+import com.takeoff.repository.RolesRepository;
 import com.takeoff.service.CategoryService;
 import com.takeoff.service.CouponService;
 import com.takeoff.service.CouponTypeService;
@@ -70,6 +72,11 @@ public class Controller {
 	CategoryService categoryService;
 	
 	
+	
+	@Autowired
+	RolesRepository rolesRepository;
+	
+	
 	@RequestMapping("/getVendorDetails")
 	public VendorDetailsDTO getVendorDetails(@RequestParam("vendorId") String vendorId) 
 	{
@@ -80,6 +87,12 @@ public class Controller {
 	public Boolean editCategory(@RequestParam("categoryId") String categoryId,@RequestParam("categoryName") String categoryName) 
 	{
 		return categoryService.editCategory(Long.valueOf(categoryId),categoryName);
+	}  
+	
+	@RequestMapping("/editCouponType")
+	public Boolean editCouponType(@RequestParam("couponTypeId") String couponTypeId,@RequestParam("couponTypeName") String couponTypeName) 
+	{
+		return couponTypeService.editCouponType(Long.valueOf(couponTypeId),couponTypeName);
 	}  
 	
 	
@@ -140,11 +153,47 @@ public class Controller {
 		return categoryService.addCategory(category);
 	}
 	
+	@RequestMapping("/changePassword")
+	public Boolean changePassword(@RequestParam("userId") String userId, @RequestParam("password") String password, @RequestParam("newpassword") String newpassword) 
+	{
+		return vendorService.changePassword(userId,password,newpassword);
+		
+	}
+
+	
 	
 	@RequestMapping("/addSubCategory")
 	public Boolean addSubCategory(@RequestParam("categoryId") String categoryId,@RequestParam("subcategory") String subcategory) 
 	{
 		return categoryService.addSubCategory(Long.valueOf(categoryId),subcategory);
+	}
+	
+	@RequestMapping("/addDesigner")
+	public Boolean addDesigner(@RequestBody VendorDetailsDTO designer) throws NoSuchAlgorithmException 
+	{
+		
+		return vendorService.addDesginer(designer);
+	}
+	
+	@RequestMapping("/editDesigner")
+	public Boolean editDesigner(@RequestBody VendorDetailsDTO designer) throws NoSuchAlgorithmException 
+	{
+		
+		return vendorService.editDesigner(designer);
+	}
+	
+	@RequestMapping("/disableDesigner")
+	public Boolean disableDesigner(@RequestParam("vendorId") String vendorId)
+	{
+		
+		return vendorService.disableDesigner(Long.valueOf(vendorId));
+	}
+	
+	@RequestMapping("/deleteDesigner")
+	public Boolean deleteDesigner(@RequestParam("vendorId") String vendorId)
+	{
+		
+		return vendorService.deleteDesigner(Long.valueOf(vendorId));
 	}
 	
 	@RequestMapping("/deleteSubCategory")
@@ -153,10 +202,30 @@ public class Controller {
 		return categoryService.deleteSubCategory(Long.valueOf(subCategoryId));
 	}
 	
+	
+	
 	@RequestMapping("/deleteCategory")
 	public Boolean deleteCategory(@RequestParam("categoryId") String categoryId) 
 	{
 		return categoryService.deleteCategory(Long.valueOf(categoryId));
+	}
+	
+	@RequestMapping("/visibleCouponType")
+	public Boolean visibleCouponType(@RequestParam("couponTypeId") String couponTypeId) 
+	{
+		return couponTypeService.visibleCouponType(Long.valueOf(couponTypeId));
+	}
+	
+	@RequestMapping("/deleteCouponType")
+	public Boolean deleteCouponType(@RequestParam("couponTypeId") String couponTypeId) 
+	{
+		return couponTypeService.deleteCouponType(Long.valueOf(couponTypeId));
+	}
+	
+	@RequestMapping("/addCouponType")
+	public Boolean addCouponType(@RequestParam("couponTypeName") String couponTypeName) 
+	{
+		return couponTypeService.addCouponType(couponTypeName);
 	}
 	
 	@RequestMapping("/visibleSubCategory")
@@ -196,6 +265,20 @@ public class Controller {
 	public List<SubCategory> getSubCategories(@RequestParam("category") String category) 
 	{
 		return categoryService.getSubCategories(category);
+	}
+	
+	
+	
+	@RequestMapping("/getDesigners")
+	public List<VendorDetailsDTO> getDesigners() 
+	{
+		return vendorService.getDesigners();
+	}
+	
+	@RequestMapping("/getVendors")
+	public List<VendorDetailsDTO> getVendors() 
+	{
+		return vendorService.getVendors();
 	}
 	
 	@RequestMapping("/saveCoupon")
@@ -287,7 +370,7 @@ public class Controller {
 	@RequestMapping("/subscribe")
 	public StatusDTO subscribe(@RequestBody SubscriptionDTO subscription)
 	{
-		
+		subscription.setRole(rolesRepository.findByRoleName("Customer").get());
 		StatusDTO statusDto = new StatusDTO();
 		
 		try

@@ -1,5 +1,7 @@
 package com.takeoff.model;
 
+import com.takeoff.domain.Roles;
+
 public class SubscriptionDTO {
 	
 	
@@ -15,7 +17,14 @@ public class SubscriptionDTO {
 	String razorpay_order_id;
 	String razorpay_signature;
 	String message;
+	Roles role;
 	
+	public Roles getRole() {
+		return role;
+	}
+	public void setRole(Roles role) {
+		this.role = role;
+	}
 	public String getMessage() {
 		return message;
 	}

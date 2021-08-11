@@ -21,6 +21,7 @@ public class VendorDetailsDTO {
 		this.details=vendorDetails.getUser().getMessage();
 		this.city=vendorDetails.getUser().getCity();
 		this.logo="data:image/jpeg;base64,"+vendorDetails.getLogo();
+		this.isDisabled=vendorDetails.getUser().getIsDisabled();
 	}
 	
 	public VendorDetailsDTO(UserDetails userDetails)
@@ -32,6 +33,7 @@ public class VendorDetailsDTO {
 		
 		this.details=userDetails.getMessage();
 		this.city=userDetails.getCity();
+		this.isDisabled=userDetails.getIsDisabled();
 		
 	}
 	
@@ -46,7 +48,16 @@ public class VendorDetailsDTO {
 	String details="";
 	String city="";
 	String logo="";
+	Boolean isDisabled=false;
 	
+	public Boolean getIsDisabled() {
+		return isDisabled;
+	}
+
+	public void setIsDisabled(Boolean isDisabled) {
+		this.isDisabled = isDisabled;
+	}
+
 	public Long getVendorId() {
 		return vendorId;
 	}
