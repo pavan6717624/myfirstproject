@@ -75,10 +75,10 @@ public Boolean addDesginer(VendorDetailsDTO designer) throws NoSuchAlgorithmExce
 	if(user.getUserId() != null)
 	{
 	
-	String text="\nTakeOff\nCongratulations! Your Designer Account has been Created in TakeOff\n"
-     		+ "Your User Id: "+user.getUserId()+"\n"
-     		+ "Your Password: "+password+"\n"
-     		+ "Login and Enjoy the Experience of TakeOff";
+	String text="\nCongrats! Your Designer Account got Created in TakeOff\n"
+     		+ "User Id: "+user.getUserId()+"\n"
+     		+ "Password: "+password+"\n"
+     		+ "Login and Enjoy the TakeOff";
 	
 
      utilService.sendMessage(designer.getEmail(), "TakeOff Designer Account", text);
