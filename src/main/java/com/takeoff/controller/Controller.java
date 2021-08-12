@@ -83,13 +83,13 @@ public class Controller {
 	@RequestMapping("/approveSMS")
 	public String approveSMS(HttpServletRequest request) 
 	{
-		String str="";
-		List<String> params = Collections.list(request.getParameterNames());
+	
 		
-		for(int i=0;i<params.size();i++)
-			str+=params.get(i)+","+request.getParameter(params.get(i))+"\n";
+		String whatsappNumber = request.getParameter("WaId");
+		String body=request.getParameter("Body");
 		
-		return "contents are \n"+str;
+		
+		return "Hi "+whatsappNumber+"!,  We received you request body "+body;
 	}   
 	
 	
