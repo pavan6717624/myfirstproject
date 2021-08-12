@@ -83,9 +83,13 @@ public class Controller {
 	@RequestMapping("/approveSMS")
 	public String approveSMS(HttpServletRequest request) 
 	{
+		String str="";
+		List<String> params = Collections.list(request.getParameterNames());
 		
-		System.out.println("in approve sms"+Collections.list(request.getParameterNames()));
-		return "in approve sms"+Collections.list(request.getParameterNames());
+		for(int i=0;i<params.size();i++)
+			str+=params.get(i)+","+request.getParameter(params.get(i))+"\n";
+		
+		return "contents are \n"+str;
 	}   
 	
 	
