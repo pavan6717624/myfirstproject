@@ -4,7 +4,10 @@ package com.takeoff.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -75,6 +78,15 @@ public class Controller {
 	
 	@Autowired
 	RolesRepository rolesRepository;
+	
+	
+	@RequestMapping("/approveSMS")
+	public String approveSMS(HttpServletRequest request) 
+	{
+		
+		System.out.println("in approve sms"+Collections.list(request.getParameterNames()));
+		return "in approve sms"+Collections.list(request.getParameterNames());
+	}   
 	
 	
 	@RequestMapping("/getVendorDetails")
