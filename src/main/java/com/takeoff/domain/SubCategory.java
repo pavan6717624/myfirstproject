@@ -19,7 +19,7 @@ public class SubCategory implements Serializable
 	 */
 	private static final long serialVersionUID = 1426391913288992703L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	
 	@OneToOne

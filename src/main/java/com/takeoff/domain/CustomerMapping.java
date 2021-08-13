@@ -2,6 +2,7 @@ package com.takeoff.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -19,7 +20,7 @@ public class CustomerMapping implements Serializable{
 	private static final long serialVersionUID = 5658610914797452087L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long mappingId;
 	
 	 @OneToOne(fetch = FetchType.LAZY)

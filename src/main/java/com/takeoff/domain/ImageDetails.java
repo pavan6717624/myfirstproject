@@ -19,7 +19,7 @@ public class ImageDetails implements Serializable{
 	 */
 	private static final long serialVersionUID = 1137373385198496953L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	@Column(length = 100000)
 	String image;

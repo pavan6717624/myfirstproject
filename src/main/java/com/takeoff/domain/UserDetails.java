@@ -73,6 +73,8 @@ public class UserDetails implements Serializable {
 		this.  city=subscription.getCity();
 		this.  message=subscription.getMessage();
 		this.  role=subscription.getRole();
+		this.isDeleted=false;
+		this.isDisabled =false;
 	}
 	
 

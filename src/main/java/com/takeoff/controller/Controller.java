@@ -4,7 +4,6 @@ package com.takeoff.controller;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -41,6 +40,7 @@ import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.LoginService;
 import com.takeoff.service.RazorpayService;
+import com.takeoff.service.UtilService;
 import com.takeoff.service.VendorService;
 
 @RestController
@@ -49,6 +49,9 @@ public class Controller {
 	
 	@Autowired
 	CustomerService customerService;
+	
+	@Autowired
+	UtilService utilService;
 	
 	@Autowired
 	RazorpayService razorpayService;
@@ -386,36 +389,7 @@ public class Controller {
 	@RequestMapping("/subscribe")
 	public StatusDTO subscribe(@RequestBody SubscriptionDTO subscription)
 	{
-		subscription.setRole(rolesRepository.findByRoleName("Customer").get());
-		StatusDTO statusDto = new StatusDTO();
-		
-		try
-		{
-		Boolean paymentStatus =razorpayService.subscribe(subscription);	
-		
-		
-		if(paymentStatus)
-		{
-			statusDto = customerService.createCustomer(subscription);
-		 if(!statusDto.getStatus())
-		 {
-			 statusDto.setCustomerId(0L);
-			 statusDto.setReferCode("0");
-			 statusDto.setMessage(" Mapping Failed. If Amount Debited, it will be refunded in 5 Business Days. ");
-		 }
-		}
-		else
-		{
-			statusDto=new StatusDTO(subscription);
-		}
-		}
-		catch(RazorpayException | IOException ex)
-		{
-			statusDto=new StatusDTO(subscription);
-			statusDto.setMessage(" User Creation Failed. If Amount Debited, it will be refunded in 5 Business Days. ");
-		}
-		
-		return statusDto;
+		return customerService.subscribe(subscription);
 	}
 	
 	@RequestMapping(value="/getOrderId")

@@ -16,7 +16,7 @@ public class CouponType implements Serializable
 	 */
 	private static final long serialVersionUID = -4670847693904566126L;
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	String couponType;
 	Boolean couponTypeVisibility=true;

@@ -22,7 +22,7 @@ public class UtilService {
 	    private JavaMailSender javaMailSender;
 	  
 	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
-	   private final static String AUTH_ID = "64232222abe4403f8f2633aa30df2a44";
+	   private final static String AUTH_ID = "b6ef2ec5585a7e6d791ed05a05808e96";
 	   
 	   
 	   static {
@@ -54,7 +54,7 @@ public class UtilService {
 	
 		 
 		   public void sendSMS(String smsTo, String text){
-		      Message.creator(new PhoneNumber(smsTo), new PhoneNumber("+15128438283"),
+		      Message.creator(new PhoneNumber("+91"+smsTo), new PhoneNumber("+15128438283"),
 		         text).create();
 		   }
 		   

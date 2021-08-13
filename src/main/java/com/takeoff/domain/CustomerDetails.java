@@ -40,7 +40,7 @@ public class CustomerDetails implements Serializable{
 		this.refererId=subscription.getRefererid();
 	}
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long customerId;
 	
 	public Long getCustomerId() {
