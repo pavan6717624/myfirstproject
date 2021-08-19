@@ -43,6 +43,7 @@ public class VendorCouponsDTO {
 	String   toDate;
 	
 	
+	
 	Long   imageId;
 	
 
@@ -57,6 +58,45 @@ public class VendorCouponsDTO {
 	
 	String logo;
 	
+	
+	Long id;
+	
+	String description;
+	
+	String vendorName;
+	
+	public String getVendorName() {
+		return vendorName;
+	}
+
+
+	public void setVendorName(String vendorName) {
+		this.vendorName = vendorName;
+	}
+
+
+	public String getDescription() {
+		return description;
+	}
+
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+
+
+	
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
 	public String getLogo() {
 		return logo;
 	}

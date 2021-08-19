@@ -1,5 +1,6 @@
 package com.takeoff.service;
 
+import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.Optional;
@@ -29,6 +30,9 @@ public class VendorService {
 	@Autowired
 	UtilService utilService;
 	
+
+	@Autowired
+	LogoService logoService;
 
 	    
 	
@@ -160,6 +164,104 @@ public Boolean editDesigner(VendorDetailsDTO designer) {
 			
 			else
 			return false;
+}
+
+public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmException, IOException {
+	UserDetails user=new UserDetails();
+	user.setCity(vendor.getCity());
+	user.setContact(vendor.getContact());
+	user.setEmail(vendor.getEmail());
+	user.setName(vendor.getName());
+	user.setRole(rolesRepository.findByRoleName("Vendor").get());
+	String password=utilService.generatePassword(9);
+	user.setPassword(utilService.getSHA(password));
+	user.setIsDeleted(false);
+	user.setIsDisabled(false);
+	
+	userDetailsRepository.save(user);
+	
+	VendorDetails vendorDetails=new VendorDetails();
+	vendorDetails.setAddress(vendor.getAddress());
+	vendorDetails.setUser(user);
+	vendorDetails.setLogo(logoService.createLogo("<html><body style='padding:5px;text-align:center;'><h1>"+user.getName().replaceAll(" ", "<br />")+"</h1></body></html>"));
+	
+	vendorDetailsRepository.save(vendorDetails);
+	
+	if(user.getUserId() != null)
+	{
+	
+	String text="\nCongrats! Your Vendor Account got Created in TakeOff\n"
+     		+ "User Id: "+user.getUserId()+"\n"
+     		+ "Password: "+password+"\n"
+     		+ "Login and Enjoy the TakeOff";
+	
+
+     utilService.sendMessage(vendor.getEmail(), "TakeOff Vendor Account", text);
+     
+     utilService.sendSMS(vendor.getContact(),text);
+     return true;
+	}
+	else
+	return false;
+}
+
+public Boolean disableVendor(Long vendorId) {
+Optional<UserDetails> user=userDetailsRepository.findById(vendorId);
+	
+	Boolean status=false;
+	
+	
+	if(user.isPresent())
+	{
+		user.get().setIsDisabled(!user.get().getIsDisabled());
+		userDetailsRepository.save(user.get());
+		if(user.get().getUserId()!=null)
+			status=true;
+	}
+	
+	return status;
+}
+
+public Boolean deleteVendor(Long vendorId) {
+Optional<UserDetails> user=userDetailsRepository.findById(vendorId);
+	
+	Boolean status=false;
+	
+	
+	if(user.isPresent())
+	{
+		user.get().setIsDeleted(true);
+		userDetailsRepository.save(user.get());
+		if(user.get().getUserId()!=null)
+			status=true;
+	}
+	
+	return status;
+}
+
+public Boolean editVendor(VendorDetailsDTO vendor) throws IOException {
+	
+	
+	VendorDetails vendorDetails=vendorDetailsRepository.findByUserId(vendor.getVendorId()).get();
+	vendorDetails.setAddress(vendor.getAddress());
+	vendorDetails.setLogo(logoService.createLogo("<html><body style='padding:10;text-align:center;'><h1>"+vendor.getName().replaceAll(" ", "<br />")+"</h1></body></html>"));
+	
+	vendorDetailsRepository.save(vendorDetails);
+	
+	UserDetails user=vendorDetails.getUser();
+			user.setCity(vendor.getCity());
+			user.setContact(vendor.getContact());
+			user.setEmail(vendor.getEmail());
+			user.setName(vendor.getName());
+			
+			userDetailsRepository.save(user);
+	
+	if(user.getUserId() != null)
+	{
+     return true;
+	}
+	else
+	return false;
 }
 
 

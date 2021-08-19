@@ -15,13 +15,13 @@ import com.takeoff.model.VendorDetailsDTO;
 public interface VendorDetailsRepository extends JpaRepository<VendorDetails,Long> {
 	
 	
-	@Query("select v from VendorDetails v where v.user.userId=(:userId)")
+	@Query("select v from VendorDetails v where v.user.userId=(:userId)  and v.user.isDisabled=false and v.user.isDeleted=false")
 	Optional<VendorDetails> findByUserId(@Param("userId") Long userId);
 	
-	@Query("select u from UserDetails u where u.userId=(:userId)")
+	@Query("select u from UserDetails u where u.userId=(:userId) and u.isDisabled=false and u.isDeleted=false")
 	Optional<UserDetails> findByDesignerId(@Param("userId") Long userId);
 	
-	@Query("select v from VendorDetails v")
+	@Query("select v from VendorDetails v where v.user.isDeleted=false order by v.user.userId desc")
 	List<VendorDetailsDTO> getVendors();
 
 

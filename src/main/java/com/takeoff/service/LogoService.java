@@ -1,0 +1,128 @@
+package com.takeoff.service;
+
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
+import javax.imageio.ImageIO;
+
+import org.apache.commons.codec.binary.Base64;
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.rendering.PDFRenderer;
+import org.springframework.stereotype.Service;
+
+import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
+
+
+@Service
+public class LogoService {
+	
+	    public BufferedImage trim(BufferedImage img) {
+	        int width  = getTrimmedWidth(img);
+	        int height = getTrimmedHeight(img);
+
+	        BufferedImage newImg = new BufferedImage(width, height,
+	                BufferedImage.TYPE_INT_RGB);
+	        Graphics g = newImg.createGraphics();
+	        g.drawImage( img, 0, 0, null );
+	        img = newImg;
+
+	AffineTransform tx = AffineTransform.getScaleInstance(-1, -1);
+	tx.translate(-img.getWidth(null), -img.getHeight(null));
+	AffineTransformOp op = new AffineTransformOp(tx, AffineTransformOp.TYPE_NEAREST_NEIGHBOR);
+	img = op.filter(img, null);
+	
+	return img;
+
+
+	    }
+
+
+	    private int getTrimmedWidth(BufferedImage img) {
+	        int height       = img.getHeight();
+	        int width        = img.getWidth();
+	        int trimmedWidth = 0;
+
+	        for(int i = 0; i < height; i++) {
+	            for(int j = width - 1; j >= 0; j--) {
+	                if(img.getRGB(j, i) != Color.WHITE.getRGB() &&
+	                        j > trimmedWidth) {
+	                    trimmedWidth = j;
+	                    break;
+	                }
+	            }
+	        }
+
+
+	        return trimmedWidth;
+	    }
+
+	    private int getTrimmedHeight(BufferedImage img) {
+	        int width         = img.getWidth();
+	        int height        = img.getHeight();
+	        int trimmedHeight = 0;
+
+	        for(int i = 0; i < width; i++) {
+	            for(int j = height - 1; j >= 0; j--) {
+	                if(img.getRGB(i, j) != Color.WHITE.getRGB() &&
+	                        j > trimmedHeight) {
+	                    trimmedHeight = j;
+	                    break;
+	                }
+	            }
+	        }
+
+	        return trimmedHeight;
+	    }
+
+	    public String createLogo(String htmlData) throws IOException {
+	    	
+	    	System.out.println(new java.util.Date());
+	    	 byte[] pdfBytes = null;
+	    	  try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BufferedOutputStream bufOs = new BufferedOutputStream(bos)) {
+	              final PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
+	              pdfBuilder.useFastMode();
+	              pdfBuilder.withHtmlContent(htmlData, "");
+	              pdfBuilder.toStream(bufOs);
+	              pdfBuilder.run();
+	              pdfBytes = bos.toByteArray();
+	          }
+	    
+	       
+	       
+	       
+	       
+	        PDDocument pd = PDDocument.load (pdfBytes);
+	        PDFRenderer pr = new PDFRenderer (pd);
+	        BufferedImage img = pr.renderImageWithDPI (0, 300);
+	       
+
+
+	    
+
+	       
+	for(int i=0;i<2;i++)
+	{
+	        img = trim(img);
+	       
+	}
+	ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	ImageIO.write(img,"JPEG",bos);
+	
+	String image =   new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
+	bos.close();
+	System.out.println(new java.util.Date());
+	return image;
+	
+	    }
+	
+}

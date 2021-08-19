@@ -1,11 +1,11 @@
 package com.takeoff.domain;
 
 import java.io.Serializable;
-import java.time.Instant;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -61,9 +61,14 @@ public class VendorCoupons implements Serializable {
 
 	String   profession;
 	String   gender;
+
 	
-	Instant   fromDate;
-	Instant   toDate;
+	
+	@Column(columnDefinition="datetime")
+	 Timestamp  fromDate;
+	
+	@Column(columnDefinition="datetime")
+	Timestamp   toDate;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "imageId")
@@ -82,6 +87,22 @@ public class VendorCoupons implements Serializable {
 	@JoinColumn(name = "vendorId")
 
 	VendorDetails vendor;
+	
+	String description;
+	
+
+	
+
+	
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	
 	public Long getId() {
 		return id;
@@ -307,30 +328,32 @@ public class VendorCoupons implements Serializable {
 		this.gender = gender;
 	}
 
-	public Instant getFromDate() {
+	public Timestamp getFromDate() {
 		return fromDate;
 	}
 
-	public void setFromDate(Instant fromDate) {
+	public void setFromDate(Timestamp fromDate) {
 		this.fromDate = fromDate;
 	}
 
 	public void setFromDate(String fromDate) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		this.fromDate = LocalDateTime.parse(fromDate,dateFormatter).toInstant(ZoneOffset.UTC);
+		this.fromDate = Timestamp.valueOf(LocalDateTime.parse(fromDate,dateFormatter));
+		System.out.println(this.fromDate+" "+fromDate);
 	}
 	
 	public void setToDate(String toDate) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-		this.toDate = LocalDateTime.parse(toDate,dateFormatter).toInstant(ZoneOffset.UTC);
+		this.toDate = Timestamp.valueOf(LocalDateTime.parse(toDate,dateFormatter));
+		System.out.println(this.toDate+" "+toDate);
 	}
 
 	
-	public Instant getToDate() {
+	public Timestamp getToDate() {
 		return toDate;
 	}
 
-	public void setToDate(Instant toDate) {
+	public void setToDate(Timestamp toDate) {
 		this.toDate = toDate;
 	}
 

@@ -16,7 +16,7 @@ import com.takeoff.model.VendorDetailsDTO;
 public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> {
 
 	
-	  @Query("select u from UserDetails u where u.userId=(:userId) and u.password = (:password) and u.isDeleted=false")
+	  @Query("select u from UserDetails u where u.userId=(:userId) and u.password = (:password) and u.isDeleted=false and u.isDisabled=false")
 			Optional<UserDetails> findByUserIdAndPassword(@Param("userId") Long userId, @Param("password") String password);
 	  
 	  @Query("select u from UserDetails u where u.role = (:role) and u.isDeleted=false order by u.userId desc")

@@ -12,7 +12,7 @@ import com.takeoff.domain.ImageDetails;
 @Repository
 public interface ImageDetailsRepository  extends JpaRepository<ImageDetails,Long> {
 
-	@Query("select i from ImageDetails i where i.user.userId = (:userId) order by id desc")
+	@Query("select i from ImageDetails i where i.user.userId = (:userId) or i.user.role.roleName like 'Designer' order by id desc")
 	List<ImageDetails> findByLatest(@Param("userId") Long userid);
 
 }

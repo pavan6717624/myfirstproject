@@ -18,9 +18,17 @@ import com.takeoff.model.SubscriptionDTO;
 @Service
 public class RazorpayService {
 	
+	private final String keyId="rzp_test_WJFhmfMmFRxETB";
+	private final String keySecret="g5Wm3ap5wCmLsioYJSoQoa35";
+	
+	
+//	private final String keyId="rzp_live_nWA6UVrzTQFr9W";
+//	private final String keySecret="IoKCC6msyc9zduVg5ZK6sIa5";
+
+	
 	public Boolean subscribe(SubscriptionDTO subscription) throws RazorpayException, IOException
 	{
-	RazorpayClient razorpayClient = new RazorpayClient("rzp_live_nWA6UVrzTQFr9W", "IoKCC6msyc9zduVg5ZK6sIa5");
+	RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
 	
 	String razorpay_order_id  = subscription.getRazorpay_order_id();
 	String razorpay_payment_id  = subscription.getRazorpay_payment_id();
@@ -50,7 +58,7 @@ public class RazorpayService {
 	options.put("razorpay_order_id", razorpay_order_id);
 	options.put("razorpay_payment_id", razorpay_payment_id);
 	options.put("razorpay_signature", razorpay_signature);
-	Boolean paymentStatus = Utils.verifyPaymentSignature(options, "IoKCC6msyc9zduVg5ZK6sIa5");
+	Boolean paymentStatus = Utils.verifyPaymentSignature(options, keySecret);
 	if(amount == 1 && paymentStatus)
 	{
 		
@@ -62,9 +70,8 @@ public class RazorpayService {
 	public String getOrderId() throws RazorpayException
 	{
 	
-//	RazorpayClient razorpayClient = new RazorpayClient("rzp_test_tqgJ9eimxluVhi", "xaOlf2KK1hTOS7yotlzCn7qs");
 		
-		RazorpayClient razorpayClient = new RazorpayClient("rzp_live_nWA6UVrzTQFr9W", "IoKCC6msyc9zduVg5ZK6sIa5");
+		RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
 
 	 
     Timestamp ts = new Timestamp(new java.util.Date().getTime());

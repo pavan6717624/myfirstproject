@@ -2,8 +2,6 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -89,6 +87,14 @@ public ImageDetails getImageDetails(Long id)
 		return images;
 	}
 	
+	
+	public List<VendorCouponsDTO> getCoupons() throws UnsupportedEncodingException {
+		
+		return getCoupons(0l);
+		
+	}
+
+	
 	public List<VendorCouponsDTO> getCoupons(Long vendorId) throws UnsupportedEncodingException
 	{
 		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId);
@@ -127,19 +133,23 @@ public ImageDetails getImageDetails(Long id)
 			vendorCoupon.setProfession(coupon.getProfession());
 			vendorCoupon.setGender(coupon.getGender());
 			
-			DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm").withZone(ZoneId.systemDefault());;
-			vendorCoupon.setFromDate(dateFormatter.format(coupon.getFromDate()));
-			vendorCoupon.setToDate(dateFormatter.format(coupon.getToDate()));
+			
+			//DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+			vendorCoupon.setFromDate(coupon.getFromDate().toString());
+			vendorCoupon.setToDate(coupon.getToDate().toString());
 			
 			vendorCoupon.setImageId(coupon.getImage().getId());
 			vendorCoupon.setImage("data:image/jpeg;base64,"+coupon.getImage().getImage());
-			vendorCoupon.setLogo("data:image/jpeg;base64,"+coupon.getImage().getImage());
+			
 			vendorCoupon.setCouponType(coupon.getCouponType().getCouponType());
 
 			vendorCoupon.setKeywords(coupon.getKeywords());
+			vendorCoupon.setDescription(coupon.getDescription());
 			
 			vendorCoupon.setVendorId(coupon.getVendor().getUser().getUserId());
 			vendorCoupon.setLogo("data:image/jpeg;base64,"+coupon.getVendor().getLogo());
+			vendorCoupon.setId(coupon.getId());
+			vendorCoupon.setVendorName(coupon.getVendor().getUser().getName());
 			vendorCoupons.add(vendorCoupon);
 		}
 
@@ -159,7 +169,7 @@ public ImageDetails getImageDetails(Long id)
 		coupon.setImage(image);
 		coupon.setUser(userDetailsRepository.findById(vendorId).get());
 		coupon.setKeywords(keywords);
-		coupon.setSubCateogry(subCategoryRepository.findBySubCategoryName(subCategory).get());
+		coupon.setSubCateogry(subCategoryRepository.findById(Long.valueOf(subCategory)).get());
 		
 		ImageDetails couponSaved = couponDetailsRepository.save(coupon);
 		if(couponSaved!= null)

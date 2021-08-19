@@ -20,6 +20,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.razorpay.RazorpayException;
 import com.takeoff.domain.Category;
 import com.takeoff.domain.CouponType;
+import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.SubCategory;
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.model.ImageStatusDTO;
@@ -39,6 +40,7 @@ import com.takeoff.service.CouponTypeService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.LoginService;
+import com.takeoff.service.LogoService;
 import com.takeoff.service.RazorpayService;
 import com.takeoff.service.UtilService;
 import com.takeoff.service.VendorService;
@@ -82,6 +84,10 @@ public class Controller {
 	@Autowired
 	RolesRepository rolesRepository;
 	
+	@Autowired
+	LogoService logoService;
+	
+
 	
 	@RequestMapping("/approveSMS")
 	public String approveSMS(HttpServletRequest request) 
@@ -159,6 +165,66 @@ public class Controller {
 		return couponService.getCoupons(Long.valueOf(vendorId));
 	}
 	
+	@RequestMapping("/getTakeOffRecommendations")
+	public List<VendorCouponsDTO> getTakeOffRecommendations() throws UnsupportedEncodingException
+	{
+	
+		return couponService.getCoupons();
+	}
+
+
+	@RequestMapping("/editCoupon")
+	public Boolean editCoupon(@RequestBody VendorCouponsDTO coupon) throws IOException
+	{
+	
+		VendorCoupons vendorCoupon = new VendorCoupons();
+		
+		vendorCoupon.setHeader(coupon.getHeader());
+		vendorCoupon.setBody(coupon.getBody());
+		vendorCoupon.setFooter(coupon.getFooter());
+		vendorCoupon.setHeader_color(coupon.getHeader_color());
+		vendorCoupon.setBody_color(coupon.getBody_color());
+		vendorCoupon.setFooter_color(coupon.getFooter_color());
+		vendorCoupon.setHeader_align(coupon.getHeader_align());
+		vendorCoupon.setBody_align(coupon.getBody_align());
+		vendorCoupon.setFooter_align(coupon.getFooter_align());
+		vendorCoupon.setHeader_size(coupon.getHeader_size());
+		vendorCoupon.setBody_size(coupon.getBody_size());
+		vendorCoupon.setFooter_size(coupon.getFooter_size());
+		vendorCoupon.setFooter_font(coupon.getFooter_font());
+		vendorCoupon.setHeader_font(coupon.getHeader_font());
+		vendorCoupon.setBody_font(coupon.getBody_font());
+		vendorCoupon.setFooter_bold(coupon.getFooter_bold());
+		vendorCoupon.setHeader_bold(coupon.getHeader_bold());
+		vendorCoupon.setBody_bold(coupon.getBody_bold());
+		vendorCoupon.setFooter_style(coupon.getFooter_style());
+		vendorCoupon.setHeader_style(coupon.getHeader_style());
+		vendorCoupon.setBody_style(coupon.getBody_style());
+		vendorCoupon.setImage_align(coupon.getImage_align());
+		vendorCoupon.setFooter_decoration(coupon.getFooter_decoration());
+		vendorCoupon.setHeader_decoration(coupon.getHeader_decoration());
+		vendorCoupon.setBody_decoration(coupon.getBody_decoration());
+		vendorCoupon.setProfession(coupon.getProfession());
+		vendorCoupon.setGender(coupon.getGender());
+		
+		
+		vendorCoupon.setFromDate(coupon.getFromDate());
+		vendorCoupon.setToDate(coupon.getToDate());
+		
+		ImageDetails image=couponService.getImageDetails(coupon.getImageId());
+		
+		vendorCoupon.setImage(image);
+		vendorCoupon.setCouponType(couponTypeService.getCouponType(coupon.getCouponType()));
+
+		vendorCoupon.setKeywords(coupon.getKeywords());
+		
+		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
+		vendorCoupon.setDescription(coupon.getDescription());
+		vendorCoupon.setId(coupon.getId());
+		
+		
+		return couponService.saveCoupon(vendorCoupon);
+	}
 	
 	@RequestMapping("/getAllSubCategories")
 	public List<SubCategoryDTO> getAllSubCategories() 
@@ -194,11 +260,26 @@ public class Controller {
 		return vendorService.addDesginer(designer);
 	}
 	
+	@RequestMapping("/addVendor")
+	public Boolean addVendor(@RequestBody VendorDetailsDTO vendor) throws NoSuchAlgorithmException, IOException 
+	{
+		
+		return vendorService.addVendor(vendor);
+	}
+	
+	
 	@RequestMapping("/editDesigner")
 	public Boolean editDesigner(@RequestBody VendorDetailsDTO designer) throws NoSuchAlgorithmException 
 	{
 		
 		return vendorService.editDesigner(designer);
+	}
+	
+	@RequestMapping("/editVendor")
+	public Boolean editVendor(@RequestBody VendorDetailsDTO vendor) throws NoSuchAlgorithmException, IOException 
+	{
+		
+		return vendorService.editVendor(vendor);
 	}
 	
 	@RequestMapping("/disableDesigner")
@@ -214,6 +295,21 @@ public class Controller {
 		
 		return vendorService.deleteDesigner(Long.valueOf(vendorId));
 	}
+	
+	@RequestMapping("/disableVendor")
+	public Boolean disableVendor(@RequestParam("vendorId") String vendorId)
+	{
+		
+		return vendorService.disableVendor(Long.valueOf(vendorId));
+	}
+	
+	@RequestMapping("/deleteVendor")
+	public Boolean deleteVendor(@RequestParam("vendorId") String vendorId)
+	{
+		
+		return vendorService.deleteVendor(Long.valueOf(vendorId));
+	}
+	
 	
 	@RequestMapping("/deleteSubCategory")
 	public Boolean deleteSubCategory(@RequestParam("subCategoryId") String subCategoryId) 
@@ -343,6 +439,7 @@ public class Controller {
 		vendorCoupon.setKeywords(coupon.getKeywords());
 		
 		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
+		vendorCoupon.setDescription(coupon.getDescription());
 		return couponService.saveCoupon(vendorCoupon);
 	}
 	

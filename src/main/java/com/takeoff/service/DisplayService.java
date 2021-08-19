@@ -116,6 +116,8 @@ public class DisplayService {
 		Long refererId=children.get(i).getRefererId();
 		Long parentId=children.get(i).getParentId();
 		
+		System.out.println(customerId+" "+refererId+" "+parentId);
+		
 		Double amount = customerDetailsRepository.findByUserId(customerId).get().getWalletAmount();
 		
 		String status="I";

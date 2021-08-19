@@ -12,7 +12,7 @@ import com.takeoff.model.DisplayDetailsDTO;
 @Repository
 public interface CustomerMappingRepository  extends JpaRepository<CustomerMapping,Long>{
 
-	@Query( nativeQuery = true, value = "select user_id as userId,referer_id as refererId,parent_id as parentId from customer_mapping where"
+	@Query( nativeQuery = true, value = "select user_id as customerId,referer_id as refererId,parent_id as parentId from customer_mapping where"
 			+ " (parent_id=(:userId) and user_id!=parent_id) or (referer_id=(:userId) and parent_id!=referer_id)"
 			+ "  order by user_id asc")
 	   public List<DisplayDetailsDTO> getTreeStructure(@Param("userId") Long userId);

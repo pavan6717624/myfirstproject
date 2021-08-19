@@ -60,6 +60,12 @@
 <artifactId>spring-boot-starter-web-services</artifactId>
 
 </dependency>
+		<!-- https://mvnrepository.com/artifact/com.openhtmltopdf/openhtmltopdf-pdfbox -->
+<dependency>
+    <groupId>com.openhtmltopdf</groupId>
+    <artifactId>openhtmltopdf-pdfbox</artifactId>
+    <version>1.0.9</version>
+</dependency>
 		
 		
 		<dependency>
