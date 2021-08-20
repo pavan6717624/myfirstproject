@@ -1,10 +1,13 @@
 package com.takeoff.controller;
 
 
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -87,6 +90,8 @@ public class Controller {
 	@Autowired
 	LogoService logoService;
 	
+
+
 
 	
 	@RequestMapping("/approveSMS")
@@ -221,6 +226,64 @@ public class Controller {
 		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
 		vendorCoupon.setDescription(coupon.getDescription());
 		vendorCoupon.setId(coupon.getId());
+		
+		
+		String bottom_left="position: absolute;bottom: 2%;left: 5%;";
+		String top_left="position: absolute; top: 2%;left: 5%;";
+		String top_center="position: absolute;top: 2%;left: 50%;transform: translate(-50%, -0%);";
+		String top_right="position: absolute;top: 2%;right: 5%;";
+		String bottom_right="position: absolute;bottom: 2%;right: 5%;";
+		String bottom_center="position:absolute;bottom: 2%;left: 50%;transform: translate(-50%, -0%);";
+		String centered="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -0%);";
+		String centered_left="position: absolute;top: 50%;left: 5%;"; 
+		String centered_right="position: absolute;top: 50%;right: 5%;";
+		
+		Map<String, String> classMap = new HashMap<String, String>();
+		
+		classMap.put("bottom-left",bottom_left);
+		classMap.put("top-left",top_left);
+		classMap.put("top-center",top_center);
+		classMap.put("top-right",top_right);
+		classMap.put("bottom-right",bottom_right);
+		classMap.put("bottom-center",bottom_center);
+		classMap.put("centered",centered);
+		classMap.put("centered-left",centered_left);
+		classMap.put("centered-right",centered_right);
+		
+		System.out.println(classMap.get(coupon.getHeader_align()));
+		
+		String htmlData="<div style='position: relative;'>"
+				+ "<img  src='data:image/jpeg;base64,"+image.getImage()+"' />"
+				
+				+ "<div style='"+classMap.get(coupon.getHeader_align())+";"
+				+ "font-family:"+coupon.getHeader_font()+";color:"+coupon.getHeader_color()+";"
+				+ "text-decoration:"+coupon.getHeader_decoration()+";font-weight:"+coupon.getHeader_bold()+";"
+				+ "font-style:"+coupon.getHeader_style()+";font-size:"+coupon.getHeader_size()+"px'>"+coupon.getHeader()+"</div>"
+				
+				+ "<div style='"+classMap.get(coupon.getBody_align())+";"
+				+ "font-family:"+coupon.getBody_font()+";color:"+coupon.getBody_color()+";"
+				+ "text-decoration:"+coupon.getBody_decoration()+";font-weight:"+coupon.getBody_bold()+";"
+				+ "font-style:"+coupon.getBody_style()+";font-size:"+coupon.getBody_size()+"px'>"+coupon.getBody()+"</div>"
+				
+				+ "<div style='"+classMap.get(coupon.getFooter_align())+";"
+				+ "font-family:"+coupon.getFooter_font()+";color:"+coupon.getFooter_color()+";"
+				+ "text-decoration:"+coupon.getFooter_decoration()+";font-weight:"+coupon.getFooter_bold()+";"
+				+ "font-style:"+coupon.getFooter_style()+";font-size:"+coupon.getFooter_size()+"px'>"+coupon.getFooter()+"</div>"
+
+
+				
+				+"</div>";
+		
+		String couponStr=logoService.createImage(htmlData,false);
+		
+//		FileOutputStream input=new FileOutputStream("f:\\demo.html");
+//		input.write(htmlData.getBytes());
+//		input.close();
+//		 input=new FileOutputStream("f:\\demo1.html");
+//		input.write(("<img src='data:image/jpeg;base64,"+couponStr+"' />").getBytes());
+//		input.close();
+		
+		vendorCoupon.setCoupon(couponStr);
 		
 		
 		return couponService.saveCoupon(vendorCoupon);
@@ -397,7 +460,7 @@ public class Controller {
 	}
 	
 	@RequestMapping("/saveCoupon")
-	public Boolean saveCoupon(@RequestBody VendorCouponsDTO coupon) 
+	public Boolean saveCoupon(@RequestBody VendorCouponsDTO coupon) throws IOException 
 	{
 		VendorCoupons vendorCoupon = new VendorCoupons();
 		
@@ -440,6 +503,71 @@ public class Controller {
 		
 		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
 		vendorCoupon.setDescription(coupon.getDescription());
+		
+		
+		
+		String bottom_left="position: absolute;bottom: 2%;left: 5%;";
+		String top_left="position: absolute; top: 2%;left: 5%;";
+		String top_center="position: absolute;top: 2%;left: 50%;transform: translate(-50%, -0%);";
+		String top_right="position: absolute;top: 2%;right: 5%;";
+		String bottom_right="position: absolute;bottom: 2%;right: 5%;";
+		String bottom_center="position:absolute;bottom: 2%;left: 50%;transform: translate(-50%, -0%);";
+		String centered="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -0%);";
+		String centered_left="position: absolute;top: 50%;left: 5%;"; 
+		String centered_right="position: absolute;top: 50%;right: 5%;";
+		
+		Map<String, String> classMap = new HashMap<String, String>();
+		
+		classMap.put("bottom-left",bottom_left);
+		classMap.put("top-left",top_left);
+		classMap.put("top-center",top_center);
+		classMap.put("top-right",top_right);
+		classMap.put("bottom-right",bottom_right);
+		classMap.put("bottom-center",bottom_center);
+		classMap.put("centered",centered);
+		classMap.put("centered-left",centered_left);
+		classMap.put("centered-right",centered_right);
+		
+		System.out.println(classMap.get(coupon.getHeader_align()));
+		
+		ImageDetails image=vendorCoupon.getImage();
+		
+		String htmlData="<div style='position: relative;'>"
+				+ "<img  src='data:image/jpeg;base64,"+image.getImage()+"' />"
+				
+				+ "<div style='"+classMap.get(coupon.getHeader_align())+";"
+				+ "font-family:"+coupon.getHeader_font()+";color:"+coupon.getHeader_color()+";"
+				+ "text-decoration:"+coupon.getHeader_decoration()+";font-weight:"+coupon.getHeader_bold()+";"
+				+ "font-style:"+coupon.getHeader_style()+";font-size:"+coupon.getHeader_size()+"px'>"+coupon.getHeader()+"</div>"
+				
+				+ "<div style='"+classMap.get(coupon.getBody_align())+";"
+				+ "font-family:"+coupon.getBody_font()+";color:"+coupon.getBody_color()+";"
+				+ "text-decoration:"+coupon.getBody_decoration()+";font-weight:"+coupon.getBody_bold()+";"
+				+ "font-style:"+coupon.getBody_style()+";font-size:"+coupon.getBody_size()+"px'>"+coupon.getBody()+"</div>"
+				
+				+ "<div style='"+classMap.get(coupon.getFooter_align())+";"
+				+ "font-family:"+coupon.getFooter_font()+";color:"+coupon.getFooter_color()+";"
+				+ "text-decoration:"+coupon.getFooter_decoration()+";font-weight:"+coupon.getFooter_bold()+";"
+				+ "font-style:"+coupon.getFooter_style()+";font-size:"+coupon.getFooter_size()+"px'>"+coupon.getFooter()+"</div>"
+
+
+				
+				+"</div>";
+		
+		String couponStr=logoService.createImage(htmlData,false);
+		
+		FileOutputStream input=new FileOutputStream("f:\\demo.html");
+		input.write(htmlData.getBytes());
+		input.close();
+		 input=new FileOutputStream("f:\\demo1.html");
+		input.write(("<img src='data:image/jpeg;base64,"+couponStr+"' />").getBytes());
+		input.close();
+		
+		vendorCoupon.setCoupon(couponStr);
+		
+		
+		
+		
 		return couponService.saveCoupon(vendorCoupon);
 	}
 	

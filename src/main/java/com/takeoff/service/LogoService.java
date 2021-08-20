@@ -7,17 +7,14 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 
 import javax.imageio.ImageIO;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
+import org.imgscalr.Scalr;
 import org.springframework.stereotype.Service;
 
 import com.openhtmltopdf.pdfboxout.PdfRendererBuilder;
@@ -84,7 +81,7 @@ public class LogoService {
 	        return trimmedHeight;
 	    }
 
-	    public String createLogo(String htmlData) throws IOException {
+	    public String createImage(String htmlData, Boolean logo) throws IOException {
 	    	
 	    	System.out.println(new java.util.Date());
 	    	 byte[] pdfBytes = null;
@@ -104,7 +101,6 @@ public class LogoService {
 	        PDDocument pd = PDDocument.load (pdfBytes);
 	        PDFRenderer pr = new PDFRenderer (pd);
 	        BufferedImage img = pr.renderImageWithDPI (0, 300);
-	       
 
 
 	    
@@ -115,11 +111,16 @@ public class LogoService {
 	        img = trim(img);
 	       
 	}
+	
+	if(!logo)
+	img = Scalr.resize(img, Scalr.Method.AUTOMATIC, Scalr.Mode.AUTOMATIC, 1000, 400, Scalr.OP_ANTIALIAS);
+		
 	ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	ImageIO.write(img,"JPEG",bos);
 	
 	String image =   new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
-	bos.close();
+	bos.close();  
+	pd.close();
 	System.out.println(new java.util.Date());
 	return image;
 	

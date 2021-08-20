@@ -150,6 +150,7 @@ public ImageDetails getImageDetails(Long id)
 			vendorCoupon.setLogo("data:image/jpeg;base64,"+coupon.getVendor().getLogo());
 			vendorCoupon.setId(coupon.getId());
 			vendorCoupon.setVendorName(coupon.getVendor().getUser().getName());
+			vendorCoupon.setCoupon("data:image/jpeg;base64,"+coupon.getCoupon());
 			vendorCoupons.add(vendorCoupon);
 		}
 

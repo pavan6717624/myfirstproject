@@ -183,7 +183,7 @@ public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmExceptio
 	VendorDetails vendorDetails=new VendorDetails();
 	vendorDetails.setAddress(vendor.getAddress());
 	vendorDetails.setUser(user);
-	vendorDetails.setLogo(logoService.createLogo("<html><body style='padding:5px;text-align:center;'><h1>"+user.getName().replaceAll(" ", "<br />")+"</h1></body></html>"));
+	vendorDetails.setLogo(logoService.createImage("<html><body style='padding:5px;text-align:center;'><h1>"+user.getName().replaceAll(" ", "<br />")+"</h1></body></html>",true));
 	
 	vendorDetailsRepository.save(vendorDetails);
 	
@@ -244,7 +244,7 @@ public Boolean editVendor(VendorDetailsDTO vendor) throws IOException {
 	
 	VendorDetails vendorDetails=vendorDetailsRepository.findByUserId(vendor.getVendorId()).get();
 	vendorDetails.setAddress(vendor.getAddress());
-	vendorDetails.setLogo(logoService.createLogo("<html><body style='padding:10;text-align:center;'><h1>"+vendor.getName().replaceAll(" ", "<br />")+"</h1></body></html>"));
+	vendorDetails.setLogo(logoService.createImage("<html><body style='padding:10;text-align:center;'><h1>"+vendor.getName().replaceAll(" ", "<br />")+"</h1></body></html>",true));
 	
 	vendorDetailsRepository.save(vendorDetails);
 	

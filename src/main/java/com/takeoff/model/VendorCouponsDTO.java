@@ -65,6 +65,18 @@ public class VendorCouponsDTO {
 	
 	String vendorName;
 	
+	String coupon;
+	
+	public String getCoupon() {
+		return coupon;
+	}
+
+
+	public void setCoupon(String coupon) {
+		this.coupon = coupon;
+	}
+
+
 	public String getVendorName() {
 		return vendorName;
 	}

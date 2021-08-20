@@ -54,18 +54,33 @@ public class UtilService {
 	
 		 
 		   public void sendSMS(String smsTo, String text){
+			   
+			   try
+			   {
 		      Message.creator(new PhoneNumber("+91"+smsTo), new PhoneNumber("+15128438283"),
 		         text).create();
+			   }
+			   catch(Exception ex)
+			   {
+				System.out.println("Error in Sending SMS for "+smsTo);   
+			   }
 		   }
 		   
 		   public void sendMessage(String mailTo, String subject, String text)
 		   {
+			   try
+			   {
 			   SimpleMailMessage msg = new SimpleMailMessage();
 			     msg.setTo(mailTo);
 
 			     msg.setSubject(subject);
 			     msg.setText(text);
 			     javaMailSender.send(msg);
+			   }
+			   catch(Exception ex)
+			   {
+				System.out.println("Error in Sending Mail for "+mailTo);   
+			   }
 		   }
 		   
 		   
