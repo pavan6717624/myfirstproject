@@ -1,13 +1,19 @@
 package com.takeoff.service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Base64;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -161,7 +167,17 @@ public ImageDetails getImageDetails(Long id)
 	public ImageStatusDTO uploadCoupon(MultipartFile file, Long vendorId, String subCategory, String keywords) throws UnsupportedEncodingException, IOException {
 		
 		
-		String image = new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
+		InputStream is = new ByteArrayInputStream(file.getBytes());
+        BufferedImage img = ImageIO.read(is);
+		
+//        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 500,500);
+               
+        
+        
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	ImageIO.write(img,"JPEG",bos);
+		
+		String image = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
 		
 		ImageStatusDTO imageStatus=new ImageStatusDTO();
 		
@@ -184,6 +200,7 @@ public ImageDetails getImageDetails(Long id)
 			imageStatus.setMessage("Oops! Something Went Wrong.");
 		}
 		
+		imageStatus.setId(couponSaved.getId());	
 		return imageStatus;
 	}
 	@Transactional
