@@ -48,16 +48,18 @@ public class LogoService {
 	        int height       = img.getHeight();
 	        int width        = img.getWidth();
 	        int trimmedWidth = 0;
-
+	        int removeColor = img.getRGB(width-1, height-1);
 	        for(int i = 0; i < height; i++) {
 	            for(int j = width - 1; j >= 0; j--) {
-	                if(img.getRGB(j, i) != Color.WHITE.getRGB() &&
+	                if(img.getRGB(j, i) != removeColor &&
 	                        j > trimmedWidth) {
 	                    trimmedWidth = j;
 	                    break;
 	                }
 	            }
 	        }
+	        
+	        System.out.println(trimmedWidth);
 
 
 	        return trimmedWidth;
@@ -68,16 +70,18 @@ public class LogoService {
 	        int height        = img.getHeight();
 	        int trimmedHeight = 0;
 
+	        int removeColor = img.getRGB(width-1, height-1);
+	        
 	        for(int i = 0; i < width; i++) {
 	            for(int j = height - 1; j >= 0; j--) {
-	                if(img.getRGB(i, j) != Color.WHITE.getRGB() &&
+	                if(img.getRGB(i, j) != removeColor &&
 	                        j > trimmedHeight) {
 	                    trimmedHeight = j;
 	                    break;
 	                }
 	            }
 	        }
-
+	        System.out.println(trimmedHeight);
 	        return trimmedHeight;
 	    }
 

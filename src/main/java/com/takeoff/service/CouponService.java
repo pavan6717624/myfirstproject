@@ -49,6 +49,10 @@ public class CouponService {
 	
 	CategoryRepository categoryRepository;
 	
+	@Autowired
+	
+	LogoService logoService;
+	
 	
 	@Autowired
 	
@@ -170,7 +174,7 @@ public ImageDetails getImageDetails(Long id)
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage img = ImageIO.read(is);
 		
-//        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 500,500);
+       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
                
         
         
@@ -207,7 +211,22 @@ public ImageDetails getImageDetails(Long id)
 public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws UnsupportedEncodingException, IOException {
 		
 		
-		String image = new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
+		InputStream is = new ByteArrayInputStream(file.getBytes());
+        BufferedImage img = ImageIO.read(is);
+		
+       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
+               
+       for(int i=0;i<2;i++)
+   	{
+   	        img = logoService.trim(img);
+   	       
+   	}
+        
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	ImageIO.write(img,"JPEG",bos);
+		
+		
+		String image = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
 		
 		ImageStatusDTO imageStatus=new ImageStatusDTO();
 		

@@ -1,17 +1,23 @@
 package com.takeoff.controller;
 
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.codec.binary.Base64;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -89,7 +95,6 @@ public class Controller {
 	
 	@Autowired
 	LogoService logoService;
-	
 
 
 
@@ -147,7 +152,18 @@ public class Controller {
 	
 		ImageStatusDTO imageStatus=new ImageStatusDTO();
 		
-		String image =   new String(Base64.encodeBase64(file.getBytes()), "UTF-8");
+		
+		InputStream is = new ByteArrayInputStream(file.getBytes());
+        BufferedImage img = ImageIO.read(is);
+		
+       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
+               
+        
+        
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+    	ImageIO.write(img,"JPEG",bos);
+		
+		String image = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
 		
 		imageStatus.setImage(image);
 		imageStatus.setStatus(true);
