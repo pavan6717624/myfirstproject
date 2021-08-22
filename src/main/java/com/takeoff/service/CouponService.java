@@ -6,6 +6,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -144,7 +145,14 @@ public ImageDetails getImageDetails(Long id)
 			vendorCoupon.setGender(coupon.getGender());
 			
 			
-			//DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+
+			
+			 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss aa");  
+			 
+				
+			
+		vendorCoupon.setExpireTime(formatter.format(coupon.getToDate()));
+			
 			vendorCoupon.setFromDate(coupon.getFromDate().toString());
 			vendorCoupon.setToDate(coupon.getToDate().toString());
 			
@@ -160,7 +168,7 @@ public ImageDetails getImageDetails(Long id)
 			vendorCoupon.setLogo("data:image/jpeg;base64,"+coupon.getVendor().getLogo());
 			vendorCoupon.setId(coupon.getId());
 			vendorCoupon.setVendorName(coupon.getVendor().getUser().getName());
-			vendorCoupon.setCoupon("data:image/jpeg;base64,"+coupon.getCoupon());
+			
 			vendorCoupons.add(vendorCoupon);
 		}
 

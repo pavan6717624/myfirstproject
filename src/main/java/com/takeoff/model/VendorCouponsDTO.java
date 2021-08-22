@@ -65,17 +65,22 @@ public class VendorCouponsDTO {
 	
 	String vendorName;
 	
-	String coupon;
+	String expireTime;
 	
-	public String getCoupon() {
-		return coupon;
+	
+	public String getExpireTime() {
+		return expireTime;
 	}
 
 
-	public void setCoupon(String coupon) {
-		this.coupon = coupon;
+	public void setExpireTime(String expireTime) {
+		this.expireTime = expireTime;
 	}
 
+
+
+	
+	
 
 	public String getVendorName() {
 		return vendorName;
@@ -406,6 +411,7 @@ public class VendorCouponsDTO {
 
 	public void setFromDate(String fromDate) {
 		this.fromDate = fromDate;
+		
 	}
 
 

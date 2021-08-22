@@ -93,11 +93,13 @@ public class Controller {
 	@Autowired
 	RolesRepository rolesRepository;
 	
-	@Autowired
-	LogoService logoService;
-
-
-
+	
+	
+	@RequestMapping("/generatePasscode")
+	public String generatePasscode(HttpServletRequest request)
+	{
+	return utilService.generatePasscode(8);
+	}
 	
 	@RequestMapping("/approveSMS")
 	public String approveSMS(HttpServletRequest request) 
@@ -149,25 +151,33 @@ public class Controller {
 	@RequestMapping("/getImage")
 	public ImageStatusDTO getImage(@RequestParam("file") MultipartFile file) throws IOException
 	{
-	
 		ImageStatusDTO imageStatus=new ImageStatusDTO();
+	try
+	{
+		
 		
 		
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage img = ImageIO.read(is);
 		
-       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
-               
+      
+        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
         
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	ImageIO.write(img,"JPEG",bos);
+    	
+    	
 		
 		String image = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
 		
 		imageStatus.setImage(image);
 		imageStatus.setStatus(true);
-		
+		}
+	catch(Exception ex)
+	{
+		System.out.println(ex);
+	}
 		
 		return imageStatus;
 	}
