@@ -4,14 +4,11 @@ package com.takeoff.controller;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -49,8 +46,8 @@ import com.takeoff.service.CouponTypeService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.LoginService;
-import com.takeoff.service.LogoService;
 import com.takeoff.service.RazorpayService;
+import com.takeoff.service.RedemptionService;
 import com.takeoff.service.UtilService;
 import com.takeoff.service.VendorService;
 
@@ -95,10 +92,15 @@ public class Controller {
 	
 	
 	
-	@RequestMapping("/generatePasscode")
-	public String generatePasscode(HttpServletRequest request)
+	@Autowired
+	RedemptionService redemptionService;
+	
+	
+	
+	@RequestMapping("/generateRedemption")
+	public String generateRedemption()
 	{
-	return utilService.generatePasscode(8);
+	return redemptionService.generateRedemption(8);
 	}
 	
 	@RequestMapping("/approveSMS")
