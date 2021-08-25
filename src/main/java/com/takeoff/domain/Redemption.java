@@ -24,22 +24,46 @@ public class Redemption  implements Serializable{
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "couponId")
-	VendorCoupons couponId;
+	VendorCoupons coupon;
 
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "vendorId")
-	UserDetails vendorId;
+	UserDetails vendor;
 	
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "customerId")
-	UserDetails customerId;
+	UserDetails customer;
 	
 	String passcode;
 	
 	@Column(columnDefinition="datetime")
 	Timestamp   validTill;
+	
+	
+	Boolean vendorAccepted=false;
+	
+	Boolean userRedempted=false;
+	
+	public Boolean getVendorAccepted() {
+		return vendorAccepted;
+	}
+
+	public void setVendorAccepted(Boolean vendorAccepted) {
+		this.vendorAccepted = vendorAccepted;
+	}
+
+	public Boolean getUserRedempted() {
+		return userRedempted;
+	}
+
+	public void setUserRedempted(Boolean userRedempted) {
+		this.userRedempted = userRedempted;
+	}
+
+	
 	
 	public Long getId() {
 		return id;
@@ -49,28 +73,28 @@ public class Redemption  implements Serializable{
 		this.id = id;
 	}
 
-	public VendorCoupons getCouponId() {
-		return couponId;
+	public VendorCoupons getCoupon() {
+		return coupon;
 	}
 
-	public void setCouponId(VendorCoupons couponId) {
-		this.couponId = couponId;
+	public void setCoupon(VendorCoupons coupon) {
+		this.coupon = coupon;
 	}
 
-	public UserDetails getVendorId() {
-		return vendorId;
+	public UserDetails getVendor() {
+		return vendor;
 	}
 
-	public void setVendorId(UserDetails vendorId) {
-		this.vendorId = vendorId;
+	public void setVendor(UserDetails vendor) {
+		this.vendor = vendor;
 	}
 
-	public UserDetails getCustomerId() {
-		return customerId;
+	public UserDetails getCustomer() {
+		return customer;
 	}
 
-	public void setCustomerId(UserDetails customerId) {
-		this.customerId = customerId;
+	public void setCustomer(UserDetails customer) {
+		this.customer = customer;
 	}
 
 	public String getPasscode() {
@@ -88,6 +112,8 @@ public class Redemption  implements Serializable{
 	public void setValidTill(Timestamp validTill) {
 		this.validTill = validTill;
 	}
+
+	
 
 	
 	

@@ -32,6 +32,7 @@ import com.takeoff.domain.VendorCoupons;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
+import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
@@ -98,9 +99,9 @@ public class Controller {
 	
 	
 	@RequestMapping("/generateRedemption")
-	public String generateRedemption()
+	public RedemptionDTO generateRedemption(@RequestBody RedemptionDTO redemption)
 	{
-	return redemptionService.generateRedemption(8);
+	return redemptionService.generateRedemption(redemption,8);
 	}
 	
 	@RequestMapping("/approveSMS")

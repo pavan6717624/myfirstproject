@@ -90,18 +90,6 @@ public class VendorCoupons implements Serializable {
 	
 	String description;
 	
-	@Column(length=100000)
-	String coupon;
-
-	
-	
-	public String getCoupon() {
-		return coupon;
-	}
-
-	public void setCoupon(String coupon) {
-		this.coupon = coupon;
-	}
 
 	public String getDescription() {
 		return description;
