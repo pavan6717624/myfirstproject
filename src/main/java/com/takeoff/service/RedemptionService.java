@@ -99,7 +99,7 @@ public RedemptionDTO vendorRedemptionProcess(RedemptionDTO redemptionDTO) {
 		
 		{
 			redemptionDTO.setId(redemption.getId());
-			redemptionDTO.setPasscode(redemption.getPasscode().substring(0,4));
+			redemptionDTO.setPasscode(redemption.getPasscode().substring(4,8));
 			 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss aa");  
 			 
 			 String validTill = formatter.format(redemption.getValidTill());
@@ -126,5 +126,78 @@ public RedemptionDTO vendorRedemptionProcess(RedemptionDTO redemptionDTO) {
 	      }
 	      return new String(password);
 	   }
+
+
+public Boolean acceptRedemption(RedemptionDTO redemptionDTO) {
+		
+		Boolean acceptRedemptionStatus = false;
+		
+		VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
+		
+		System.out.println(redemptionDTO.getCouponId()+" "+redemptionDTO.getCustomerId()+" "+coupon.getVendor().getUser().getUserId());
+		
+		Redemption redemption = redemptionRepository.findPasscode(redemptionDTO.getCouponId(),redemptionDTO.getCustomerId(),coupon.getVendor().getUser().getUserId(), Timestamp.valueOf(LocalDateTime.now()));
+		
+		if(redemption!=null)
+		{
+			if(redemption.getPasscode().equals(redemptionDTO.getPasscode()))
+			{
+				redemption.setVendorAccepted(true);
+				redemptionRepository.save(redemption);
+				acceptRedemptionStatus= true;
+			}
+		}
+		
+		return acceptRedemptionStatus;
+	}
+
+public Boolean acceptRedemptionWhatsApp(Long couponId, Long customerId, String passcode) {
+	
+	Boolean acceptRedemptionStatus = false;
+	
+	VendorCoupons coupon =  vendorCouponsRepository.findById(couponId).get();
+	
+	System.out.println(couponId+" "+customerId+" "+coupon.getVendor().getUser().getUserId());
+	
+	Redemption redemption = redemptionRepository.findPasscode(couponId,customerId,coupon.getVendor().getUser().getUserId(), Timestamp.valueOf(LocalDateTime.now()));
+	
+	if(redemption!=null)
+	{
+		if(redemption.getPasscode().equals(passcode))
+		{
+			redemption.setVendorAccepted(true);
+			redemptionRepository.save(redemption);
+			acceptRedemptionStatus= true;
+		}
+	}
+	
+	return acceptRedemptionStatus;
+}
+
+
+public Boolean customerRedemption(RedemptionDTO redemptionDTO) {
+	Boolean acceptRedemptionStatus = false;
+	
+	VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
+	
+	System.out.println("customerRedemption "+ redemptionDTO.getCouponId()+" "+redemptionDTO.getCustomerId()+" "+coupon.getVendor().getUser().getUserId());
+	
+	Redemption redemption = redemptionRepository.findVendorAcceptedPasscode(redemptionDTO.getCouponId(),redemptionDTO.getCustomerId(),coupon.getVendor().getUser().getUserId(), Timestamp.valueOf(LocalDateTime.now()));
+	
+	if(redemption!=null)
+	{
+		if(redemption.getPasscode().equals(redemptionDTO.getPasscode()))
+		{
+			redemption.setUserRedempted(true);
+			redemptionRepository.save(redemption);
+			acceptRedemptionStatus= true;
+		}
+	}
+	
+	return acceptRedemptionStatus;
+}
+
+
+
 
 }

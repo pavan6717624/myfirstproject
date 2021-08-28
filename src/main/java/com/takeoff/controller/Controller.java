@@ -97,6 +97,20 @@ public class Controller {
 	RedemptionService redemptionService;
 	
 	
+	@RequestMapping("/vendorRedemptionProcess")
+	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
+	{
+	return redemptionService.vendorRedemptionProcess(redemption);
+	}
+	
+	
+	@RequestMapping("/customerRedemption")
+	public Boolean customerRedemption(@RequestBody RedemptionDTO redemption)
+	{
+	return redemptionService.customerRedemption(redemption);
+	}
+	
+	
 	
 	@RequestMapping("/generateRedemption")
 	public RedemptionDTO generateRedemption(@RequestBody RedemptionDTO redemption)
@@ -104,16 +118,48 @@ public class Controller {
 	return redemptionService.generateRedemption(redemption,8);
 	}
 	
+	@RequestMapping("/acceptRedemption")
+	public Boolean acceptRedemption(@RequestBody RedemptionDTO redemption)
+	{
+	return redemptionService.acceptRedemption(redemption);
+	}
 	@RequestMapping("/approveSMS")
 	public String approveSMS(HttpServletRequest request) 
 	{
 	
+		try
+		{
 		
 		String whatsappNumber = request.getParameter("WaId");
 		String body=request.getParameter("Body");
 		
+		String approve=body.split(" ")[0];
 		
-		return "Hi "+whatsappNumber+"!,  We received you request body "+body;
+		if(approve.toLowerCase().equals("approve"))
+		{
+			return "Hi "+whatsappNumber+"!\nWrong Format of Approval! Try Again..";
+
+		}
+		
+		Long couponId=Long.valueOf(body.split(" ")[1]);
+		
+		Long customerId=Long.valueOf(body.split(" ")[2]);
+		
+		String passcode=body.split(" ")[3];
+		
+		
+
+			
+			Boolean status = redemptionService.acceptRedemptionWhatsApp(couponId, customerId, passcode);
+			String statusStr="Success.";
+			if(!status)
+			statusStr="Failed.";
+			return "Hi "+whatsappNumber+"!\nCoupon Id: "+couponId+"\nCustomer Id: "+customerId+"\nRedemption Status:"+statusStr;
+		}
+		catch(Exception ex)
+		{
+			return "Hi! Wrong Format of Approval! Try Again..";
+		}
 	}   
 	
 	
