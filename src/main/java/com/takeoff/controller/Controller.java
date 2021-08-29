@@ -142,7 +142,7 @@ public class Controller {
 		
 		if(!(approve.toLowerCase().equals("approve")))
 		{
-			return "Hi "+whatsappNumber+"!\nWrong Format of Approval! Try Again..";
+			return "Hi "+whatsappNumber+"!\nWrong Format of Approval! Try Again with Format\nApprove <CouponId> <CustomerId> <Customer Shared 4 Characters Passcode>\n from your Registered Mobile Number..";
 
 		}
 		
@@ -167,7 +167,7 @@ public class Controller {
 		}
 		catch(Exception ex)
 		{
-			return "Hi! Wrong Format of Approval! Try Again..";
+			return "Hi! Wrong Format of Approval! Try Again with Format\nApprove <CouponId> <CustomerId> <Customer Shared 4 Characters Passcode>\n from your Registered Mobile Number..";
 		}
 	}   
 	
