@@ -13,6 +13,7 @@ import com.takeoff.domain.Redemption;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.model.RedemptionDTO;
+import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.repository.RedemptionRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorCouponsRepository;
@@ -151,27 +152,44 @@ public Boolean acceptRedemption(RedemptionDTO redemptionDTO) {
 		return acceptRedemptionStatus;
 	}
 
-public Boolean acceptRedemptionWhatsApp(Long couponId, Long customerId, String passcode) {
+public ResponseStatusDTO acceptRedemptionWhatsApp(Long couponId, Long customerId, String passcode, String whatsappNumber) {
 	
-	Boolean acceptRedemptionStatus = false;
+	ResponseStatusDTO status=new ResponseStatusDTO();
+	
+	status.setStatus(false);
+	status.setMessage("");
+	
 	
 	VendorCoupons coupon =  vendorCouponsRepository.findById(couponId).get();
 	
 	System.out.println(couponId+" "+customerId+" "+coupon.getVendor().getUser().getUserId());
 	
+	if(!coupon.getVendor().getUser().getContact().equals(whatsappNumber))
+	{
+		status.setMessage("Request received from UnMapped Number. Please contact Support Team");
+		return status;
+	}
+	
 	Redemption redemption = redemptionRepository.findPasscode(couponId,customerId,coupon.getVendor().getUser().getUserId(), Timestamp.valueOf(LocalDateTime.now()));
 	
 	if(redemption!=null)
 	{
-		if(redemption.getPasscode().equals(passcode))
+		if(redemption.getPasscode().substring(0,4).equals(passcode))
 		{
 			redemption.setVendorAccepted(true);
 			redemptionRepository.save(redemption);
-			acceptRedemptionStatus= true;
+			status.setMessage("Share Passcode to Customer : " + redemption.getPasscode().substring(4,8));
+			status.setStatus(true);
+		}
+		else
+		{
+			status.setMessage("Invalid Passcode..");
 		}
 	}
+	else
+		status.setMessage("No Requests found from Customer OR Passcode Expired.");
 	
-	return acceptRedemptionStatus;
+	return status;
 }
 
 

@@ -34,6 +34,7 @@ import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RefererCodeDTO;
+import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubCategoryDTO;
@@ -127,11 +128,13 @@ public class Controller {
 	public String approveSMS(HttpServletRequest request) 
 	{
 	
+		
 		try
 		{
 		
 		String whatsappNumber = request.getParameter("WaId");
 		String body=request.getParameter("Body");
+		body=body.replaceAll(","," ");
 		
 		System.out.println(body);
 		
@@ -152,11 +155,15 @@ public class Controller {
 		
 
 			
-			Boolean status = redemptionService.acceptRedemptionWhatsApp(couponId, customerId, passcode);
+		ResponseStatusDTO status = redemptionService.acceptRedemptionWhatsApp(couponId, customerId, passcode,whatsappNumber);
 			String statusStr="Success.";
-			if(!status)
+			if(!status.getStatus())
 			statusStr="Failed.";
-			return "Hi "+whatsappNumber+"!\nCoupon Id: "+couponId+"\nCustomer Id: "+customerId+"\nRedemption Status:"+statusStr;
+			return "Hi "+whatsappNumber+"!"
+					+ "\nCoupon Id: "+couponId+""
+							+ "\nCustomer Id: "+customerId
+							+"\nRedemption Status: "+statusStr+""
+									+ "\nMessage: "+status.getMessage();
 		}
 		catch(Exception ex)
 		{
