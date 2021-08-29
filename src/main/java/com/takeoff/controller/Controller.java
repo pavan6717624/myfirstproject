@@ -137,7 +137,7 @@ public class Controller {
 		
 		String approve=body.split(" ")[0];
 		
-		if(approve.toLowerCase().equals("approve"))
+		if(!(approve.toLowerCase().equals("approve")))
 		{
 			return "Hi "+whatsappNumber+"!\nWrong Format of Approval! Try Again..";
 
