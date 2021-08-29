@@ -183,7 +183,7 @@ public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmExceptio
 	VendorDetails vendorDetails=new VendorDetails();
 	vendorDetails.setAddress(vendor.getAddress());
 	vendorDetails.setUser(user);
-	vendorDetails.setLogo(logoService.createImage("<html><body style='padding:5px;text-align:center;'><h1>"+user.getName()+"</h1></body></html>",true));
+	vendorDetails.setLogo(logoService.createImage("<html><body style='padding:5px;text-align:center;'><h1>"+user.getName().replaceAll(" ","<br/>")+"</h1></body></html>",true));
 	
 	vendorDetailsRepository.save(vendorDetails);
 	
