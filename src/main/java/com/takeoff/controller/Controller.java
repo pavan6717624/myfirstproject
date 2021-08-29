@@ -133,6 +133,8 @@ public class Controller {
 		String whatsappNumber = request.getParameter("WaId");
 		String body=request.getParameter("Body");
 		
+		System.out.println(body);
+		
 		String approve=body.split(" ")[0];
 		
 		if(approve.toLowerCase().equals("approve"))
