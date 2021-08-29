@@ -164,7 +164,9 @@ public ResponseStatusDTO acceptRedemptionWhatsApp(Long couponId, Long customerId
 	
 	System.out.println(couponId+" "+customerId+" "+coupon.getVendor().getUser().getUserId());
 	
-	if(!coupon.getVendor().getUser().getContact().equals(whatsappNumber))
+	String contact="91"+coupon.getVendor().getUser().getContact();
+	
+	if(!contact.equals(whatsappNumber))
 	{
 		status.setMessage("Request received from UnMapped Number. Please contact Support Team");
 		return status;
