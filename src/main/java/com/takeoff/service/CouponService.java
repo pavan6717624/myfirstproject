@@ -99,16 +99,9 @@ public ImageDetails getImageDetails(Long id)
 	}
 	
 	
-	public List<VendorCouponsDTO> getCoupons() throws UnsupportedEncodingException {
-		
-		return getCoupons(0l);
-		
-	}
-
-	
-	public List<VendorCouponsDTO> getCoupons(Long vendorId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO> getCoupons(Long vendorId, Long couponType) throws UnsupportedEncodingException
 	{
-		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId);
+		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId,couponType);
 		List<VendorCouponsDTO> vendorCoupons = new ArrayList<>();
 		
 		for(int i=0;i<coupons.size();i++)
@@ -143,6 +136,10 @@ public ImageDetails getImageDetails(Long id)
 			vendorCoupon.setBody_decoration(coupon.getBody_decoration());
 			vendorCoupon.setProfession(coupon.getProfession());
 			vendorCoupon.setGender(coupon.getGender());
+			vendorCoupon.setLike(true);
+			vendorCoupon.setDislike(false);
+			
+			vendorCoupon.setLikeCount(100l);
 			
 			
 

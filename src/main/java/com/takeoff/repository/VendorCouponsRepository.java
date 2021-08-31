@@ -10,6 +10,6 @@ import com.takeoff.domain.VendorCoupons;
 
 public interface VendorCouponsRepository  extends JpaRepository<VendorCoupons,Long> {
 	
-	@Query("select c from VendorCoupons c where (c.vendor.user.userId = (:userId) or (:userId) = 0) order by id desc")
-	List<VendorCoupons> findByLatest(@Param("userId") Long userId);
+	@Query("select c from VendorCoupons c where (c.couponType.id = (:couponType) or (:couponType) = 0) and (c.vendor.user.userId = (:userId) or (:userId) = 0) order by id desc")
+	List<VendorCoupons> findByLatest(@Param("userId") Long userId, @Param("couponType") Long couponType);
 }
