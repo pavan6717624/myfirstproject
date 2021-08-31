@@ -275,7 +275,6 @@ public class Controller {
 	
 		return couponService.getCoupons(0l,2l);
 	}
-
 	
 	@RequestMapping("/getDailyCoupons")
 	public List<VendorCouponsDTO> getDailyCoupons() throws UnsupportedEncodingException
@@ -283,6 +282,30 @@ public class Controller {
 	
 		return couponService.getCoupons(0l,3l);
 	}
+	
+	@RequestMapping("/getLimitedCoupons")
+	public List<VendorCouponsDTO> getLimitedCoupons() throws UnsupportedEncodingException
+	{
+	
+		return couponService.getCoupons(0l,4l);
+	}
+	
+	@RequestMapping("/getRedeemableCoupons")
+	public List<VendorCouponsDTO> getRedeemableCoupons() throws UnsupportedEncodingException
+	{
+	
+		return couponService.getCoupons(0l,5l);
+	}
+	
+	@RequestMapping("/getDiscountCoupons")
+	public List<VendorCouponsDTO> getDiscountCoupons() throws UnsupportedEncodingException
+	{
+	
+		return couponService.getCoupons(0l,6l);
+	}
+	
+	
+	
 
 	@RequestMapping("/editCoupon")
 	public Boolean editCoupon(@RequestBody VendorCouponsDTO coupon) throws IOException
