@@ -40,6 +40,7 @@ import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubCategoryDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.model.VendorCouponsDTO;
+import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.model.VendorDetailsDTO;
 import com.takeoff.repository.RolesRepository;
 import com.takeoff.service.CategoryService;
@@ -248,14 +249,14 @@ public class Controller {
 	}
 	
 	@RequestMapping("/getCoupons")
-	public List<VendorCouponsDTO> getCoupons(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
+	public List<VendorCouponsDTO1> getCoupons(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
 	{
 	
 		return couponService.getCoupons(Long.valueOf(vendorId),0l);
 	}
 	
 	@RequestMapping("/getTakeOffRecommendations")
-	public List<VendorCouponsDTO> getTakeOffRecommendations() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getTakeOffRecommendations() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,0l);
@@ -263,42 +264,42 @@ public class Controller {
 
 	
 	@RequestMapping("/getComplimentaryCoupons")
-	public List<VendorCouponsDTO> getComplimentaryCoupons() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getComplimentaryCoupons() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,1l);
 	}
 
 	@RequestMapping("/getFreeCoupons")
-	public List<VendorCouponsDTO> getFreeCoupons() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getFreeCoupons() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,2l);
 	}
 	
 	@RequestMapping("/getDailyCoupons")
-	public List<VendorCouponsDTO> getDailyCoupons() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getDailyCoupons() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,3l);
 	}
 	
 	@RequestMapping("/getLimitedCoupons")
-	public List<VendorCouponsDTO> getLimitedCoupons() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getLimitedCoupons() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,4l);
 	}
 	
 	@RequestMapping("/getRedeemableCoupons")
-	public List<VendorCouponsDTO> getRedeemableCoupons() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getRedeemableCoupons() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,5l);
 	}
 	
 	@RequestMapping("/getDiscountCoupons")
-	public List<VendorCouponsDTO> getDiscountCoupons() throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getDiscountCoupons() throws UnsupportedEncodingException
 	{
 	
 		return couponService.getCoupons(0l,6l);

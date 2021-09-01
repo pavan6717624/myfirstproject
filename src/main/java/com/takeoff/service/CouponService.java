@@ -24,6 +24,7 @@ import com.takeoff.domain.VendorCoupons;
 import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.VendorCouponsDTO;
+import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.repository.CategoryRepository;
 import com.takeoff.repository.ImageDetailsRepository;
 import com.takeoff.repository.SubCategoryRepository;
@@ -99,9 +100,24 @@ public ImageDetails getImageDetails(Long id)
 	}
 	
 	
-	public List<VendorCouponsDTO> getCoupons(Long vendorId, Long couponType) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType) throws UnsupportedEncodingException
 	{
+		
+		
+		/*System.out.println("1."+new java.util.Date());
 		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId,couponType);
+		System.out.println("2."+new java.util.Date());		
+		List<VendorCouponsDTO> vendorCoupons = toVendorCouponsDTO(coupons);
+		System.out.println("3."+new java.util.Date());
+		return vendorCoupons;*/
+		
+		
+		return vendorCouponsRepository.findByLatest1(vendorId,couponType);
+	}
+	
+	public List<VendorCouponsDTO> toVendorCouponsDTO(List<VendorCoupons> coupons)
+	{
+		
 		List<VendorCouponsDTO> vendorCoupons = new ArrayList<>();
 		
 		for(int i=0;i<coupons.size();i++)
@@ -168,9 +184,10 @@ public ImageDetails getImageDetails(Long id)
 			
 			vendorCoupons.add(vendorCoupon);
 		}
-
 		return vendorCoupons;
+		
 	}
+	
 	
 	@Transactional
 	public ImageStatusDTO uploadCoupon(MultipartFile file, Long vendorId, String subCategory, String keywords) throws UnsupportedEncodingException, IOException {
