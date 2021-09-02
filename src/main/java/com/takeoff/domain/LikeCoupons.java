@@ -30,10 +30,28 @@ public class LikeCoupons implements Serializable{
 	 @JoinColumn(name = "coupon_id")
 	 VendorCoupons coupon;
 	 
-	 Boolean like;
+		Boolean likeCoupon;
+		 
+		 Boolean disLikeCoupon;
+		 
 	 
-	 Boolean disLike;
-	 
+	 public Boolean getLikeCoupon() {
+		return likeCoupon;
+	}
+
+	public void setLikeCoupon(Boolean likeCoupon) {
+		this.likeCoupon = likeCoupon;
+	}
+
+	public Boolean getDisLikeCoupon() {
+		return disLikeCoupon;
+	}
+
+	public void setDisLikeCoupon(Boolean disLikeCoupon) {
+		this.disLikeCoupon = disLikeCoupon;
+	}
+
+
 	 
 	
 	 public Long getId() {
@@ -58,22 +76,6 @@ public class LikeCoupons implements Serializable{
 
 	public void setCoupon(VendorCoupons coupon) {
 		this.coupon = coupon;
-	}
-
-	public Boolean getLike() {
-		return like;
-	}
-
-	public void setLike(Boolean like) {
-		this.like = like;
-	}
-
-	public Boolean getDisLike() {
-		return disLike;
-	}
-
-	public void setDisLike(Boolean disLike) {
-		this.disLike = disLike;
 	}
 
 	

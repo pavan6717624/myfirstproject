@@ -24,7 +24,11 @@ public interface VendorCouponsRepository  extends JpaRepository<VendorCoupons,Lo
 			+ "c.header_bold as header_bold, c.body_bold as body_bold, c.footer_bold as footer_bold, "
 			+ "c.header_style as header_style, c.body_style as body_style, c.footer_style as footer_style, "
 			+ "c.header_decoration as header_decoration, c.body_decoration as body_decoration, c.footer_decoration as footer_decoration, "
-			+ "c.profession as profession, c.gender as gender, true as like, false as dislike, 100 as likeCount,  "
+			+ "c.profession as profession, c.gender as gender,  "
+			+" (select l.likeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as likeCoupon, "
+			+" (select l.disLikeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as disLikeCoupon, "
+			+" (select sum(case when l.likeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as likeCount, "
+			+" (select sum(case when l.disLikeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as dislikeCount, "
 			+" DATE_FORMAT(c.toDate, '%d %M %Y %h:%i:%s %p') as expireTime, c.fromDate as fromDate, c.toDate as toDate, "
 			+" c.image.id as imageId, concat('data:image/jpeg;base64,',c.image.image) as image, "
 			+" c.couponType.couponType as couponType, c.keywords as keywords, c.description as description, "
@@ -32,5 +36,5 @@ public interface VendorCouponsRepository  extends JpaRepository<VendorCoupons,Lo
 			+" c.id as id, c.vendor.user.name as vendorName "
 			
 			+ " from VendorCoupons c where (c.couponType.id = (:couponType) or (:couponType) = 0) and (c.vendor.user.userId = (:userId) or (:userId) = 0) order by id desc")
-	List<VendorCouponsDTO1> findByLatest1(@Param("userId") Long userId, @Param("couponType") Long couponType);
+	List<VendorCouponsDTO1> findByLatest1(@Param("userId") Long userId, @Param("couponType") Long couponType, @Param("customerId") Long customerId );
 }

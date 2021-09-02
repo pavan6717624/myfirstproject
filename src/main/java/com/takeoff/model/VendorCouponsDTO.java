@@ -66,34 +66,42 @@ public class VendorCouponsDTO {
 	String vendorName;
 	
 	String expireTime;
-	
-	Boolean like;
-	
 
-	Boolean dislike;
 	
 	Long likeCount;
 	
 	Long dislikeCount;
 	
-	public Boolean getLike() {
-		return like;
+	Boolean likeCoupon;
+	
+
+	Boolean disLikeCoupon;
+	
+	
+	public Boolean getLikeCoupon() {
+		return likeCoupon;
 	}
 
 
-	public void setLike(Boolean like) {
-		this.like = like;
+	public void setLikeCoupon(Boolean likeCoupon) {
+		this.likeCoupon = likeCoupon;
 	}
 
 
-	public Boolean getDislike() {
-		return dislike;
+	public Boolean getDisLikeCoupon() {
+		return disLikeCoupon;
 	}
 
 
-	public void setDislike(Boolean dislike) {
-		this.dislike = dislike;
+	public void setDisLikeCoupon(Boolean disLikeCoupon) {
+		this.disLikeCoupon = disLikeCoupon;
 	}
+
+
+
+
+
+
 
 
 	public Long getLikeCount() {

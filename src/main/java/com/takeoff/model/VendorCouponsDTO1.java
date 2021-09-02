@@ -131,6 +131,11 @@ public interface VendorCouponsDTO1 {
 
 
 	public Long getVendorId() ;
+	
+	public Boolean getLikeCoupon();
+
+	public Boolean getDisLikeCoupon();
+
 
 
 
