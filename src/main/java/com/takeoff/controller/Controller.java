@@ -176,6 +176,7 @@ public class Controller {
 		}
 		catch(Exception ex)
 		{
+			System.out.println(ex);
 			return "Hi! Wrong Format of Approval! Try Again with Format\nApprove <CouponId> <CustomerId> <Customer Shared 4 Characters Passcode>\n from your Registered Mobile Number..";
 		}
 	}   
@@ -431,7 +432,7 @@ public class Controller {
 	@RequestMapping("/downloadCoupon")
 	public String downloadCoupon() throws NumberFormatException, IOException
 	{
-		return couponService.downloadCoupon(8l);
+		return couponService.downloadCoupon(8l,10004l);
 	}
 	
 	@RequestMapping("/getAllSubCategories")

@@ -195,6 +195,8 @@ public ImageDetails getImageDetails(Long id)
 //	}
 	
 	
+	
+	
 	@Transactional
 	public ImageStatusDTO uploadCoupon(MultipartFile file, Long vendorId, String subCategory, String keywords) throws UnsupportedEncodingException, IOException {
 		
@@ -339,7 +341,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		
 	}
-	public String downloadCoupon(Long couponId) throws IOException {
+	public String downloadCoupon(Long couponId, Long customerId) throws IOException {
 		
 		VendorCoupons coupon = vendorCouponsRepository.findById(couponId).get();
 		
@@ -388,7 +390,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 				+ "text-decoration:"+coupon.getFooter_decoration()+";font-weight:"+coupon.getFooter_bold()+";"
 				+ "font-style:"+coupon.getFooter_style()+";font-size:"+coupon.getFooter_size()+"px'>"+coupon.getFooter().replace("\n", "<br>").replace(" ","&nbsp;")+"</div>"
 				+"</div>"
-				+"<div>wwww.thetakeoff.in<br/><br/>Subscribe to TakeOff by Reference Code 'TO10004'.<br/><br/>Enjoy the Experience of TakeOff."
+				+"<div>wwww.thetakeoff.in<br/><br/>Subscribe to TakeOff by Reference Code 'TO'"+customerId+"'.<br/><br/>Enjoy the Experience of TakeOff."
 				+"</div>"
 				
 				+"</div>";
