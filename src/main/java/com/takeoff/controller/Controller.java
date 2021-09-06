@@ -158,11 +158,11 @@ public class Controller {
 		
 		System.out.println(body);
 		
-		Long couponId=Long.valueOf(body.split(" ")[1]);
+		Long couponId=Long.valueOf(body.split(" ")[0]);
 		
-		Long customerId=Long.valueOf(body.split(" ")[2]);
+		Long customerId=Long.valueOf(body.split(" ")[1]);
 		
-		String passcode=body.split(" ")[3];
+		String passcode=body.split(" ")[2];
 			
 		ResponseStatusDTO status = redemptionService.acceptRedemptionWhatsApp(couponId, customerId, passcode,whatsappNumber);
 			String statusStr="Success.";
