@@ -2,7 +2,6 @@ package com.takeoff.repository;
 
 import java.util.Optional;
 
-import javax.swing.tree.DefaultMutableTreeNode;
 import javax.transaction.Transactional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.takeoff.domain.CustomerDetails;
+import com.takeoff.model.CustomerDetailsDTO;
 
 @Repository
 public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails,Long> {
@@ -28,6 +28,10 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 
 	  @Query("select c from CustomerDetails c where c.user.userId=(:userId)")
 		Optional<CustomerDetails> findByUserId(@Param("userId") Long userId);
+	  
+	  
+	  @Query("select c.user.userId as userId,c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.razorpay_payment_id as razorpay_payment_id,c.razorpay_order_id as razorpay_order_id,c.refererId as refererId,c.referCode as referCode,c.paymentStatus as paymentStatus,c.mappingStatus as mappingStatus,c.walletAmount as walletAmount from CustomerDetails c where c.user.userId=(:userId)")
+		CustomerDetailsDTO getCustomerAccountDetails(@Param("userId") Long userId);
 
 
 }

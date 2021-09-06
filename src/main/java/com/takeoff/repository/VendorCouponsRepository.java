@@ -29,6 +29,7 @@ public interface VendorCouponsRepository  extends JpaRepository<VendorCoupons,Lo
 			+" (select l.disLikeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as disLikeCoupon, "
 			+" (select sum(case when l.likeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as likeCount, "
 			+" (select sum(case when l.disLikeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as dislikeCount, "
+			+" (select count(r) from Redemption r where r.coupon = c and r.vendorAccepted=true and r.userRedempted=true) as redemptionCount, "
 			+" DATE_FORMAT(c.toDate, '%d %M %Y %h:%i:%s %p') as expireTime, c.fromDate as fromDate, c.toDate as toDate, "
 			+" c.image.id as imageId, concat('data:image/jpeg;base64,',c.image.image) as image, "
 			+" c.couponType.couponType as couponType, c.keywords as keywords, c.description as description, "

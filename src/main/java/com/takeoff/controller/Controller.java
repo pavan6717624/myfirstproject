@@ -29,6 +29,7 @@ import com.takeoff.domain.CouponType;
 import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.SubCategory;
 import com.takeoff.domain.VendorCoupons;
+import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
@@ -106,6 +107,13 @@ public class Controller {
 	}
 	
 	
+	@RequestMapping("/getCustomerAccountDetails")
+	public CustomerDetailsDTO getCustomerAccountDetails(@RequestParam("userId") String userId)
+	{
+	return customerService.getCustomerAccountDetails(Long.valueOf(userId));
+	}
+	
+	
 	@RequestMapping("/customerRedemption")
 	public Boolean customerRedemption(@RequestBody RedemptionDTO redemption)
 	{
@@ -140,34 +148,21 @@ public class Controller {
 	}
 	@RequestMapping("/approveSMS")
 	public String approveSMS(HttpServletRequest request) 
-	{
-	
-		
+	{		
 		try
 		{
 		
 		String whatsappNumber = request.getParameter("WaId");
 		String body=request.getParameter("Body");
-		body=body.replaceAll(","," ");
+		body=body.toLowerCase().replaceAll(","," ").replaceAll("approve","").trim();
 		
 		System.out.println(body);
-		
-		String approve=body.split(" ")[0];
-		
-		if(!(approve.toLowerCase().equals("approve")))
-		{
-			return "Hi "+whatsappNumber+"!\nWrong Format of Approval! Try Again with Format\nApprove <CouponId> <CustomerId> <Customer Shared 4 Characters Passcode>\n from your Registered Mobile Number..";
-
-		}
 		
 		Long couponId=Long.valueOf(body.split(" ")[1]);
 		
 		Long customerId=Long.valueOf(body.split(" ")[2]);
 		
 		String passcode=body.split(" ")[3];
-		
-		
-
 			
 		ResponseStatusDTO status = redemptionService.acceptRedemptionWhatsApp(couponId, customerId, passcode,whatsappNumber);
 			String statusStr="Success.";
@@ -430,6 +425,13 @@ public class Controller {
 		
 		
 		return couponService.saveCoupon(vendorCoupon);
+	}
+	
+	
+	@RequestMapping("/downloadCoupon")
+	public String downloadCoupon() throws NumberFormatException, IOException
+	{
+		return couponService.downloadCoupon(8l);
 	}
 	
 	@RequestMapping("/getAllSubCategories")

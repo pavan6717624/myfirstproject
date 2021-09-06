@@ -6,9 +6,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.imageio.ImageIO;
@@ -25,7 +26,6 @@ import com.takeoff.domain.LikeCoupons;
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.ImageStatusDTO;
-import com.takeoff.model.VendorCouponsDTO;
 import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.repository.CategoryRepository;
 import com.takeoff.repository.ImageDetailsRepository;
@@ -244,12 +244,12 @@ public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws Unsup
 		
        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
                
-       for(int i=0;i<2;i++)
-   	{
-   	        img = logoService.trim(img);
-   	       
-   	}
-        
+//       for(int i=0;i<2;i++)
+//   	{
+//   	        img = logoService.trim(img);
+//   	       
+//   	}
+//        
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
     	ImageIO.write(img,"JPEG",bos);
 		
@@ -336,6 +336,66 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 	likeCouponRepository.save(dislikeCoupon);
 	
 	return likeCouponRepository.getDisLikes(couponId);
+		
+		
+	}
+	public String downloadCoupon(Long couponId) throws IOException {
+		
+		VendorCoupons coupon = vendorCouponsRepository.findById(couponId).get();
+		
+		ImageDetails image = coupon.getImage();
+		
+		String bottom_left="position: absolute;bottom: 2%;left: 7%;";
+		String top_left="position: absolute; top: 2%;left: 7%;";
+		String top_center="position: absolute;top: 2%;left: 50%;transform: translate(-50%, -0%);";
+		String top_right="position: absolute;top: 2%;right: 7%;";
+		String bottom_right="position: absolute;bottom: 2%;right: 7%;";
+		String bottom_center="position:absolute;bottom: 2%;left: 50%;transform: translate(-50%, -0%);";
+		String centered="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -0%);";
+		String centered_left="position: absolute;top: 50%;left: 7%;"; 
+		String centered_right="position: absolute;top: 50%;right: 7%;";
+		
+		Map<String, String> classMap = new HashMap<String, String>();
+		
+		classMap.put("bottom-left",bottom_left);
+		classMap.put("top-left",top_left);
+		classMap.put("top-center",top_center);
+		classMap.put("top-right",top_right);
+		classMap.put("bottom-right",bottom_right);
+		classMap.put("bottom-center",bottom_center);
+		classMap.put("centered",centered);
+		classMap.put("centered-left",centered_left);
+		classMap.put("centered-right",centered_right);
+		
+		System.out.println(classMap.get(coupon.getHeader_align()));
+		
+		String htmlData="<div style='border :5px'> <div style=' padding: 0px; position: relative;width:350px;height:250px;overflow:hidden;'>"
+				+ "<img style='width:350px;height:250px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
+				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
+                +" style='top_left; max-width: 80px; max-height: 80px;border: 1px solid  #bbb;'></img>"
+				+ "<div style='"+classMap.get(coupon.getHeader_align())+";"
+				+ "font-family:"+coupon.getHeader_font()+";color:"+coupon.getHeader_color()+";"
+				+ "text-decoration:"+coupon.getHeader_decoration()+";font-weight:"+coupon.getHeader_bold()+";"
+				+ "font-style:"+coupon.getHeader_style()+";font-size:"+coupon.getHeader_size()+"px'>"+coupon.getHeader().replace("\n", "<br>").replace(" ","&nbsp;")+"</div>"
+				
+				+ "<div style='"+classMap.get(coupon.getBody_align())+";"
+				+ "font-family:"+coupon.getBody_font()+";color:"+coupon.getBody_color()+";"
+				+ "text-decoration:"+coupon.getBody_decoration()+";font-weight:"+coupon.getBody_bold()+";"
+				+ "font-style:"+coupon.getBody_style()+";font-size:"+coupon.getBody_size()+"px'>"+coupon.getBody().replace("\n", "<br>").replace(" ","&nbsp;")+"</div>"
+				
+				+ "<div style='"+classMap.get(coupon.getFooter_align())+";"
+				+ "font-family:"+coupon.getFooter_font()+";color:"+coupon.getFooter_color()+";"
+				+ "text-decoration:"+coupon.getFooter_decoration()+";font-weight:"+coupon.getFooter_bold()+";"
+				+ "font-style:"+coupon.getFooter_style()+";font-size:"+coupon.getFooter_size()+"px'>"+coupon.getFooter().replace("\n", "<br>").replace(" ","&nbsp;")+"</div>"
+				+"</div>"
+				+"<div>wwww.thetakeoff.in<br/><br/>Subscribe to TakeOff by Reference Code 'TO10004'.<br/><br/>Enjoy the Experience of TakeOff."
+				+"</div>"
+				
+				+"</div>";
+		
+		String couponStr="<img style='width:350px;height:300px;' src='data:image/jpeg;base64,"+logoService.createImage(htmlData,false)+"' />";
+		
+		return couponStr;
 		
 		
 	}

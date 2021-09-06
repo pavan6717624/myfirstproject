@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.razorpay.RazorpayException;
 import com.takeoff.domain.CustomerDetails;
 import com.takeoff.domain.UserDetails;
+import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
@@ -73,6 +74,9 @@ public class CustomerService {
 			return false;
 		
 	}
+	
+	
+	
 	
 	public StatusDTO subscribe(SubscriptionDTO subscription)
 	{
@@ -164,6 +168,18 @@ public class CustomerService {
 		
 		StatusDTO statusDto=new StatusDTO(customer);
 		return statusDto;
+		
+	}
+
+
+
+
+	public CustomerDetailsDTO getCustomerAccountDetails(Long userId) {
+		
+		return customerDetailsRepository.getCustomerAccountDetails(userId);
+		
+		
+		
 		
 	}
 

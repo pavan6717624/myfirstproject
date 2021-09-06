@@ -28,6 +28,8 @@ public interface VendorCouponsDTO1 {
 
 
 	public String getDescription() ;
+	
+	public Long getRedemptionCount();
 
 
 
