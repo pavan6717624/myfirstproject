@@ -59,10 +59,10 @@ public class JwtTokenUtil implements Serializable {
 
 	//generate token for user
 	public String generateToken(UserDetails userDetails) {
-		//System.out.println("entered in generateToken...");
+		System.out.println("entered in generateToken...");
 		Map<String, Object> claims = new HashMap<>();
 		claims.put("Organisation", "Takeoff");
-		//System.out.println("exited in generateToken...");
+		System.out.println("exited in generateToken...");
 		return doGenerateToken(claims, userDetails.getUsername());
 	}
 

@@ -772,14 +772,14 @@ public class Controller {
 	}
 	@RequestMapping(value = "/login")
 	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
-		//System.out.println("entered in authenticate...");
+		System.out.println("entered in authenticate...");
 		authenticate(username, password);
 
 		final UserDetails userDetails = userDetailsService
 				.loadUserByUsername(username);
 
 		final String token = jwtTokenUtil.generateToken(userDetails);
-		//System.out.println("exited in authenticate...");
+		System.out.println("exited in authenticate...");
 		
 		LoginStatusDTO loginStatus=new LoginStatusDTO();
 		
