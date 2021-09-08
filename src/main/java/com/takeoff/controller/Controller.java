@@ -282,7 +282,7 @@ public class Controller {
 	public List<VendorCouponsDTO1> getCoupons(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
 	{
 	
-		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l,null);
+		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l,Arrays.asList(-1l));
 	}
 	
 	@RequestMapping("/getTakeOffRecommendations")
