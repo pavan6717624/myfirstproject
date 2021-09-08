@@ -18,6 +18,9 @@ import javax.transaction.Transactional;
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -107,7 +110,7 @@ public ImageDetails getImageDetails(Long id)
 	}
 	
 	
-	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds) throws UnsupportedEncodingException
 	{
 		
 		
@@ -117,8 +120,8 @@ public ImageDetails getImageDetails(Long id)
 		List<VendorCouponsDTO> vendorCoupons = toVendorCouponsDTO(coupons);
 		System.out.println("3."+new java.util.Date());
 		return vendorCoupons;*/
-		
-		return vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId);
+		Pageable paging = PageRequest.of(0, 10);
+		return vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,paging);
 	}
 	
 //	public List<VendorCouponsDTO> toVendorCouponsDTO(List<VendorCoupons> coupons)

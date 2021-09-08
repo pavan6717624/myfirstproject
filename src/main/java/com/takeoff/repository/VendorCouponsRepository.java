@@ -2,14 +2,15 @@ package com.takeoff.repository;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.data.repository.query.Param;
 
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.model.VendorCouponsDTO1;
 
-public interface VendorCouponsRepository  extends JpaRepository<VendorCoupons,Long> {
+public interface VendorCouponsRepository  extends PagingAndSortingRepository<VendorCoupons,Long> {
 	
 	@Query("select c from VendorCoupons c where (c.couponType.id = (:couponType) or (:couponType) = 0) and (c.vendor.user.userId = (:userId) or (:userId) = 0) order by id desc")
 	List<VendorCoupons> findByLatest(@Param("userId") Long userId, @Param("couponType") Long couponType);
@@ -36,6 +37,6 @@ public interface VendorCouponsRepository  extends JpaRepository<VendorCoupons,Lo
 			+" c.vendor.user.userId as vendorId, concat('data:image/jpeg;base64,',c.vendor.logo) as logo, "
 			+" c.id as id, c.vendor.user.name as vendorName "
 			
-			+ " from VendorCoupons c where (c.couponType.id = (:couponType) or (:couponType) = 0) and (c.vendor.user.userId = (:userId) or (:userId) = 0) order by id desc")
-	List<VendorCouponsDTO1> findByLatest1(@Param("userId") Long userId, @Param("couponType") Long couponType, @Param("customerId") Long customerId );
+			+ " from VendorCoupons c where (c.id not in (:couponIds)) and (c.couponType.id = (:couponType) or (:couponType) = 0) and (c.vendor.user.userId = (:userId) or (:userId) = 0) order by id desc")
+	List<VendorCouponsDTO1> findByLatest1(@Param("userId") Long userId, @Param("couponType") Long couponType, @Param("customerId") Long customerId , @Param("couponIds") List<Long> couponIds,Pageable pageable);
 }

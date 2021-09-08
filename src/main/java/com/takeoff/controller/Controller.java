@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -36,6 +38,7 @@ import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.SubCategory;
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.jwt.JwtTokenUtil;
+import com.takeoff.model.CouponsRequest;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.LoginStatusDTO;
@@ -279,11 +282,11 @@ public class Controller {
 	public List<VendorCouponsDTO1> getCoupons(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
 	{
 	
-		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l);
+		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l,null);
 	}
 	
 	@RequestMapping("/getTakeOffRecommendations")
-	public List<VendorCouponsDTO1> getTakeOffRecommendations(@RequestParam("userId") String userId) throws Exception
+	public List<VendorCouponsDTO1> getTakeOffRecommendations(@RequestBody CouponsRequest request) throws Exception
 	{
 		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		String username= "";
@@ -294,59 +297,107 @@ public class Controller {
 		   username = principal.toString();
 		}
 		
-		if(!username.equals(userId))
+		if(!username.equals(request.getUserId()+""))
 		{
 			throw new Exception("UnAuthorized Exception");
 		}
 		
-		return couponService.getCoupons(0l,0l,Long.valueOf(userId));
+		List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,0l,request.getUserId(),couponIds);
 	}
 
 	
 	@RequestMapping("/getComplimentaryCoupons")
-	public List<VendorCouponsDTO1> getComplimentaryCoupons(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getComplimentaryCoupons(@RequestBody CouponsRequest request) throws UnsupportedEncodingException
 	{
 	
-		return couponService.getCoupons(0l,1l,Long.valueOf(userId));
+List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,1l,request.getUserId(),couponIds);
 	}
 
 	@RequestMapping("/getFreeCoupons")
-	public List<VendorCouponsDTO1> getFreeCoupons(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getFreeCoupons(@RequestBody CouponsRequest request) throws UnsupportedEncodingException
 	{
 	
-		return couponService.getCoupons(0l,2l,Long.valueOf(userId));
+List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,2l,request.getUserId(),couponIds);
 	}
 	
 	@RequestMapping("/getDailyCoupons")
-	public List<VendorCouponsDTO1> getDailyCoupons(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getDailyCoupons(@RequestBody CouponsRequest request) throws UnsupportedEncodingException
 	{
 	
-		return couponService.getCoupons(0l,3l,Long.valueOf(userId));
+List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,3l,request.getUserId(),couponIds);
 	}
 	
 	@RequestMapping("/getLimitedCoupons")
-	public List<VendorCouponsDTO1> getLimitedCoupons(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getLimitedCoupons(@RequestBody CouponsRequest request) throws UnsupportedEncodingException
 	{
 	
-		return couponService.getCoupons(0l,4l,Long.valueOf(userId));
+List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,4l,request.getUserId(),couponIds);
 	}
 	
 	@RequestMapping("/getRedeemableCoupons")
-	public List<VendorCouponsDTO1> getRedeemableCoupons(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getRedeemableCoupons(@RequestBody CouponsRequest request) throws UnsupportedEncodingException
 	{
 	
-		return couponService.getCoupons(0l,5l,Long.valueOf(userId));
+List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,5l,request.getUserId(),couponIds);
 	}
 	
 	@RequestMapping("/getDiscountCoupons")
-	public List<VendorCouponsDTO1> getDiscountCoupons(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getDiscountCoupons(@RequestBody CouponsRequest request) throws UnsupportedEncodingException
 	{
 	
-		return couponService.getCoupons(0l,6l,Long.valueOf(userId));
+List<Long> couponIds = request.getCouponIds();
+		
+		
+		
+		if(couponIds.size() == 0)
+			couponIds=Arrays.asList(-1l);
+		
+		return couponService.getCoupons(0l,6l,request.getUserId(),couponIds);
+	
+	
 	}
-	
-	
-	
 
 	@RequestMapping("/editCoupon")
 	public Boolean editCoupon(@RequestBody VendorCouponsDTO coupon) throws IOException
