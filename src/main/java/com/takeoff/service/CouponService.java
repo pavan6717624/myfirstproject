@@ -102,7 +102,7 @@ public ImageDetails getImageDetails(Long id)
 		
 		}
 		
-		System.out.println(images);
+		//System.out.println(images);
 		return images;
 	}
 	
@@ -260,7 +260,7 @@ public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws Unsup
 		
 		ImageStatusDTO imageStatus=new ImageStatusDTO();
 		
-		System.out.println(vendorId);
+		//System.out.println(vendorId);
 		
 		VendorDetails vendor=vendorDetailsRepository.findByUserId(vendorId).get();
 		
@@ -369,7 +369,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		classMap.put("centered-left",centered_left);
 		classMap.put("centered-right",centered_right);
 		
-		System.out.println(classMap.get(coupon.getHeader_align()));
+		//System.out.println(classMap.get(coupon.getHeader_align()));
 		
 		String htmlData="<div style='border :5px'> <div style=' padding: 0px; position: relative;width:350px;height:250px;overflow:hidden;'>"
 				+ "<img style='width:350px;height:250px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"

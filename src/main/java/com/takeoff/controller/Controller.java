@@ -16,6 +16,12 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.DisabledException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +35,7 @@ import com.takeoff.domain.CouponType;
 import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.SubCategory;
 import com.takeoff.domain.VendorCoupons;
+import com.takeoff.jwt.JwtTokenUtil;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.LoginStatusDTO;
@@ -49,6 +56,7 @@ import com.takeoff.service.CouponService;
 import com.takeoff.service.CouponTypeService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
+import com.takeoff.service.JwtUserDetailsService;
 import com.takeoff.service.LoginService;
 import com.takeoff.service.RazorpayService;
 import com.takeoff.service.RedemptionService;
@@ -99,6 +107,16 @@ public class Controller {
 	@Autowired
 	RedemptionService redemptionService;
 	
+	@Autowired
+	private AuthenticationManager authenticationManager;
+
+	@Autowired
+	private JwtTokenUtil jwtTokenUtil;
+
+	@Autowired
+	private JwtUserDetailsService userDetailsService;
+	
+	
 	
 	@RequestMapping("/vendorRedemptionProcess")
 	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
@@ -123,14 +141,14 @@ public class Controller {
 	@RequestMapping("/likeCoupon")
 	public Long likeCoupon(@RequestParam("couponId") String couponId, @RequestParam("userId") String userId, @RequestParam("like") String like)
 	{
-		System.out.println("asdfasdf");
+		//System.out.println("asdfasdf");
 	return couponService.likeCoupon(Long.valueOf(couponId), Long.valueOf(userId), Boolean.parseBoolean(like));
 	}
 	
 	@RequestMapping("/disLikeCoupon")
 	public Long disLikeCoupon(@RequestParam("couponId") String couponId, @RequestParam("userId") String userId, @RequestParam("dislike") String dislike)
 	{
-		System.out.println("asdfasdf12");
+		//System.out.println("asdfasdf12");
 	return couponService.disLikeCoupon(Long.valueOf(couponId), Long.valueOf(userId), Boolean.parseBoolean(dislike));
 	}
 	
@@ -156,7 +174,7 @@ public class Controller {
 		String body=request.getParameter("Body");
 		body=body.toLowerCase().replaceAll(","," ").replaceAll("approve","").trim();
 		
-		System.out.println(body);
+		//System.out.println(body);
 		
 		Long couponId=Long.valueOf(body.split(" ")[0]);
 		
@@ -253,7 +271,7 @@ public class Controller {
 	@RequestMapping("/getImages")
 	public List<ImageStatusDTO> getImages(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
 	{
-		System.out.println(vendorId);
+		//System.out.println(vendorId);
 		return couponService.getImages(Long.valueOf(vendorId));
 	}
 	
@@ -265,9 +283,22 @@ public class Controller {
 	}
 	
 	@RequestMapping("/getTakeOffRecommendations")
-	public List<VendorCouponsDTO1> getTakeOffRecommendations(@RequestParam("userId") String userId) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getTakeOffRecommendations(@RequestParam("userId") String userId) throws Exception
 	{
-	
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username= "";
+
+		if (principal instanceof UserDetails) {
+		   username = ((UserDetails)principal).getUsername();
+		} else {
+		   username = principal.toString();
+		}
+		
+		if(!username.equals(userId))
+		{
+			throw new Exception("UnAuthorized Exception");
+		}
+		
 		return couponService.getCoupons(0l,0l,Long.valueOf(userId));
 	}
 
@@ -739,13 +770,73 @@ public class Controller {
 	{
 	return displayService.getTreeStructure(Integer.parseInt(type));
 	}
-	@RequestMapping("/login")
-	public LoginStatusDTO login(@RequestParam("userid") String userid, @RequestParam("password") String password)
-	{
+	@RequestMapping(value = "/login")
+	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
+		//System.out.println("entered in authenticate...");
+		authenticate(username, password);
+
+		final UserDetails userDetails = userDetailsService
+				.loadUserByUsername(username);
+
+		final String token = jwtTokenUtil.generateToken(userDetails);
+		//System.out.println("exited in authenticate...");
 		
-		return loginService.login(userid,password);
+		LoginStatusDTO loginStatus=new LoginStatusDTO();
 		
+		loginStatus.setUserId(userDetails.getUsername());
+		
+		loginStatus.setLoginStatus(true);
+		
+		loginStatus.setJwt(token);
+			
+		loginStatus.setUserType(userDetails.getAuthorities().toArray()[0].toString());
+	
+		return loginStatus;
 	}
+	
+	
+	@RequestMapping(value = "/getLoginDetails")
+	public LoginStatusDTO getLoginDetails() throws Exception {
+		
+		LoginStatusDTO loginStatus=new LoginStatusDTO();
+		
+		 if(SecurityContextHolder.getContext().getAuthentication() == null)
+		 {
+			 loginStatus.setUserId("");
+				
+				loginStatus.setLoginStatus(false);
+					
+				loginStatus.setUserType("");
+		 }
+		 else
+		 {
+		
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		loginStatus.setUserId(userDetails.getUsername());
+		
+		loginStatus.setLoginStatus(true);
+			
+		loginStatus.setUserType(userDetails.getAuthorities().toArray()[0].toString());
+		 }
+	
+		return loginStatus;
+	}
+	
+	
+
+	private void authenticate(String username, String password) throws Exception {
+	//	System.out.println("entered in authenticate sub function...");
+		try {
+			authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
+		} catch (DisabledException e) {
+			throw new Exception("USER_DISABLED", e);
+		} catch (BadCredentialsException e) {
+			throw new Exception("INVALID_CREDENTIALS", e);
+		}
+		//System.out.println("exited in authenticate sub function...");
+	}
+
 	
 	@RequestMapping("/checkRefererId")
 	public RefererCodeDTO checkRefererId(@RequestParam("refererid") String refererid)

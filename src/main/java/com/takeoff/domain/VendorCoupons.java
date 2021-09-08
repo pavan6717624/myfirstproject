@@ -335,13 +335,13 @@ public class VendorCoupons implements Serializable {
 	public void setFromDate(String fromDate) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		this.fromDate = Timestamp.valueOf(LocalDateTime.parse(fromDate,dateFormatter));
-		System.out.println(this.fromDate+" "+fromDate);
+		//System.out.println(this.fromDate+" "+fromDate);
 	}
 	
 	public void setToDate(String toDate) {
 		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		this.toDate = Timestamp.valueOf(LocalDateTime.parse(toDate,dateFormatter));
-		System.out.println(this.toDate+" "+toDate);
+		//System.out.println(this.toDate+" "+toDate);
 	}
 
 	

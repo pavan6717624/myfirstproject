@@ -5,8 +5,16 @@ public class LoginStatusDTO {
 	String userId="0";
 	String userType="NONE";
 	Boolean loginStatus=false;
+	String jwt="";
 	
 	
+	
+	public String getJwt() {
+		return jwt;
+	}
+	public void setJwt(String jwt) {
+		this.jwt = jwt;
+	}
 	public String getUserId() {
 		return userId;
 	}
