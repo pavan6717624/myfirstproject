@@ -6,6 +6,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,7 +20,6 @@ import javax.transaction.Transactional;
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
@@ -121,7 +122,7 @@ public ImageDetails getImageDetails(Long id)
 		System.out.println("3."+new java.util.Date());
 		return vendorCoupons;*/
 		Pageable paging = PageRequest.of(0, 10);
-		return vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,paging);
+		return vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),paging);
 	}
 	
 //	public List<VendorCouponsDTO> toVendorCouponsDTO(List<VendorCoupons> coupons)
