@@ -250,7 +250,7 @@ public class Controller {
         BufferedImage img = ImageIO.read(is);
 		
       
-        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
+        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300,300);
         
         
         ByteArrayOutputStream bos = new ByteArrayOutputStream();

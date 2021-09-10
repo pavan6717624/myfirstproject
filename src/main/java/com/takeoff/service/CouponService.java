@@ -208,7 +208,7 @@ public ImageDetails getImageDetails(Long id)
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage img = ImageIO.read(is);
 		
-       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
+       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300,300);
                
         
         
@@ -248,7 +248,7 @@ public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws Unsup
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage img = ImageIO.read(is);
 		
-       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 350,250);
+       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300,300);
                
 //       for(int i=0;i<2;i++)
 //   	{
@@ -375,10 +375,10 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		//System.out.println(classMap.get(coupon.getHeader_align()));
 		
-		String htmlData="<div style='border :5px'> <div style=' padding: 0px; position: relative;width:350px;height:250px;overflow:hidden;'>"
-				+ "<img style='width:350px;height:250px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
+		String htmlData="<div style='border :5px'> <div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
+				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
 				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
-                +" style='top_left; max-width: 80px; max-height: 80px;border: 1px solid  #bbb;'></img>"
+                +" style='top_left;max-height: 50px;border: 1px solid  #bbb;'></img>"
 				+ "<div style='"+classMap.get(coupon.getHeader_align())+";"
 				+ "font-family:"+coupon.getHeader_font()+";color:"+coupon.getHeader_color()+";"
 				+ "text-decoration:"+coupon.getHeader_decoration()+";font-weight:"+coupon.getHeader_bold()+";"
@@ -399,7 +399,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 				
 				+"</div>";
 		
-		String couponStr="<img style='width:350px;height:300px;' src='data:image/jpeg;base64,"+logoService.createImage(htmlData,false)+"' />";
+		String couponStr="<img style='width:300px;height:350px;' src='data:image/jpeg;base64,"+logoService.createImage(htmlData,false)+"' />";
 		
 		return couponStr;
 		
