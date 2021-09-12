@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletRequest;
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.DisabledException;
@@ -40,7 +39,9 @@ import com.takeoff.domain.VendorCoupons;
 import com.takeoff.jwt.JwtTokenUtil;
 import com.takeoff.model.CouponsRequest;
 import com.takeoff.model.CustomerDetailsDTO;
+import com.takeoff.model.ImageDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
+import com.takeoff.model.ImagesRequest;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
@@ -133,6 +134,13 @@ public class Controller {
 	{
 	return customerService.getCustomerAccountDetails(Long.valueOf(userId));
 	}
+	
+	@RequestMapping("/deleteImage")
+	public Boolean deleteImage(@RequestParam("imageId") String imageId)
+	{
+	return couponService.deleteImage(Long.valueOf(imageId));
+	}
+	
 	
 	
 	@RequestMapping("/customerRedemption")
@@ -272,10 +280,18 @@ public class Controller {
 	}
 	
 	@RequestMapping("/getImages")
-	public List<ImageStatusDTO> getImages(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
+	public List<ImageDetailsDTO> getImages(@RequestBody ImagesRequest request ) throws UnsupportedEncodingException 
 	{
-		//System.out.println(vendorId);
-		return couponService.getImages(Long.valueOf(vendorId));
+		System.out.println(request.getVendorId());
+		
+		List<Long> imageIds = request.getImageIds();
+		
+		
+		
+		if(imageIds.size() == 0)
+			imageIds=Arrays.asList(-1l);
+		
+		return couponService.getImages(Long.valueOf(request.getVendorId()),imageIds);
 	}
 	
 	@RequestMapping("/getCoupons")
@@ -908,6 +924,9 @@ List<Long> couponIds = request.getCouponIds();
 	@RequestMapping(value="/getOrderId")
 	public OrderDTO getOrderId() throws RazorpayException
 	{
+		
+	
+		
 		String orderid=razorpayService.getOrderId();
 OrderDTO sendOrder = new OrderDTO(orderid);
 return sendOrder;

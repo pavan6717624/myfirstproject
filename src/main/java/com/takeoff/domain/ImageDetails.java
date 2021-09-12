@@ -32,7 +32,17 @@ public class ImageDetails implements Serializable{
 	 @JoinColumn(name = "subCategoryId")
 	SubCategory subCateogry;
 	
+	Boolean deleted=false;
 	
+	
+	public Boolean getDeleted() {
+		return deleted;
+	}
+
+	public void setDeleted(Boolean deleted) {
+		this.deleted = deleted;
+	}
+
 	public SubCategory getSubCateogry() {
 		return subCateogry;
 	}

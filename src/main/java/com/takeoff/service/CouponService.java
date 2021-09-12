@@ -8,7 +8,6 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,7 @@ import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.LikeCoupons;
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.domain.VendorDetails;
+import com.takeoff.model.ImageDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.repository.CategoryRepository;
@@ -91,23 +91,30 @@ public ImageDetails getImageDetails(Long id)
 			return true;
 	}
 	
-	public List<ImageStatusDTO> getImages(Long vendorId) throws UnsupportedEncodingException
+	public List<ImageDetailsDTO> getImages(Long vendorId, List<Long> imageIds) throws UnsupportedEncodingException
 	{
-		List<ImageDetails> coupons = couponDetailsRepository.findByLatest(vendorId);
-		List<ImageStatusDTO> images = new ArrayList<>();
+		Pageable paging = PageRequest.of(0, 10);
 		
-		for(int i=0;i<coupons.size();i++)
-		{
-			ImageStatusDTO image=new ImageStatusDTO();
-			String img = "data:image/jpeg;base64," +coupons.get(i).getImage();
-			image.setImage(img);
-			image.setId(coupons.get(i).getId());
-			images.add(image);
 		
-		}
+		List<ImageDetailsDTO> images = couponDetailsRepository.findByLatest(vendorId,imageIds,paging);
+		
+		
+		
+		return images;
+//		List<ImageStatusDTO> images = new ArrayList<>();
+//		
+//		for(int i=0;i<coupons.size();i++)
+//		{
+//			ImageStatusDTO image=new ImageStatusDTO();
+//			String img = "data:image/jpeg;base64," +coupons.get(i).getImage();
+//			image.setImage(img);
+//			image.setId(coupons.get(i).getId());
+//			images.add(image);
+//		
+//		}
 		
 		//System.out.println(images);
-		return images;
+		//return images;
 	}
 	
 	
@@ -222,6 +229,7 @@ public ImageDetails getImageDetails(Long id)
 		ImageDetails coupon = new ImageDetails();
 		
 		coupon.setImage(image);
+		coupon.setDeleted(false);
 		coupon.setUser(userDetailsRepository.findById(vendorId).get());
 		coupon.setKeywords(keywords);
 		coupon.setSubCateogry(subCategoryRepository.findById(Long.valueOf(subCategory)).get());
@@ -404,6 +412,16 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		return couponStr;
 		
 		
+	}
+	public Boolean deleteImage(Long imageId) {
+	
+		ImageDetails image=couponDetailsRepository.findById(imageId).get();
+		
+		image.setDeleted(true);
+		
+		couponDetailsRepository.save(image);
+		
+		return image.getDeleted();
 	}
 
 

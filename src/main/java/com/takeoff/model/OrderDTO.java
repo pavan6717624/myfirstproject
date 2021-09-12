@@ -4,7 +4,7 @@ package com.takeoff.model;
 public class OrderDTO {
 
 	String orderId;
-
+	
 	public OrderDTO(String orderId) {
 		super();
 		this.orderId = orderId;
