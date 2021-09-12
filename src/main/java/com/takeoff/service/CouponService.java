@@ -418,13 +418,14 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 	public Boolean deleteImage(Long imageId) {
 	
 		ImageDetails image=couponDetailsRepository.findById(imageId).get();
-		
-		image.setDeleted(true);
-		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		image.setDeleted(true);
+		image.setDeletedBy(Long.valueOf(userDetails.getUsername()));
+		
+	
 		
 		couponDetailsRepository.save(image);
-		couponDetailsRepository.deleteById(Long.valueOf(userDetails.getUsername()));
+		
 		
 		return image.getDeleted();
 	}
