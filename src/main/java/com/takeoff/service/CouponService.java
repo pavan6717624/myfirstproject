@@ -21,6 +21,8 @@ import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -419,7 +421,10 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		image.setDeleted(true);
 		
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
 		couponDetailsRepository.save(image);
+		couponDetailsRepository.deleteById(Long.valueOf(userDetails.getUsername()));
 		
 		return image.getDeleted();
 	}

@@ -33,6 +33,16 @@ public class ImageDetails implements Serializable{
 	SubCategory subCateogry;
 	
 	Boolean deleted=false;
+	Long deletedBy=0l;
+	
+	public Long getDeletedBy() {
+		return deletedBy;
+	}
+
+	public void setDeletedBy(Long deletedBy) {
+		this.deletedBy = deletedBy;
+	}
+
 	
 	
 	public Boolean getDeleted() {
