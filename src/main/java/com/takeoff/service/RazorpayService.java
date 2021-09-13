@@ -18,12 +18,12 @@ import com.takeoff.model.SubscriptionDTO;
 @Service
 public class RazorpayService {
 	
-	private final String keyId="rzp_test_WJFhmfMmFRxETB";
-	private final String keySecret="g5Wm3ap5wCmLsioYJSoQoa35";
+//	private final String keyId="rzp_test_WJFhmfMmFRxETB";
+//	private final String keySecret="g5Wm3ap5wCmLsioYJSoQoa35";
 	
 	
-//	private final String keyId="rzp_live_nWA6UVrzTQFr9W";
-//	private final String keySecret="IoKCC6msyc9zduVg5ZK6sIa5";
+	private final String keyId="rzp_live_nWA6UVrzTQFr9W";
+	private final String keySecret="IoKCC6msyc9zduVg5ZK6sIa5";
 
 	
 	public Boolean subscribe(SubscriptionDTO subscription) throws RazorpayException, IOException
