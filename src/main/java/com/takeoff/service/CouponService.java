@@ -258,7 +258,7 @@ public ImageStatusDTO uploadLogo(MultipartFile file, Long vendorId) throws Unsup
 		InputStream is = new ByteArrayInputStream(file.getBytes());
         BufferedImage img = ImageIO.read(is);
 		
-       img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300,300);
+   //    img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300,300);
                
 //       for(int i=0;i<2;i++)
 //   	{
