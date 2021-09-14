@@ -833,9 +833,17 @@ List<Long> couponIds = request.getCouponIds();
 	
 	
 	@RequestMapping("/getTreeStructure")
-	public StructureDTO getTreeStructure(@RequestParam("type") String type)
+	public StructureDTO getTreeStructure()
 	{
-	return displayService.getTreeStructure(Integer.parseInt(type));
+		StructureDTO structure =  new StructureDTO();
+		
+		String str =displayService.getTreeStructure();
+		System.out.println(str);
+		structure.setStructure(str);
+		
+		
+		
+		return structure;
 	}
 	@RequestMapping(value = "/login")
 	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
