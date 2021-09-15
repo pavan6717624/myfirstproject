@@ -846,8 +846,11 @@ List<Long> couponIds = request.getCouponIds();
 		return structure;
 	}
 	@RequestMapping(value = "/login")
-	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) throws Exception {
+	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) {
 		//System.out.println("entered in authenticate...");
+		LoginStatusDTO loginStatus=new LoginStatusDTO();
+		try
+		{
 		authenticate(username, password);
 
 		final UserDetails userDetails = userDetailsService
@@ -856,7 +859,7 @@ List<Long> couponIds = request.getCouponIds();
 		final String token = jwtTokenUtil.generateToken(userDetails);
 		//System.out.println("exited in authenticate...");
 		
-		LoginStatusDTO loginStatus=new LoginStatusDTO();
+		
 		
 		loginStatus.setUserId(userDetails.getUsername());
 		
@@ -865,6 +868,11 @@ List<Long> couponIds = request.getCouponIds();
 		loginStatus.setJwt(token);
 			
 		loginStatus.setUserType(userDetails.getAuthorities().toArray()[0].toString());
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Error Occured while logging in "+ex);
+		}
 	
 		return loginStatus;
 	}
