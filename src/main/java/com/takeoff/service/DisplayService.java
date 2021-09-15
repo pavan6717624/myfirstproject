@@ -108,7 +108,7 @@ public class DisplayService {
 
                                    
 
-                                    if(displayNodes.get(i).getParentId().equals(parentId))
+                                   if(!color.equals("red"))
 
                                     ret+=getStructure(allNodes,allNodes.stream().filter(n -> !(n.getCustomerId().equals(customerId)) && (n.getParentId().equals(customerId) || n.getRefererId().equals(customerId))).map(DisplayDetailsDTO::getCustomerId).collect(Collectors.toList()),customerId);
 
