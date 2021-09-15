@@ -21,8 +21,8 @@ public class UtilService {
 	  @Autowired
 	    private JavaMailSender javaMailSender;
 	  
-	  private final static String ACCOUNT_SID = "SKf010b70478195bc3127dadaa3184f2df";
-	   private final static String AUTH_ID = "KLE1tLLIcw5leMKRyhBtzORHk1FWYtkb";
+	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
+	   private final static String AUTH_ID = "727a4dce634f0fa15bb82fb35e8c4195";
 	   
 	   
 	   static {
