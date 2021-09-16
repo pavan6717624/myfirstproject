@@ -28,8 +28,15 @@ public class CategoryService {
 	
 	public List<SubCategory> getSubCategories(String category)
 	{
+		try
+		{
+		return subCategoryRepository.findByCategory(categoryRepository.findById(Long.valueOf(category)).get());
+		}
+		catch(Exception ex)
+		{
 		return subCategoryRepository.findByCategory(categoryRepository.findByCategoryName(category).get());
 	}
+		}
 
 	public List<SubCategoryDTO> getAllSubCategories() {
 		

@@ -8,10 +8,12 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -120,7 +122,7 @@ public ImageDetails getImageDetails(Long id)
 	}
 	
 	
-	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds) throws UnsupportedEncodingException
+	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
 	{
 		
 		
@@ -131,7 +133,48 @@ public ImageDetails getImageDetails(Long id)
 		System.out.println("3."+new java.util.Date());
 		return vendorCoupons;*/
 		Pageable paging = PageRequest.of(0, 10);
-		return vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),paging);
+		
+		System.out.println(category+" "+subCategory+" "+city+" "+keywords);
+		
+		List<String> keyWords = Arrays.asList(keywords.split(","));
+		
+		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, paging);
+		
+		coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
+		
+		return coupons;
+	}
+	
+	public Boolean check(VendorCouponsDTO1 coupon,List<String> keyWords)
+	{
+		for(int i=0;i<keyWords.size();i++)
+		{
+			if(coupon.getKeywords().toLowerCase().contains(keyWords.get(i).toLowerCase()))
+			{
+				return true;
+			}
+		
+			else if(coupon.getVendorName().toLowerCase().contains(keyWords.get(i).toLowerCase()))
+			{
+				return true;
+			}
+			
+			else if(coupon.getHeader().toLowerCase().contains(keyWords.get(i).toLowerCase()))
+			{
+				return true;
+			}
+			else if(coupon.getFooter().toLowerCase().contains(keyWords.get(i).toLowerCase()))
+			{
+				return true;
+			}
+			else if(coupon.getBody().toLowerCase().contains(keyWords.get(i).toLowerCase()))
+			{
+				return true;
+			}
+		}
+		
+		
+		return false;
 	}
 	
 //	public List<VendorCouponsDTO> toVendorCouponsDTO(List<VendorCoupons> coupons)
