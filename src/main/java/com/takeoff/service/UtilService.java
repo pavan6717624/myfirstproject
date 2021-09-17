@@ -80,7 +80,7 @@ public class UtilService {
 			   }
 			   catch(Exception ex)
 			   {
-				System.out.println("Error in Sending Mail for "+mailTo);   
+				System.out.println("Error in Sending Mail for "+mailTo + "\n"+ex);   
 			   }
 		   }
 		   
