@@ -73,7 +73,7 @@ public class UtilService {
 			   {
 			   SimpleMailMessage msg = new SimpleMailMessage();
 			     msg.setTo(mailTo);
-
+ 				msg.setFrom("admin@thetakeoff.in");
 			     msg.setSubject(subject);
 			     msg.setText(text);
 			     javaMailSender.send(msg);
