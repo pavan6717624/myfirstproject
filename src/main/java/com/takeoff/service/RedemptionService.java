@@ -35,6 +35,40 @@ public class RedemptionService {
 		
 		
 		VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
+		Long otherCount = vendorCouponsRepository.other3456Count(coupon.getVendor().getUser().getUserId());
+	
+		if(coupon.getCouponType().getId() == 1L)
+		{
+			Long complimentaryCount = vendorCouponsRepository.specific12Count( coupon.getVendor().getUser().getUserId());
+			
+			
+			if(complimentaryCount >= 1)
+			{
+				redemptionDTO.setStatus(false);
+				redemptionDTO.setMessage("Sorry! You cannot Redeem this Coupon as You have already redemmed the Complimentary Coupon from this Vendor.");
+				return redemptionDTO;
+			}
+			else if(complimentaryCount == 0 && otherCount == 0)
+			{
+				redemptionDTO.setStatus(false);
+				redemptionDTO.setMessage("Sorry! You can redeem ONLY ONCE Complimentary Coupons IF ONE of Redeemable, Discount, Limit, Daily Deals got Redemption from the SAME OUTLET.");
+				return redemptionDTO;
+			}
+				
+		}
+//		else if(coupon.getCouponType().getId() == 2L)
+//		{
+//			Long freeCount = vendorCouponsRepository.specific12CountFree();
+//			
+//			if(freeCount >= otherCount)
+//			{
+//				redemptionDTO.setStatus(false);
+//				redemptionDTO.setMessage("Sorry! You can redeem ONE Free Coupons ONLY IF ONE of Redeemable, Discount, Limit, Daily Deals got Redemption from the OTHER (than this) OUTLET.");
+//				return redemptionDTO;
+//			}
+//			else if(freeCount < otherCount && coupon.)
+//			
+//		}
 		
 		System.out.println(redemptionDTO.getCouponId()+" "+redemptionDTO.getCustomerId()+" "+coupon.getVendor().getUser().getUserId()+" "+LocalDateTime.now());
 		
@@ -80,7 +114,8 @@ public class RedemptionService {
 				redemptionDTO.setValidTill(validTill);
 		}
 	
-		
+		redemptionDTO.setStatus(true);
+		redemptionDTO.setMessage("Eligible for Redemption");
 		return redemptionDTO;
 	}
 	

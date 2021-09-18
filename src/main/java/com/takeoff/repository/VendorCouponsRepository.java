@@ -50,4 +50,14 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	
 	@Query("select (case when count(*)>0 then true else false end) from VendorCoupons c where c.vendor.user.userId = (:userId) and c.couponType.id=1")
 	Boolean complimentaryExists(@Param("userId") Long userId);	
+	
+	@Query("select count(*) from VendorCoupons c where c.vendor.user.userId = (:vendorId) and c.couponType.id in (3,4,5,6)")
+	Long other3456Count(@Param("vendorId") Long vendorId);
+	
+	@Query("select count(*) from VendorCoupons c where c.couponType.id=1 and c.vendor.user.userId = (:vendorId)")
+	Long specific12Count(@Param("vendorId") Long vendorId);
+	
+	
+	
+	
 }

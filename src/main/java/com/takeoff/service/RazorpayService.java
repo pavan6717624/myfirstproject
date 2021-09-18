@@ -24,6 +24,7 @@ public class RazorpayService {
 	
 	private final String keyId="rzp_live_nWA6UVrzTQFr9W";
 	private final String keySecret="IoKCC6msyc9zduVg5ZK6sIa5";
+	private final Long amount = 119900L;
 
 	
 	public Boolean subscribe(SubscriptionDTO subscription) throws RazorpayException, IOException
@@ -78,7 +79,7 @@ public class RazorpayService {
     String txnid = ts.toString().replace(":","").replace(" ","").replace("-","").replace(".","");
 
 JSONObject options = new JSONObject();
-options.put("amount", 100);
+options.put("amount", amount);
 options.put("currency", "INR");
 options.put("receipt", "txn_"+txnid);
 Order order = razorpayClient.Orders.create(options);
