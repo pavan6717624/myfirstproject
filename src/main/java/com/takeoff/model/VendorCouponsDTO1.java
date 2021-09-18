@@ -139,6 +139,8 @@ public interface VendorCouponsDTO1 {
 	public Boolean getDisLikeCoupon();
 	
 	public Boolean getExpired();
+	
+	public String getAddress();
 
 
 
