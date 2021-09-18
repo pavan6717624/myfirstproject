@@ -36,7 +36,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+" c.image.id as imageId, concat('data:image/jpeg;base64,',c.image.image) as image, "
 			+" c.couponType.couponType as couponType, c.image.keywords as keywords, c.description as description, "
 			+" c.vendor.user.userId as vendorId, concat('data:image/jpeg;base64,',c.vendor.logo) as logo, "
-			+" c.id as id, c.vendor.user.name as vendorName, (case when (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) then false else true end) as expired "
+			+" c.id as id, c.vendor.user.name as vendorName, (case when (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) then false else true end) as expired, "
+	       		+" c.vendor.address as address "
 			
 			+ " from VendorCoupons c where ((c.fromDate <= (:current_time) and c.toDate >=(:current_time)) or "
 			+ "(:userId)!=0L) and (c.id not in (:couponIds)) and (c.couponType.id = (:couponType) or ((:couponType) = 0 "
