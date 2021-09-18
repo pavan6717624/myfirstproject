@@ -40,7 +40,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			
 			+ " from VendorCoupons c where ((c.fromDate <= (:current_time) and c.toDate >=(:current_time)) or "
 			+ "(:userId)!=0L) and (c.id not in (:couponIds)) and (c.couponType.id = (:couponType) or ((:couponType) = 0 "
-			+ "and c.couponType.id!=1 and c.couponType.id!=2)) and (c.vendor.user.userId = (:userId) or "
+			+ "and ((c.couponType.id!=1 and c.couponType.id!=2) or (:userId)=0))) and (c.vendor.user.userId = (:userId) or "
 			+ "(:userId) = 0) and (c.image.subCateogry.category.id=(:category) or (:category=0)) and "
 			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0)) "
 			+ " order by id desc")
