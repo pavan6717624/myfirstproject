@@ -51,7 +51,7 @@ public class RedemptionService {
 			else if(complimentaryCount == 0 && otherCount == 0)
 			{
 				redemptionDTO.setStatus(false);
-				redemptionDTO.setMessage("Sorry! You can redeem ONLY ONCE Complimentary Coupons IF ONE of Redeemable, Discount, Limit, Daily Deals got Redemption from the SAME OUTLET.");
+				redemptionDTO.setMessage("Sorry! You can ONLY redeem Complimentary Coupons IF ONE of Redeemable, Discount, Limit, Daily Deals got Redemption from the SAME OUTLET.");
 				return redemptionDTO;
 			}
 				
