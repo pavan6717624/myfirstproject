@@ -13,5 +13,7 @@ public interface ImageDetailsDTO {
 	public String getMessage() ;
 	
 	public Long getUserId();
+	
+	public Long getCategoryId();
 
 }

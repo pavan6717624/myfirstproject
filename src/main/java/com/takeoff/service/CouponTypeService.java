@@ -23,6 +23,9 @@ public class CouponTypeService {
 	public Boolean complimentaryExists() {
 	Boolean status=false;
 	UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
+	
+	
 	if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Vendor")) && vendorCouponsRepository.complimentaryExists(Long.valueOf(userDetails.getUsername())))
 	return true;
 	return status;
@@ -33,6 +36,13 @@ public class CouponTypeService {
 	return couponTypeRepository.getCouponTypes();
 	else
 	return Arrays.asList(couponTypeRepository.findById(1l).get());
+	}
+	
+	public List<CouponType> getAllCouponTypes()
+	{
+	
+	return couponTypeRepository.getCouponTypes();
+	
 	}
 	
 	

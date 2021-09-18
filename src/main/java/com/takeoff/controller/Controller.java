@@ -684,6 +684,13 @@ List<Long> couponIds = request.getCouponIds();
 		return couponTypeService.getCouponTypes();
 	}
 	
+	@RequestMapping("/getAllCouponTypes")
+	public List<CouponType> getAllCouponTypes() 
+	{
+		return couponTypeService.getAllCouponTypes();
+	}
+	
+	
 	@RequestMapping("/getSubCategories")
 	public List<SubCategory> getSubCategories(@RequestParam("category") String category) 
 	{
