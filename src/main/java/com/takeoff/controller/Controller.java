@@ -527,10 +527,11 @@ List<Long> couponIds = request.getCouponIds();
 	}
 	
 	
-	@RequestMapping("/downloadCoupon")
-	public String downloadCoupon() throws NumberFormatException, IOException
+		@RequestMapping("/downloadCoupon")
+	public String downloadCoupon(@RequestParam("couponId") String couponId) throws NumberFormatException, IOException
 	{
-		return couponService.downloadCoupon(8l,10004l);
+		//String couponId="8";
+		return "{\"img\":\""+couponService.downloadCoupon(Long.valueOf(couponId))+"\"}";
 	}
 	
 	@RequestMapping("/getAllSubCategories")
