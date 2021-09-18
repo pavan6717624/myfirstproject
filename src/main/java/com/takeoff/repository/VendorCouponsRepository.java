@@ -37,7 +37,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+" c.couponType.couponType as couponType, c.image.keywords as keywords, c.description as description, "
 			+" c.vendor.user.userId as vendorId, concat('data:image/jpeg;base64,',c.vendor.logo) as logo, "
 			+" c.id as id, c.vendor.user.name as vendorName, (case when (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) then false else true end) as expired, "
-	       		+" c.vendor.address as address "
+	       		+" c.vendor.address as address, c.vendor.user.contact as contact "
 			
 			+ " from VendorCoupons c where ((c.fromDate <= (:current_time) and c.toDate >=(:current_time)) or "
 			+ "(:userId)!=0L) and (c.id not in (:couponIds)) and (c.couponType.id = (:couponType) or ((:couponType) = 0 "
@@ -46,4 +46,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0)) "
 			+ " order by id desc")
 	List<VendorCouponsDTO1> findByLatest1(@Param("userId") Long userId, @Param("couponType") Long couponType, @Param("customerId") Long customerId , @Param("couponIds") List<Long> couponIds,@Param("current_time") Timestamp current_time,@Param("category") Long category,@Param("subCategory") Long subCategory,Pageable pageable);
+	
+	
+	@Query("select (case when count(*)>0 then true else false end) from VendorCoupons c where c.vendor.user.userId = (:userId) and c.couponType.id=1")
+	Boolean complimentaryExists(@Param("userId") Long userId);	
 }

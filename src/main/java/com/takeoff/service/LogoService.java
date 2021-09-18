@@ -1,6 +1,5 @@
 package com.takeoff.service;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
@@ -96,7 +95,10 @@ public class LogoService {
 	              pdfBuilder.toStream(bufOs);
 	              pdfBuilder.run();
 	              pdfBytes = bos.toByteArray();
+	              bos.close();
+	              bufOs.close();
 	          }
+	    	 
 	    
 	       
 	       
@@ -104,7 +106,10 @@ public class LogoService {
 	       
 	        PDDocument pd = PDDocument.load (pdfBytes);
 	        PDFRenderer pr = new PDFRenderer (pd);
-	        BufferedImage img = pr.renderImageWithDPI (0, 500);
+	        BufferedImage img = pr.renderImageWithDPI (0, 300);
+	        
+	       
+	       
 
 
 	    

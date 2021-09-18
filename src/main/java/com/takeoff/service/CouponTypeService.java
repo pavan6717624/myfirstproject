@@ -1,24 +1,40 @@
 package com.takeoff.service;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
-import com.takeoff.domain.Category;
 import com.takeoff.domain.CouponType;
 import com.takeoff.repository.CouponTypeRepository;
+import com.takeoff.repository.VendorCouponsRepository;
 
 @Service
 public class CouponTypeService {
 	@Autowired
 	CouponTypeRepository couponTypeRepository;
 	
-	
+	@Autowired
+	VendorCouponsRepository vendorCouponsRepository;
+	public Boolean complimentaryExists() {
+	Boolean status=false;
+	UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Vendor")) && vendorCouponsRepository.complimentaryExists(Long.valueOf(userDetails.getUsername())))
+	return true;
+	return status;
+	}
 	public List<CouponType> getCouponTypes()
 	{
-		return couponTypeRepository.getCouponTypes();
+	if(complimentaryExists())
+	return couponTypeRepository.getCouponTypes();
+	else
+	return Arrays.asList(couponTypeRepository.findById(1l).get());
 	}
+	
 	
 	public CouponType getCouponType(String couponType)
 	{

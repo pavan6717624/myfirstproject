@@ -141,6 +141,8 @@ public interface VendorCouponsDTO1 {
 	public Boolean getExpired();
 	
 	public String getAddress();
+	
+	public Long getContact();
 
 
 
