@@ -116,8 +116,8 @@ public class LogoService {
 	       
 	}
 	
-//	if(!logo)
-//        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 1000,400);
+	if(!logo)
+        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT,  660,320);
 		
 	ByteArrayOutputStream bos = new ByteArrayOutputStream();
 	ImageIO.write(img,"JPEG",bos);
