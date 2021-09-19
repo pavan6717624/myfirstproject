@@ -2,6 +2,8 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -73,6 +75,7 @@ public Boolean addDesginer(VendorDetailsDTO designer) throws NoSuchAlgorithmExce
 	user.setPassword(utilService.getSHA(password));
 	user.setIsDeleted(false);
 	user.setIsDisabled(false);
+	user.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
 	
 	userDetailsRepository.save(user);
 	
@@ -177,6 +180,7 @@ public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmExceptio
 	user.setPassword(utilService.getSHA(password));
 	user.setIsDeleted(false);
 	user.setIsDisabled(false);
+	user.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
 	
 	userDetailsRepository.save(user);
 	

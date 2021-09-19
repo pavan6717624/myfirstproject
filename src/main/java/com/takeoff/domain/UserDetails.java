@@ -1,7 +1,9 @@
 package com.takeoff.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -28,6 +30,18 @@ public class UserDetails implements Serializable {
 	String email="";
 	String city="";
 	String message="";
+	
+	@Column(columnDefinition="datetime")
+	 Timestamp  joinDate;
+	
+	public Timestamp getJoinDate() {
+		return joinDate;
+	}
+
+	public void setJoinDate(Timestamp joinDate) {
+		this.joinDate = joinDate;
+	}
+
 	@OneToOne(fetch = FetchType.LAZY)
 	 @JoinColumn(name = "roleId")
 	Roles role;

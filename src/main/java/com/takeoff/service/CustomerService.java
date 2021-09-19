@@ -2,6 +2,8 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -136,7 +138,7 @@ public class CustomerService {
 	{
 		
 		UserDetails user=new UserDetails(subscription);
-		
+		user.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
 		user = userDetailsRepository.save(user);
 		
 		
