@@ -60,14 +60,14 @@ public class RazorpayService {
 	options.put("razorpay_payment_id", razorpay_payment_id);
 	options.put("razorpay_signature", razorpay_signature);
 	Boolean paymentStatus = Utils.verifyPaymentSignature(options, keySecret);
-	if(amount == 1199 && paymentStatus)
+	if(amount == (int)(this.amount/100) && paymentStatus)
 	{
 		
 		statusStr=true;	
 	}
 	else
 	{
-		System.out.println("Payment Failed for "+razorpay_order_id+" @ "+amount+","+paymentStatus);
+		System.out.println("Mapping Failed for "+razorpay_order_id+", "+razorpay_payment_id+" @ "+amount+","+paymentStatus);
 	}
 	}
 	return statusStr;
