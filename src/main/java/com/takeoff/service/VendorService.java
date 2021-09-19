@@ -183,7 +183,8 @@ public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmExceptio
 	VendorDetails vendorDetails=new VendorDetails();
 	vendorDetails.setAddress(vendor.getAddress());
 	vendorDetails.setUser(user);
-	vendorDetails.setLogo(logoService.createImage("<html><body style='padding:5px;text-align:center;'><h1>"+user.getName().replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s{2,}", " ").trim().replaceAll(" ","<br/>")+"</h1></body></html>",true));
+	vendorDetails.setLogo(logoService.createImage("<html><head><style>@page { size: 500px 500px; } @page { margin: 0; } "
+			+ "	body { margin: 0; }</style></head><body style='padding:5px;text-align:center;'><h1>"+user.getName().replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s{2,}", " ").trim().replaceAll(" ","<br/>")+"</h1></body></html>",true));
 	
 	vendorDetailsRepository.save(vendorDetails);
 	
@@ -244,7 +245,7 @@ public Boolean editVendor(VendorDetailsDTO vendor) throws IOException {
 	
 	VendorDetails vendorDetails=vendorDetailsRepository.findByUserId(vendor.getVendorId()).get();
 	vendorDetails.setAddress(vendor.getAddress());
-	vendorDetails.setLogo(logoService.createImage("<html><body style='padding:10;text-align:center;'><h1>"+vendor.getName()+"</h1></body></html>",true));
+	//vendorDetails.setLogo(logoService.createImage("<html><body style='padding:10;text-align:center;'><h1>"+vendor.getName()+"</h1></body></html>",true));
 	
 	vendorDetailsRepository.save(vendorDetails);
 	

@@ -3,6 +3,7 @@ package com.takeoff.service;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
@@ -409,32 +410,13 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		ImageDetails image = coupon.getImage();
 		
-		String bottom_left="position: absolute;bottom: 2%;left: 7%;";
-		String top_left="position: absolute; top: 2%;left: 7%;";
-		String top_center="position: absolute;top: 2%;left: 50%;transform: translate(-50%, -0%);";
-		String top_right="position: absolute;top: 2%;right: 7%;";
-		String bottom_right="position: absolute;bottom: 2%;right: 7%;";
-		String bottom_center="position:absolute;bottom: 2%;left: 50%;transform: translate(-50%, -0%);";
-		String centered="position: absolute;top: 50%;left: 50%;transform: translate(-50%, -0%);";
-		String centered_left="position: absolute;top: 50%;left: 7%;"; 
-		String centered_right="position: absolute;top: 50%;right: 7%;";
-		
-		Map<String, String> classMap = new HashMap<String, String>();
-		
-		classMap.put("bottom-left",bottom_left);
-		classMap.put("top-left",top_left);
-		classMap.put("top-center",top_center);
-		classMap.put("top-right",top_right);
-		classMap.put("bottom-right",bottom_right);
-		classMap.put("bottom-center",bottom_center);
-		classMap.put("centered",centered);
-		classMap.put("centered-left",centered_left);
-		classMap.put("centered-right",centered_right);
+	
 		
 		//System.out.println(classMap.get(coupon.getHeader_align()));
 		
-		String htmlData="<html><body>"
-				+ "<table border='1'  style='border-collapse: collapse;border: 2px solid grey; word-wrap:break-word'  cellpadding='3'><tr><td>"
+		String htmlData="<html><head><style>@page { size: 700px 500px; } @page { margin: 0; }"
+				+ "body { margin: 0; }</style></head><body>"
+				+ "<table border='1'  style='border-collapse: collapse;border: 2px solid grey; word-wrap:break-word;'  cellpadding='3'><tr><td>"
 				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
 				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
 				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
@@ -471,6 +453,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 				
 				
 		+"</body></html>";
+		
 		
 		String couponStr="data:image/jpeg;base64,"+logoService.createImage(htmlData,false);
 		

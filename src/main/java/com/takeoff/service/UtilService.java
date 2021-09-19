@@ -63,7 +63,7 @@ public class UtilService {
 			   }
 			   catch(Exception ex)
 			   {
-				System.out.println("Error in Sending SMS for "+smsTo);   
+				System.out.println("Error in Sending SMS for "+smsTo+ex);   
 			   }
 		   }
 		   

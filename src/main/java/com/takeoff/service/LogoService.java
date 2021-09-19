@@ -6,6 +6,7 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
@@ -90,6 +91,8 @@ public class LogoService {
 	    	 byte[] pdfBytes = null;
 	    	  try (ByteArrayOutputStream bos = new ByteArrayOutputStream(); BufferedOutputStream bufOs = new BufferedOutputStream(bos)) {
 	              final PdfRendererBuilder pdfBuilder = new PdfRendererBuilder();
+	              //pdfBuilder.useDefaultPageSize(660, 320, PdfRendererBuilder.PageSizeUnits.MM);
+	              //pdfBuilder.usePdfAConformance(PdfRendererBuilder.PdfAConformance.PDFA_3_A);
 	              pdfBuilder.useFastMode();
 	              pdfBuilder.withHtmlContent(htmlData, "");
 	              pdfBuilder.toStream(bufOs);
@@ -100,7 +103,6 @@ public class LogoService {
 	          }
 	    	 
 	    
-	       
 	       
 	       
 	       
