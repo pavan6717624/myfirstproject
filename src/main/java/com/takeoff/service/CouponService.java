@@ -444,7 +444,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 + "                                            font-style:"+coupon.getFooter_style()+"; margin-bottom:0.5em; word-wrap:break-word;'>"
 + "                                          "+coupon.getFooter().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"</p>"
 + ""
-+ "											<p> Address: "+coupon.getVendor().getAddress().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"<br>Mobile"+coupon.getVendor().getUser().getContact()+"</p>"
++ "											<p> Address: "+coupon.getVendor().getAddress().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"<br>Mobile"+coupon.getVendor().getUser().getContact()+"</br></p>"
 + ""
 
 +"</div>"
