@@ -415,14 +415,15 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		//System.out.println(classMap.get(coupon.getHeader_align()));
 		
 		String htmlData="<html><head><style>@page { size: 1000px 1000px; } @page { margin: 0; }"
-				+ "body { margin: 0; }</style></head><body>"
-				+ "<table style='word-wrap:break-word;'  cellpadding='3'><tr><td>"
+				+ "body { margin: 0; padding-left:2px }</style></head><body>"
+				+ "<table border='1'  style='border-collapse: collapse;border: 2px solid grey;word-wrap:break-word;'  cellpadding='3'>"
+				+ "<tr><td style='vertical-align: center'>"
 				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
 				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
 				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
                 +" style='top_left;max-height: 50px;border: 1px solid  #bbb;'></img>"
 				
-+ "                                    </div></td><td>"
++ "                                    </div></td><td style='vertical-align: center;'>"
 				
 +" <div"
 + "                                        style='text-align:center;padding: 5px; width: 300px'>"
