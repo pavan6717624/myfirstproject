@@ -414,7 +414,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		//System.out.println(classMap.get(coupon.getHeader_align()));
 		
-		String htmlData="<html><head><style>@page { size: 700px 500px; } @page { margin: 0; }"
+		String htmlData="<html><head><style>@page { size: 1000px 1000px; } @page { margin: 0; }"
 				+ "body { margin: 0; }</style></head><body>"
 				+ "<table border='1'  style='border-collapse: collapse;border: 2px solid grey; word-wrap:break-word;'  cellpadding='3'><tr><td>"
 				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
