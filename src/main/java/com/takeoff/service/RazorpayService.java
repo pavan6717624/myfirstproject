@@ -60,7 +60,7 @@ public class RazorpayService {
 	options.put("razorpay_payment_id", razorpay_payment_id);
 	options.put("razorpay_signature", razorpay_signature);
 	Boolean paymentStatus = Utils.verifyPaymentSignature(options, keySecret);
-	if(amount == 1 && paymentStatus)
+	if(amount == 1199 && paymentStatus)
 	{
 		
 		statusStr=true;	
