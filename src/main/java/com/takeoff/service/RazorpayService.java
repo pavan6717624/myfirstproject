@@ -65,6 +65,10 @@ public class RazorpayService {
 		
 		statusStr=true;	
 	}
+	else
+	{
+		System.out.println("Payment Failed for "+razorpay_order_id+" @ "+amount+","+paymentStatus);
+	}
 	}
 	return statusStr;
 	}
