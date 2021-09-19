@@ -416,7 +416,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		String htmlData="<html><head><style>@page { size: 1000px 1000px; } @page { margin: 0; }"
 				+ "body { margin: 0; }</style></head><body>"
-				+ "<table border='1'  style='border-collapse: collapse;border: 2px solid grey; word-wrap:break-word;'  cellpadding='3'><tr><td>"
+				+ "<table style='word-wrap:break-word;'  cellpadding='3'><tr><td>"
 				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
 				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
 				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
@@ -443,8 +443,8 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 + "                                            font-weight:"+coupon.getFooter_bold()+";"
 + "                                            font-style:"+coupon.getFooter_style()+"; margin-bottom:0.5em; word-wrap:break-word;'>"
 + "                                          "+coupon.getFooter().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"</p>"
-+ ""
-+ "											<p> Address: "+coupon.getVendor().getAddress().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"<br>Mobile"+coupon.getVendor().getUser().getContact()+"</br></p>"
++ "											<p> OutLet Name: "+ coupon.getVendor().getUser().getName()+"</p>"
++ "											<p> Address: "+coupon.getVendor().getAddress().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
 + ""
 
 +"</div>"
