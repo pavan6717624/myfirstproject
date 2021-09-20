@@ -43,6 +43,7 @@ import com.takeoff.repository.SubCategoryRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorCouponsRepository;
 import com.takeoff.repository.VendorDetailsRepository;
+import org.apache.commons.text.StringEscapeUtils;
 
 @Service
 public class CouponService {
@@ -432,19 +433,19 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 + "                                            font-weight:"+coupon.getHeader_bold()+";"
 + "                                            font-style:"+coupon.getHeader_style()+";"
 + "                                            margin-bottom:0.5em;word-wrap: break-word;'>"
-+ "                                            "+coupon.getHeader().replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s{2,}", " ")+"</h5>"
++ "                                            "+StringEscapeUtils.escapeXml11(coupon.getHeader())+"</h5>"
 + ""
 + "                                        <p style='text-decoration:"+coupon.getBody_decoration()+";"
 + "                                            font-weight:"+coupon.getBody_bold()+";font-style:"+coupon.getBody_style()+";"
 + "                                            margin-bottom:0.5em;word-wrap: break-word;'>"
-+ "                                            "+coupon.getBody().replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s{2,}", " ")+"</p>"
++ "                                            "+StringEscapeUtils.escapeXml11(coupon.getBody())+"</p>"
 + ""
 + "                                        <p style='text-decoration:"+coupon.getFooter_decoration()+";"
 + "                                            font-weight:"+coupon.getFooter_bold()+";"
 + "                                            font-style:"+coupon.getFooter_style()+"; margin-bottom:0.5em; word-wrap:break-word;'>"
-+ "                                          "+coupon.getFooter().replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s{2,}", " ")+"</p>"
++ "                                          "+StringEscapeUtils.escapeXml11(coupon.getFooter())+"</p>"
 + "											<p> OutLet Name: "+ coupon.getVendor().getUser().getName()+"</p>"
-+ "											<p> Address: "+coupon.getVendor().getAddress().replaceAll("[^a-zA-Z0-9]"," ").replaceAll("\\s{2,}", " ")+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
++ "											<p> Address: "+StringEscapeUtils.escapeXml11(coupon.getVendor())+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
 + ""
 
 +"</div>"
