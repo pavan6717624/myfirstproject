@@ -19,6 +19,8 @@ public interface KYCDetailsDTO {
 
 	public String getIfsc() ;
 	
-	public Double walletAmount();
+	public Double getWalletAmount();
+	
+	public Long getReferals();
 
 }
