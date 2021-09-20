@@ -420,8 +420,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 				+ "<tr><td style='vertical-align: center'>"
 				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
 				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
-				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
-                +" style='top_left;max-height: 50px;border: 1px solid  #bbb;'></img>"
+				
 				
 + "                                    </div></td><td style='vertical-align: center;'>"
 				
