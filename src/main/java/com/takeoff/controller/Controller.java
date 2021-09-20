@@ -154,6 +154,20 @@ public class Controller {
 	return kycService.getKYCDetails();
 	}
 	
+	@RequestMapping("/updateKYC")
+	public KYCDetailsDTO updateKYC(@RequestParam("cname") String cname, @RequestParam("bname") String bname, @RequestParam("account") String account, @RequestParam("ifsc") String ifsc )
+	{
+		
+	return kycService.updateKyc(cname,bname,account,ifsc);
+	}
+	
+	@RequestMapping("/updatePan")
+	public KYCDetailsDTO updatePan(@RequestParam("pan") String pan)
+	{
+		
+	return kycService.updatePan(pan);
+	}
+	
 	
 	@RequestMapping("/customerRedemption")
 	public Boolean customerRedemption(@RequestBody RedemptionDTO redemption)

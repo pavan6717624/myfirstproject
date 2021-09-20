@@ -35,7 +35,39 @@ public class KYCDetails implements Serializable
 	
 	String ifsc="";
 	
+	String account = "";
 	
+	String panStatus="";
+	
+	String kycStatus="";
+	
+	public String getPanStatus() {
+		return panStatus;
+	}
+
+	public void setPanStatus(String panStatus) {
+		this.panStatus = panStatus;
+	}
+
+	public String getKycStatus() {
+		return kycStatus;
+	}
+
+	public void setKycStatus(String kycStatus) {
+		this.kycStatus = kycStatus;
+	}
+
+	
+	
+	
+	public String getAccount() {
+		return account;
+	}
+
+	public void setAccount(String account) {
+		this.account = account;
+	}
+
 	public Long getId() {
 		return id;
 	}

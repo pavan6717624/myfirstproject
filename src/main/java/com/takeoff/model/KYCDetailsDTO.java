@@ -15,6 +15,8 @@ public interface KYCDetailsDTO {
 
 	public String getCname() ;
 	public String getBname();
+	
+	public String getAccount();
 
 
 	public String getIfsc() ;
@@ -22,5 +24,9 @@ public interface KYCDetailsDTO {
 	public Double getWalletAmount();
 	
 	public Long getReferals();
+	
+	public String getPanStatus();
+	
+	public String getKycStatus();
 
 }
