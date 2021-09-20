@@ -43,6 +43,7 @@ import com.takeoff.repository.SubCategoryRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorCouponsRepository;
 import com.takeoff.repository.VendorDetailsRepository;
+import org.apache.commons.text.StringEscapeUtils;
 
 @Service
 public class CouponService {
@@ -420,8 +421,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 				+ "<tr><td style='vertical-align: center'>"
 				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;overflow:hidden;'>"
 				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64,"+image.getImage()+"'></img>"
-				+" <img src='data:image/jpeg;base64,"+coupon.getVendor().getLogo()+"' >"
-                +" style='top_left;max-height: 50px;border: 1px solid  #bbb;'></img>"
+				
 				
 + "                                    </div></td><td style='vertical-align: center;'>"
 				
@@ -433,23 +433,23 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 + "                                            font-weight:"+coupon.getHeader_bold()+";"
 + "                                            font-style:"+coupon.getHeader_style()+";"
 + "                                            margin-bottom:0.5em;word-wrap: break-word;'>"
-+ "                                            "+coupon.getHeader().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"</h5>"
++ "                                            "+StringEscapeUtils.escapeXml11(coupon.getHeader())+"</h5>"
 + ""
 + "                                        <p style='text-decoration:"+coupon.getBody_decoration()+";"
 + "                                            font-weight:"+coupon.getBody_bold()+";font-style:"+coupon.getBody_style()+";"
 + "                                            margin-bottom:0.5em;word-wrap: break-word;'>"
-+ "                                            "+coupon.getBody().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"</p>"
++ "                                            "+StringEscapeUtils.escapeXml11(coupon.getBody())+"</p>"
 + ""
 + "                                        <p style='text-decoration:"+coupon.getFooter_decoration()+";"
 + "                                            font-weight:"+coupon.getFooter_bold()+";"
 + "                                            font-style:"+coupon.getFooter_style()+"; margin-bottom:0.5em; word-wrap:break-word;'>"
-+ "                                          "+coupon.getFooter().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"</p>"
-+ "											<p> OutLet Name: "+ coupon.getVendor().getUser().getName()+"</p>"
-+ "											<p> Address: "+coupon.getVendor().getAddress().replaceAll("&"," ").replaceAll("\\s{2,}", " ")+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
++ "                                          "+StringEscapeUtils.escapeXml11(coupon.getFooter())+"</p>"
++ "											<p> OutLet Name: "+ StringEscapeUtils.escapeXml11(coupon.getVendor().getUser().getName())+"</p>"
++ "											<p> Address: "+StringEscapeUtils.escapeXml11(coupon.getVendor().getAddress())+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
 + ""
 
 +"</div>"
-				+"<div style='text-align:center'>wwww.thetakeoff.in<br/><br/>Subscribe to TakeOff by Reference Code 'TO"+customerId+"'.<br/><br/>Enjoy the Experience of TakeOff."
+				+"<div style='text-align:center'>wwww.thetakeoff.in<br/><br/>Subscribe to TakeOff by <br/>Reference Code 'TO"+customerId+"'.<br/><br/>Enjoy the Experience of TakeOff."
 				+"</div></td></tr></table>"
 				
 				

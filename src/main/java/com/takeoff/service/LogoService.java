@@ -108,7 +108,7 @@ public class LogoService {
 	       
 	        PDDocument pd = PDDocument.load (pdfBytes);
 	        PDFRenderer pr = new PDFRenderer (pd);
-	        BufferedImage img = pr.renderImageWithDPI (0, 300);
+	        BufferedImage img = pr.renderImageWithDPI (0, 75);
 	        
 	       
 	       
