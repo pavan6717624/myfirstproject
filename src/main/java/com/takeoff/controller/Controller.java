@@ -42,6 +42,7 @@ import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.ImageDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.ImagesRequest;
+import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
@@ -61,6 +62,7 @@ import com.takeoff.service.CouponTypeService;
 import com.takeoff.service.CustomerService;
 import com.takeoff.service.DisplayService;
 import com.takeoff.service.JwtUserDetailsService;
+import com.takeoff.service.KYCService;
 import com.takeoff.service.LoginService;
 import com.takeoff.service.RazorpayService;
 import com.takeoff.service.RedemptionService;
@@ -121,6 +123,11 @@ public class Controller {
 	private JwtUserDetailsService userDetailsService;
 	
 	
+	@Autowired
+	KYCService kycService;
+	
+	
+	
 	
 	@RequestMapping("/vendorRedemptionProcess")
 	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
@@ -141,6 +148,11 @@ public class Controller {
 	return couponService.deleteImage(Long.valueOf(imageId));
 	}
 	
+	@RequestMapping("/getKYCDetails")
+	public List<KYCDetailsDTO> getKYCDetails()
+	{
+	return kycService.getKYCDetails();
+	}
 	
 	
 	@RequestMapping("/customerRedemption")
