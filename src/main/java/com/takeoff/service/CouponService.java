@@ -445,7 +445,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 + "                                            font-style:"+coupon.getFooter_style()+"; margin-bottom:0.5em; word-wrap:break-word;'>"
 + "                                          "+StringEscapeUtils.escapeXml11(coupon.getFooter())+"</p>"
 + "											<p> OutLet Name: "+ coupon.getVendor().getUser().getName()+"</p>"
-+ "											<p> Address: "+StringEscapeUtils.escapeXml11(coupon.getVendor())+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
++ "											<p> Address: "+StringEscapeUtils.escapeXml11(coupon.getVendor().getAddress())+"<p>Mobile: "+coupon.getVendor().getUser().getContact()+"</p></p>"
 + ""
 
 +"</div>"
