@@ -27,7 +27,17 @@ public class KYCService {
 		
 		System.out.println(Long.valueOf(userDetails.getUsername()));
 		
-		return kycRepository.getKYCDetails(Long.valueOf(userDetails.getUsername()));
+		List<KYCDetailsDTO> details = kycRepository.getKYCDetails(Long.valueOf(userDetails.getUsername()));
+		
+		if(details.size() == 0)
+		{
+		
+			details = kycRepository.getWalletDetails(Long.valueOf(userDetails.getUsername()));
+		}
+				
+		System.out.println(details.get(0).getWalletAmount());
+		
+		return details;
 	}
 	public KYCDetailsDTO updatePan(String pan) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
