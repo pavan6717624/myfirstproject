@@ -164,7 +164,7 @@ public class CustomerService {
 		
 		CustomerDetails parent=customerDetailsRepository.findByUserId(parentId).get();
 		
-		parent.setWalletAmount(parent.getWalletAmount()+500);
+		parent.setWalletAmount(parent.getWalletAmount()+400);
 		customerDetailsRepository.save(parent);
 		}
 		
