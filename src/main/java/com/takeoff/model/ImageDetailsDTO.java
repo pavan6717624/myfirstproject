@@ -15,5 +15,7 @@ public interface ImageDetailsDTO {
 	public Long getUserId();
 	
 	public Long getCategoryId();
+	
+	public String getKeywords();
 
 }

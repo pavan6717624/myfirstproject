@@ -317,7 +317,7 @@ public class Controller {
 		if(imageIds.size() == 0)
 			imageIds=Arrays.asList(-1l);
 		
-		return couponService.getImages(Long.valueOf(request.getVendorId()),imageIds);
+		return couponService.getImages(Long.valueOf(request.getVendorId()),imageIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
 	}
 	
 	@RequestMapping("/getCoupons")

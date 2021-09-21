@@ -3,16 +3,13 @@ package com.takeoff.service;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -20,6 +17,7 @@ import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.text.StringEscapeUtils;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -43,7 +41,6 @@ import com.takeoff.repository.SubCategoryRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorCouponsRepository;
 import com.takeoff.repository.VendorDetailsRepository;
-import org.apache.commons.text.StringEscapeUtils;
 
 @Service
 public class CouponService {
@@ -97,14 +94,15 @@ public ImageDetails getImageDetails(Long id)
 			return true;
 	}
 	
-	public List<ImageDetailsDTO> getImages(Long vendorId, List<Long> imageIds) throws UnsupportedEncodingException
+	public List<ImageDetailsDTO> getImages(Long vendorId, List<Long> imageIds,Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
 	{
 		Pageable paging = PageRequest.of(0, 10);
 		
+		List<String> keyWords = Arrays.asList(keywords.split(","));
 		
-		List<ImageDetailsDTO> images = couponDetailsRepository.findByLatest(vendorId,imageIds,paging);
+		List<ImageDetailsDTO> images = couponDetailsRepository.findByLatest(vendorId,imageIds,category, subCategory,paging);
 		
-		
+		images=images.stream().filter( c -> filterImages(c,keyWords)).collect(Collectors.toList());
 		
 		return images;
 //		List<ImageStatusDTO> images = new ArrayList<>();
@@ -123,6 +121,19 @@ public ImageDetails getImageDetails(Long id)
 		//return images;
 	}
 	
+	public Boolean filterImages(ImageDetailsDTO image,List<String> keyWords)
+	{
+		for(int i=0;i<keyWords.size();i++)
+		{
+			if(image.getKeywords().toLowerCase().contains(keyWords.get(i).toLowerCase()))
+			{
+				return true;
+			}
+		}
+		
+		
+		return false;
+	}
 	
 	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
 	{
