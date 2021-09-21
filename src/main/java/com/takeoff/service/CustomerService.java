@@ -13,12 +13,14 @@ import org.springframework.stereotype.Service;
 
 import com.razorpay.RazorpayException;
 import com.takeoff.domain.CustomerDetails;
+import com.takeoff.domain.KYCDetails;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.CustomerMappingRepository;
+import com.takeoff.repository.KYCDetailsRepository;
 import com.takeoff.repository.RolesRepository;
 import com.takeoff.repository.UserDetailsRepository;
 
@@ -67,6 +69,10 @@ public class CustomerService {
 	
 	@Autowired
 	UserDetailsRepository userDetailsRepository;
+	
+	@Autowired
+	KYCDetailsRepository kycRepository;
+	
 	public Boolean checkRefererId(String refercode)
 	{
 		Optional<CustomerDetails> customerDetails = customerDetailsRepository.findByReferCode(refercode);
@@ -164,7 +170,16 @@ public class CustomerService {
 		
 		CustomerDetails parent=customerDetailsRepository.findByUserId(parentId).get();
 		
-		parent.setWalletAmount(parent.getWalletAmount()+400);
+		KYCDetails details = kycRepository.findByCustomerId(parentId);
+		
+		Double addAmount = 400d;
+		
+		if(details != null && details.getPanStatus().equals("Approved"))
+			addAmount = 475d;
+		
+		
+		
+		parent.setWalletAmount(parent.getWalletAmount()+ addAmount);
 		customerDetailsRepository.save(parent);
 		}
 		

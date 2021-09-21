@@ -1,12 +1,16 @@
 package com.takeoff.service;
 
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.takeoff.domain.CustomerDetails;
 import com.takeoff.domain.KYCDetails;
 import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
@@ -27,6 +31,15 @@ public class KYCService {
 		
 		System.out.println(Long.valueOf(userDetails.getUsername()));
 		
+		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Admin")))
+		{
+		
+			List<KYCDetailsDTO> details = kycRepository.getKYCDetails(0l);
+			return details;
+		}
+		else
+		{
+		
 		List<KYCDetailsDTO> details = kycRepository.getKYCDetails(Long.valueOf(userDetails.getUsername()));
 		
 		if(details.size() == 0)
@@ -38,6 +51,7 @@ public class KYCService {
 		System.out.println(details.get(0).getWalletAmount());
 		
 		return details;
+		}
 	}
 	public KYCDetailsDTO updatePan(String pan) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -81,6 +95,39 @@ public class KYCService {
 		
 		return getKYCDetails().get(0);
 	}
+	public KYCDetailsDTO verifyPanStatus(String customerId, String status) {
+		
+		System.out.println(customerId+" "+status+" in Pan Status");
+		
+		KYCDetails details = kycRepository.findByCustomerId(Long.valueOf(customerId));
+		details.setPanStatus(status);
+		details.setPanStatusOn(Timestamp.valueOf(LocalDateTime.now()));
+		kycRepository.save(details);
+		
+		if(status.equals("Approved"))
+		{
+			CustomerDetails cdetails = customerDetailsRepository.findByUserId(Long.valueOf(customerId)).get();
+			Double amount = cdetails.getWalletAmount();
+			Double addAmount = ((amount)/400)*75;
+			
+			cdetails.setWalletAmount(amount+addAmount);
+			customerDetailsRepository.save(cdetails);
+		}
+		
+		return kycRepository.getKYCDetails(Long.valueOf(customerId)).get(0);
+	}
+	public KYCDetailsDTO verifyKycStatus(String customerId, String status) {
+		System.out.println(customerId+" "+status+" in kyc Status");
+		
+		KYCDetails details = kycRepository.findByCustomerId(Long.valueOf(customerId));
+		details.setKycStatus(status);
+		details.setKycStatusOn(Timestamp.valueOf(LocalDateTime.now()));
+		
+		kycRepository.save(details);
+		
+		return kycRepository.getKYCDetails(Long.valueOf(customerId)).get(0);
+	}
+
 
 
 }

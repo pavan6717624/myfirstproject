@@ -1,7 +1,9 @@
 package com.takeoff.domain;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -40,6 +42,39 @@ public class KYCDetails implements Serializable
 	String panStatus="";
 	
 	String kycStatus="";
+	
+	@Column(columnDefinition="datetime")
+	 Timestamp  panStatusOn;
+	
+	@Column(columnDefinition="datetime")
+	 Timestamp  kycStatusOn;
+	
+	
+	
+	
+	public Timestamp getKycStatusOn() {
+		return kycStatusOn;
+	}
+
+	public void setKycStatusOn(Timestamp kycStatusOn) {
+		this.kycStatusOn = kycStatusOn;
+	}
+
+	public Timestamp getPanStatusOn() {
+		return panStatusOn;
+	}
+
+	public void setPanStatusOn(Timestamp panStatusOn) {
+		this.panStatusOn = panStatusOn;
+	}
+
+
+	
+	
+
+	
+	
+	
 	
 	public String getPanStatus() {
 		return panStatus;

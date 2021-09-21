@@ -154,6 +154,19 @@ public class Controller {
 	return kycService.getKYCDetails();
 	}
 	
+	
+	@RequestMapping("/verifyPanStatus")
+	public KYCDetailsDTO verifyPanStatus(@RequestParam("customerId") String customerId, @RequestParam("status") String status)
+	{
+	return kycService.verifyPanStatus(customerId, status);
+	}
+	
+	@RequestMapping("/verifyKycStatus")
+	public KYCDetailsDTO verifyKycStatus(@RequestParam("customerId") String customerId, @RequestParam("status") String status)
+	{
+	return kycService.verifyKycStatus(customerId, status);
+	}
+	
 	@RequestMapping("/updateKYC")
 	public KYCDetailsDTO updateKYC(@RequestParam("cname") String cname, @RequestParam("bname") String bname, @RequestParam("account") String account, @RequestParam("ifsc") String ifsc )
 	{
