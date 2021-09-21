@@ -21,7 +21,12 @@ public interface KYCDetailsRepository  extends JpaRepository<KYCDetails,Long> {
 	List<KYCDetailsDTO> getKYCDetails(@Param("customerId") Long customerId);
 
 	@Query("select k from KYCDetails k where k.customer.user.userId=(:customerId) ")
-	KYCDetails findByCustomerId(Long customerId);
+	KYCDetails findByCustomerId(@Param("customerId") Long customerId);
+	
+	@Query("select  c.user.name as name, c.user.userId as customerId,"
+		+ " c.user.contact as contact, c.walletAmount as walletAmount, (c.walletAmount)/400 as referals"
+		+ " from CustomerDetails c where c.user.userId=(:customerId) ")
+	List<KYCDetailsDTO> getWalletDetails(@Param("customerId") Long customerId);
 	
 	
 
