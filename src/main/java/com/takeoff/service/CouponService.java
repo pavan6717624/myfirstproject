@@ -102,6 +102,8 @@ public ImageDetails getImageDetails(Long id)
 		
 		List<ImageDetailsDTO> images = couponDetailsRepository.findByLatest(vendorId,imageIds,category, subCategory,paging);
 		
+		System.out.println("images size :: "+image.size());
+		
 		images=images.stream().filter( c -> filterImages(c,keyWords)).collect(Collectors.toList());
 		
 		return images;
