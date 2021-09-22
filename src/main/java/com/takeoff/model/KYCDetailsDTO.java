@@ -27,4 +27,5 @@ public interface KYCDetailsDTO {
 	
 	public String getKycStatus();
 
+	public String getStatement();
 }

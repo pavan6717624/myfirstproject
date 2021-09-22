@@ -9,9 +9,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.takeoff.domain.CustomerDetails;
 import com.takeoff.domain.KYCDetails;
+import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.KYCDetailsRepository;
@@ -24,6 +26,9 @@ public class KYCService {
 	
 	@Autowired
 	CustomerDetailsRepository customerDetailsRepository;
+	
+	@Autowired
+	CouponService couponService;
 	
 	public List<KYCDetailsDTO> getKYCDetails() {
 		
@@ -73,7 +78,7 @@ public class KYCService {
 		return getKYCDetails().get(0);
 	}
 	
-	public KYCDetailsDTO updateKyc(String cname,String bname,String account,String ifsc) {
+	public KYCDetailsDTO updateKyc(MultipartFile file,String cname,String bname,String account,String ifsc) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		KYCDetails details = kycRepository.findByCustomerId(Long.valueOf(userDetails.getUsername()));
 		
@@ -89,6 +94,15 @@ public class KYCService {
 		details.setAccount(account);
 		details.setIfsc(ifsc);
 		details.setKycStatus("Submitted");
+		
+		
+		ImageStatusDTO statement = couponService.getImage(file);
+		
+		details.setStatement(statement.getImage());
+		
+		
+		
+		
 		kycRepository.save(details);
 		
 		

@@ -168,10 +168,10 @@ public class Controller {
 	}
 	
 	@RequestMapping("/updateKYC")
-	public KYCDetailsDTO updateKYC(@RequestParam("cname") String cname, @RequestParam("bname") String bname, @RequestParam("account") String account, @RequestParam("ifsc") String ifsc )
+	public KYCDetailsDTO updateKYC(@RequestParam("file") MultipartFile file,@RequestParam("cname") String cname, @RequestParam("bname") String bname, @RequestParam("account") String account, @RequestParam("ifsc") String ifsc )
 	{
 		
-	return kycService.updateKyc(cname,bname,account,ifsc);
+	return kycService.updateKyc(file,cname,bname,account,ifsc);
 	}
 	
 	@RequestMapping("/updatePan")
@@ -316,6 +316,14 @@ public class Controller {
 	}
 		
 		return imageStatus;
+	}
+	
+	
+	@RequestMapping("/getImageStatement")
+	public ImageStatusDTO getImageStatement(@RequestParam("file") MultipartFile file) throws IOException
+	{
+		
+		return couponService.getImage(file);
 	}
 	
 	@RequestMapping("/getImages")

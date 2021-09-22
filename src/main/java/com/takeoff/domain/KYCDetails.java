@@ -49,9 +49,22 @@ public class KYCDetails implements Serializable
 	@Column(columnDefinition="datetime")
 	 Timestamp  kycStatusOn;
 	
+	@Column(length = 100000)
+	String statement;
 	
 	
 	
+	
+	
+	
+	public String getStatement() {
+		return statement;
+	}
+
+	public void setStatement(String statement) {
+		this.statement = statement;
+	}
+
 	public Timestamp getKycStatusOn() {
 		return kycStatusOn;
 	}

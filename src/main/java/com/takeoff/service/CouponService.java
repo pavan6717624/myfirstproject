@@ -487,6 +487,40 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		
 		return image.getDeleted();
 	}
+	
+	public ImageStatusDTO getImage(MultipartFile file)
+	{
+		ImageStatusDTO imageStatus=new ImageStatusDTO();
+		try
+		{
+			
+			
+			
+			InputStream is = new ByteArrayInputStream(file.getBytes());
+	        BufferedImage img = ImageIO.read(is);
+			
+	      
+	        img =  Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT,600,600);
+	        
+	        
+	        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+	    	ImageIO.write(img,"JPEG",bos);
+	    	
+	    	
+			
+			String image = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
+			
+			imageStatus.setImage(image);
+			imageStatus.setStatus(true);
+			}
+		catch(Exception ex)
+		{
+			System.out.println(ex);
+		}
+		
+		return imageStatus;
+			
+	}
 
 
 
