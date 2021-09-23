@@ -174,7 +174,7 @@ public ImageDetails getImageDetails(Long id)
 
 		String[] keyWords = keywords.split(",");
 		
-		String[] keyword = {"","","","",""};
+		String[] keyword = {"0","0","0","0","0"};
 		
 		for(int i=0;i<keyWords.length && i<5; i++)
 			keyword[i]="%"+keyWords[i]+"%";
