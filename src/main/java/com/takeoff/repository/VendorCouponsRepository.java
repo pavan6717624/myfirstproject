@@ -87,6 +87,9 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			
 			+ " c.footer like :keyword1 or c.footer like :keyword2 or c.footer like :keyword3 or "
 			+ "c.footer like :keyword4 or c.footer like :keyword5 or  "
+	       
+	       		+ " c.keywords like :keyword1 or c.keywords like :keyword2 or c.keywords like :keyword3 or "
+			+ "c.keywords like :keyword4 or c.keywords like :keyword5 or  "
 			
 			+ " c.vendor.user.name like :keyword1 or c.vendor.user.name like :keyword2 or c.vendor.user.name like :keyword3 or "
 			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) "
