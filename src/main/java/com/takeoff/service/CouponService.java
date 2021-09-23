@@ -98,13 +98,19 @@ public ImageDetails getImageDetails(Long id)
 	{
 		Pageable paging = PageRequest.of(0, 10);
 		
-		List<String> keyWords = Arrays.asList(keywords.split(","));
+		String[] keyWords = keywords.split(",");
 		
-		List<ImageDetailsDTO> images = couponDetailsRepository.findByLatest(vendorId,imageIds,category, subCategory,paging);
+		String[] keyword = {"","","","",""};
+		
+		for(int i=0;i<keyWords.length && i<5; i++)
+			keyword[i]="%"+keyWords[i]+"%";
+		
+		List<ImageDetailsDTO> images = 
+		couponDetailsRepository.findByLatest(vendorId,imageIds,category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],paging);
 		
 		System.out.println("images size :: "+images.size());
 		
-		images=images.stream().filter( c -> filterImages(c,keyWords)).collect(Collectors.toList());
+		//images=images.stream().filter( c -> filterImages(c,keyWords)).collect(Collectors.toList());
 		
 		return images;
 //		List<ImageStatusDTO> images = new ArrayList<>();
