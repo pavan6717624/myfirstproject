@@ -17,7 +17,7 @@ public interface KYCDetailsRepository  extends JpaRepository<KYCDetails,Long> {
 	@Query("select k.id as id, k.customer.user.name as name, k.customer.user.userId as customerId, "
 		+ "k.customer.user.contact as contact,  k.pan as pan, k.cname as cname, k.bname as bname, k.ifsc as ifsc,k.account as account,"
 		+ " k.customer.walletAmount as walletAmount, k.panStatus as panStatus, k.kycStatus as kycStatus, k.statement as statement "
-		+ "from KYCDetails k where k.customer.user.userId=(:customerId) or (:customerId)=0")
+		+ "from KYCDetails k where k.customer.user.userId=(:customerId) or (:customerId)=0 order by k.customer.user.userId asc")
 	List<KYCDetailsDTO> getKYCDetails(@Param("customerId") Long customerId);
 
 	@Query("select k from KYCDetails k where k.customer.user.userId=(:customerId) ")
@@ -25,8 +25,14 @@ public interface KYCDetailsRepository  extends JpaRepository<KYCDetails,Long> {
 	
 	@Query("select  c.user.name as name, c.user.userId as customerId,"
 		+ " c.user.contact as contact, c.walletAmount as walletAmount, (c.walletAmount)/400 as referals"
-		+ " from CustomerDetails c where c.user.userId=(:customerId) ")
+		+ " from CustomerDetails c where c.user.userId=(:customerId) order by c.user.userId asc")
 	List<KYCDetailsDTO> getWalletDetails(@Param("customerId") Long customerId);
+	
+	@Query("select  c.user.name as name, c.user.userId as customerId,"
+			+ " c.user.contact as contact, c.walletAmount as walletAmount, (c.walletAmount)/400 as referals"
+			+ " from CustomerDetails c where c.user.userId not in (:customerIds) and c.user.role.roleName not like 'Admin' order by c.user.userId asc")
+		List<KYCDetailsDTO> getOtherCustomerDetails(@Param("customerIds") List<Long> customerIds);
+	
 	
 	
 
