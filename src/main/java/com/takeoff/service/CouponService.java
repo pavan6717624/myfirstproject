@@ -143,25 +143,45 @@ public ImageDetails getImageDetails(Long id)
 		return false;
 	}
 	
-	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
+// 	public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
+// 	{
+		
+		
+// 		/*System.out.println("1."+new java.util.Date());
+// 		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId,couponType);
+// 		System.out.println("2."+new java.util.Date());		
+// 		List<VendorCouponsDTO> vendorCoupons = toVendorCouponsDTO(coupons);
+// 		System.out.println("3."+new java.util.Date());
+// 		return vendorCoupons;*/
+// 		Pageable paging = PageRequest.of(0, 10);
+		
+// 		System.out.println(category+" "+subCategory+" "+city+" "+keywords);
+		
+// 		List<String> keyWords = Arrays.asList(keywords.split(","));
+		
+// 		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, paging);
+		
+// 		coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
+		
+// 		return coupons;
+// 	}
+	
+		public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
 	{
 		
-		
-		/*System.out.println("1."+new java.util.Date());
-		List<VendorCoupons> coupons = vendorCouponsRepository.findByLatest(vendorId,couponType);
-		System.out.println("2."+new java.util.Date());		
-		List<VendorCouponsDTO> vendorCoupons = toVendorCouponsDTO(coupons);
-		System.out.println("3."+new java.util.Date());
-		return vendorCoupons;*/
 		Pageable paging = PageRequest.of(0, 10);
 		
-		System.out.println(category+" "+subCategory+" "+city+" "+keywords);
+
+		String[] keyWords = keywords.split(",");
 		
-		List<String> keyWords = Arrays.asList(keywords.split(","));
+		String[] keyword = {"","","","",""};
 		
-		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, paging);
+		for(int i=0;i<keyWords.length && i<5; i++)
+			keyword[i]="%"+keyWords[i]+"%";
 		
-		coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
+		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4], paging);
+		
+		// coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
 		
 		return coupons;
 	}
