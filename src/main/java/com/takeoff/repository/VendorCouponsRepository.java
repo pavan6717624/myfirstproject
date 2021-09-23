@@ -77,19 +77,19 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0))  and "
 			
 			+ "( c.image.keywords like :keyword1 or c.image.keywords like :keyword2 or c.image.keywords like :keyword3 or "
-			+ " c.image.keywords like :keyword4 or c.image.keywords like :keyword5 ) and c.image.keywords not like '' and "
+			+ " c.image.keywords like :keyword4 or c.image.keywords like :keyword5 ) and "
 			
 			+ "( c.header like :keyword1 or c.header like :keyword2 or c.header like :keyword3 or "
-			+ " c.header like :keyword4 or c.header like :keyword5 ) and c.header not like '' and "
+			+ " c.header like :keyword4 or c.header like :keyword5 ) and "
 			
 			+ "( c.body like :keyword1 or c.body like :keyword2 or c.body like :keyword3 or "
-			+ " c.body like :keyword4 or c.body like :keyword5 ) and c.body not like '' and  "
+			+ " c.body like :keyword4 or c.body like :keyword5 ) and  "
 			
 			+ "( c.footer like :keyword1 or c.footer like :keyword2 or c.footer like :keyword3 or "
-			+ "c.footer like :keyword4 or c.footer like :keyword5 ) and c.footer not like '' and  "
+			+ "c.footer like :keyword4 or c.footer like :keyword5 )  and  "
 			
 			+ "( c.vendor.user.name like :keyword1 or c.vendor.user.name like :keyword2 or c.vendor.user.name like :keyword3 or "
-			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) and c.vendor.user.name not like '' "
+			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) "
 			
 			+ " order by id desc")
 	
