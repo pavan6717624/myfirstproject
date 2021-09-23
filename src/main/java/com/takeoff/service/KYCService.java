@@ -40,6 +40,14 @@ public class KYCService {
 		{
 		
 			List<KYCDetailsDTO> details = kycRepository.getKYCDetails(0l);
+			
+			List<Long> customerIds=details.stream().map(d -> d.getCustomerId()).collect(Collectors.toList());
+			
+			List<KYCDetailsDTO> otherDetails = kycRepository.getOtherCustomerDetails(customerIds);
+			
+			details.addAll(otherDetails);
+			
+					
 			return details;
 		}
 		else
