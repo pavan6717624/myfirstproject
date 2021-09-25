@@ -22,7 +22,7 @@ public class Statement implements Serializable
 	private static final long serialVersionUID = -367860616831689274L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
