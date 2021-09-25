@@ -26,19 +26,33 @@ public class Statement implements Serializable
 	Long id;
 	
 	@OneToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "userId")
-	UserDetails user;
+	 @JoinColumn(name = "customerId")
+	CustomerDetails customer;
 	
-	@OneToOne(fetch = FetchType.LAZY)
-	 @JoinColumn(name = "childId")
-	UserDetails child;
-	
+	public CustomerDetails getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(CustomerDetails customer) {
+		this.customer = customer;
+	}
+
 	@Column(columnDefinition="datetime")
 	 Timestamp  date;
 	
 	Double amount;
 	
+	String description;
 	
+	
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -47,22 +61,9 @@ public class Statement implements Serializable
 		this.id = id;
 	}
 
-	public UserDetails getUser() {
-		return user;
-	}
+	
 
-	public void setUser(UserDetails user) {
-		this.user = user;
-	}
-
-	public UserDetails getChild() {
-		return child;
-	}
-
-	public void setChild(UserDetails child) {
-		this.child = child;
-	}
-
+	
 	public Timestamp getDate() {
 		return date;
 	}

@@ -2,8 +2,11 @@ package com.takeoff.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
+
+import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -14,10 +17,12 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.takeoff.domain.CustomerDetails;
 import com.takeoff.domain.KYCDetails;
+import com.takeoff.domain.Statement;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.KYCDetailsRepository;
+import com.takeoff.repository.StatementRepository;
 
 @Service
 public class KYCService {
@@ -29,9 +34,12 @@ public class KYCService {
 	CustomerDetailsRepository customerDetailsRepository;
 	
 	@Autowired
+	StatementRepository statementRepository;
+	
+	@Autowired
 	CouponService couponService;
 	
-	public List<KYCDetailsDTO> getKYCDetails() {
+	public List<KYCDetailsDTO> getKYCDetails(String message) {
 		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
@@ -40,7 +48,7 @@ public class KYCService {
 		if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Admin")))
 		{
 		
-			List<KYCDetailsDTO> details = kycRepository.getKYCDetails(0l);
+			List<KYCDetailsDTO> details = kycRepository.getKYCDetails(0l,message);
 			
 			List<Long> customerIds=details.stream().map(d -> d.getCustomerId()).collect(Collectors.toList());
 			
@@ -54,7 +62,7 @@ public class KYCService {
 		else
 		{
 		
-		List<KYCDetailsDTO> details = kycRepository.getKYCDetails(Long.valueOf(userDetails.getUsername()));
+		List<KYCDetailsDTO> details = kycRepository.getKYCDetails(Long.valueOf(userDetails.getUsername()),message);
 		
 		if(details.size() == 0)
 		{
@@ -67,6 +75,7 @@ public class KYCService {
 		return details;
 		}
 	}
+	@Transactional
 	public KYCDetailsDTO updatePan(String pan) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		KYCDetails details = kycRepository.findByCustomerId(Long.valueOf(userDetails.getUsername()));
@@ -84,9 +93,9 @@ public class KYCService {
 		
 		
 		
-		return getKYCDetails().get(0);
+		return getKYCDetails("Pan Updated Successfully").get(0);
 	}
-	
+	@Transactional
 	public KYCDetailsDTO updateKyc(MultipartFile file,String cname,String bname,String account,String ifsc) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		KYCDetails details = kycRepository.findByCustomerId(Long.valueOf(userDetails.getUsername()));
@@ -116,16 +125,20 @@ public class KYCService {
 		
 		
 		
-		return getKYCDetails().get(0);
+		return getKYCDetails("KYC Updated Successfully").get(0);
 	}
+	@Transactional
 	public KYCDetailsDTO verifyPanStatus(String customerId, String status) {
 		
 		System.out.println(customerId+" "+status+" in Pan Status");
+		
 		
 		KYCDetails details = kycRepository.findByCustomerId(Long.valueOf(customerId));
 		details.setPanStatus(status);
 		details.setPanStatusOn(Timestamp.valueOf(LocalDateTime.now()));
 		kycRepository.save(details);
+		
+		
 		
 		if(status.equals("Approved"))
 		{
@@ -137,8 +150,9 @@ public class KYCService {
 			customerDetailsRepository.save(cdetails);
 		}
 		
-		return kycRepository.getKYCDetails(Long.valueOf(customerId)).get(0);
+		return kycRepository.getKYCDetails(Long.valueOf(customerId),"Pan "+status+" for "+customerId).get(0);
 	}
+	@Transactional
 	public KYCDetailsDTO verifyKycStatus(String customerId, String status) {
 		System.out.println(customerId+" "+status+" in kyc Status");
 		
@@ -148,7 +162,46 @@ public class KYCService {
 		
 		kycRepository.save(details);
 		
-		return kycRepository.getKYCDetails(Long.valueOf(customerId)).get(0);
+		return kycRepository.getKYCDetails(Long.valueOf(customerId),"KYC "+status+" for "+customerId).get(0);
+	}
+	
+	@Transactional
+	public KYCDetailsDTO creditAmount(String customerId, String creditAmount, String creditDate) {
+		
+		CustomerDetails customer = customerDetailsRepository.findByUserId(Long.valueOf(customerId)).get();
+		
+		 if(Double.parseDouble(creditAmount) <=0)
+		  {
+		    		    
+		    return kycRepository.getKYCDetails(Long.valueOf(customerId),"Please Provide Valid Credit Amount").get(0);
+			
+		    
+		  }
+		 else if(Double.parseDouble(creditAmount) > customer.getWalletAmount())
+		  {
+		 
+		  return kycRepository.getKYCDetails(Long.valueOf(customerId),"Cannot Credit more than the Wallet Amount").get(0);
+			
+		  }
+		
+		Statement statement=new Statement();
+		statement.setCustomer(customer);
+		
+		statement.setAmount(Double.parseDouble(creditAmount));
+		
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+				
+		statement.setDate(Timestamp.valueOf(LocalDateTime.parse(creditDate,dateFormatter)));
+		
+		statement.setDescription("Amount credited to Bank Account");
+		
+		customer.setWalletAmount(customer.getWalletAmount()-Double.parseDouble(creditAmount));
+		
+		customerDetailsRepository.save(customer);
+		
+		statementRepository.save(statement);
+				
+		return kycRepository.getKYCDetails(Long.valueOf(customerId),"Amount ("+creditAmount+") Credited to "+customerId).get(0);
 	}
 
 

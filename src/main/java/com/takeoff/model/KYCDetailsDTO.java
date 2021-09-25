@@ -28,4 +28,6 @@ public interface KYCDetailsDTO {
 	public String getKycStatus();
 
 	public String getStatement();
+	
+	public String getMessage();
 }

@@ -151,7 +151,7 @@ public class Controller {
 	@RequestMapping("/getKYCDetails")
 	public List<KYCDetailsDTO> getKYCDetails()
 	{
-	return kycService.getKYCDetails();
+	return kycService.getKYCDetails("");
 	}
 	
 	
@@ -160,6 +160,14 @@ public class Controller {
 	{
 	return kycService.verifyPanStatus(customerId, status);
 	}
+	
+	
+	@RequestMapping("/creditAmount")
+	public KYCDetailsDTO creditAmount(@RequestParam("customerId") String customerId, @RequestParam("creditAmount") String creditAmount, @RequestParam("creditDate") String creditDate)
+	{
+	return kycService.creditAmount(customerId, creditAmount, creditDate);
+	}
+	
 	
 	@RequestMapping("/verifyKycStatus")
 	public KYCDetailsDTO verifyKycStatus(@RequestParam("customerId") String customerId, @RequestParam("status") String status)
