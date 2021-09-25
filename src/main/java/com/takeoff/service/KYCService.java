@@ -146,6 +146,14 @@ public class KYCService {
 			Double amount = cdetails.getWalletAmount();
 			Double addAmount = ((amount)/400)*75;
 			
+			Statement statement=new Statement();
+			statement.setAmount(addAmount);
+			statement.setCustomer(cdetails);
+			statement.setDate(details.getPanStatusOn());
+			statement.setDescription("Pan Updated");
+			
+			statementRepository.save(statement);
+			
 			cdetails.setWalletAmount(amount+addAmount);
 			customerDetailsRepository.save(cdetails);
 		}

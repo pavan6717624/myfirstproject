@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.razorpay.RazorpayException;
 import com.takeoff.domain.CustomerDetails;
 import com.takeoff.domain.KYCDetails;
+import com.takeoff.domain.Statement;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.StatusDTO;
@@ -22,6 +23,7 @@ import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.CustomerMappingRepository;
 import com.takeoff.repository.KYCDetailsRepository;
 import com.takeoff.repository.RolesRepository;
+import com.takeoff.repository.StatementRepository;
 import com.takeoff.repository.UserDetailsRepository;
 
 @Service
@@ -72,6 +74,9 @@ public class CustomerService {
 	
 	@Autowired
 	KYCDetailsRepository kycRepository;
+	
+	@Autowired
+	StatementRepository statementRepository;
 	
 	public Boolean checkRefererId(String refercode)
 	{
@@ -176,6 +181,14 @@ public class CustomerService {
 		
 		if(details != null && details.getPanStatus().equals("Approved"))
 			addAmount = 475d;
+		
+		Statement statement=new Statement();
+		statement.setAmount(addAmount);
+		statement.setCustomer(parent);
+		statement.setDate(user.getJoinDate());
+		statement.setDescription("Refered by "+user.getUserId());
+		
+		statementRepository.save(statement);
 		
 		
 		
