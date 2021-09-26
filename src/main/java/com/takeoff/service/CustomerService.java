@@ -194,6 +194,14 @@ public class CustomerService {
 		
 		statementRepository.save(statement);
 		
+		statement=new Statement();
+		statement.setAmount(0d);
+		statement.setCustomer(customer);
+		statement.setDate(user.getJoinDate());
+		statement.setDescription("Subscribed to TakeOff");
+		
+		statementRepository.save(statement);
+		
 		
 		
 		
