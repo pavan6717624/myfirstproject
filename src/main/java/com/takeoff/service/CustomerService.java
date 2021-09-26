@@ -182,6 +182,10 @@ public class CustomerService {
 		if(details != null && details.getPanStatus().equals("Approved"))
 			addAmount = 475d;
 		
+		parent.setWalletAmount(parent.getWalletAmount()+ addAmount);
+		customerDetailsRepository.save(parent);
+		
+		
 		Statement statement=new Statement();
 		statement.setAmount(addAmount);
 		statement.setCustomer(parent);
@@ -192,8 +196,7 @@ public class CustomerService {
 		
 		
 		
-		parent.setWalletAmount(parent.getWalletAmount()+ addAmount);
-		customerDetailsRepository.save(parent);
+		
 		}
 		
 		StatusDTO statusDto=new StatusDTO(customer);
