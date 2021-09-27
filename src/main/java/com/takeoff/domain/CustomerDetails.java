@@ -72,7 +72,18 @@ public class CustomerDetails implements Serializable{
 	
 	Double walletAmount=0d;
 	
+	
+	Double creditAmount = 0d;
+	
 
+
+	public Double getCreditAmount() {
+		return creditAmount;
+	}
+
+	public void setCreditAmount(Double creditAmount) {
+		this.creditAmount = creditAmount;
+	}
 
 	public UserDetails getUser() {
 		return user;

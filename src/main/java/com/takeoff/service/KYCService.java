@@ -205,6 +205,8 @@ public class KYCService {
 		
 		customer.setWalletAmount(customer.getWalletAmount()-Double.parseDouble(creditAmount));
 		
+		customer.setCreditAmount(customer.getCreditAmount()+Double.parseDouble(creditAmount));
+		
 		customerDetailsRepository.save(customer);
 		
 		statementRepository.save(statement);

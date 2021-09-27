@@ -23,6 +23,8 @@ public interface KYCDetailsDTO {
 	
 	public Double getWalletAmount();
 	
+	public Double getCreditAmount();
+	
 	public String getPanStatus();
 	
 	public String getKycStatus();
