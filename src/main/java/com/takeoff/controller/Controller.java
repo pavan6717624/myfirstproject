@@ -48,6 +48,7 @@ import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.ResponseStatusDTO;
+import com.takeoff.model.StatementDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubCategoryDTO;
@@ -66,6 +67,7 @@ import com.takeoff.service.KYCService;
 import com.takeoff.service.LoginService;
 import com.takeoff.service.RazorpayService;
 import com.takeoff.service.RedemptionService;
+import com.takeoff.service.StatementService;
 import com.takeoff.service.UtilService;
 import com.takeoff.service.VendorService;
 
@@ -126,6 +128,15 @@ public class Controller {
 	@Autowired
 	KYCService kycService;
 	
+	
+	@Autowired
+	StatementService statementService;
+	
+	@RequestMapping("/takeOffStatement")
+	public List<StatementDTO> takeOffStatement(@RequestParam("customerId") String customerId)
+	{
+	return statementService.takeOffStatement(customerId);
+	}
 	
 	
 	

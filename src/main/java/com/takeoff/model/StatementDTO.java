@@ -1,5 +1,14 @@
 package com.takeoff.model;
 
-public class StatementDTO {
+public interface StatementDTO {
+	
+	public Long getCustomerId();
+	
+	public Double getAmount();
+	
+	public String getDate();
+	
+	public String getDescription();
+	
 
 }

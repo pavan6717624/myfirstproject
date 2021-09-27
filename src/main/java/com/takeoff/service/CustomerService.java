@@ -168,6 +168,8 @@ public class CustomerService {
 		customer.setReferCode("TO"+customerId);
 		customer.setMappingStatus(true);
 		customer.getUser().setMessage("Mapping Successful");
+		customer.setWalletAmount(0d);
+		customer.setCreditAmount(0d);
 		customerDetailsRepository.save(customer);
 		
 		
