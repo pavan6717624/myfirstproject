@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -17,6 +18,7 @@ import com.takeoff.domain.KYCDetails;
 import com.takeoff.domain.Statement;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.model.CustomerDetailsDTO;
+import com.takeoff.model.GstDetails;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
@@ -224,6 +226,15 @@ public class CustomerService {
 		
 		
 		
+	}
+
+
+
+
+	public List<GstDetails> gstDetails() {
+		
+		
+		return customerDetailsRepository.gstDetails();
 	}
 
 }

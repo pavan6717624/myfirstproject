@@ -1,5 +1,6 @@
 package com.takeoff.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Repository;
 
 import com.takeoff.domain.CustomerDetails;
 import com.takeoff.model.CustomerDetailsDTO;
+import com.takeoff.model.GstDetails;
 
 @Repository
 public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails,Long> {
@@ -32,6 +34,9 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	  
 	  @Query("select c.user.userId as userId,c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.razorpay_payment_id as razorpay_payment_id,c.razorpay_order_id as razorpay_order_id,c.refererId as refererId,c.referCode as referCode,c.paymentStatus as paymentStatus,c.mappingStatus as mappingStatus,c.walletAmount as walletAmount from CustomerDetails c where c.user.userId=(:userId)")
 		CustomerDetailsDTO getCustomerAccountDetails(@Param("userId") Long userId);
+
+	  @Query("select c.user.userId as id,c.user.name as name,c.user.joinDate as date from CustomerDetails c where c.user.role.roleName not like 'Admin' order by c.user.joinDate asc")
+	  List<GstDetails> gstDetails();
 
 
 }

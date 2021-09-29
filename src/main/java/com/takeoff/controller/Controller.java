@@ -39,6 +39,7 @@ import com.takeoff.domain.VendorCoupons;
 import com.takeoff.jwt.JwtTokenUtil;
 import com.takeoff.model.CouponsRequest;
 import com.takeoff.model.CustomerDetailsDTO;
+import com.takeoff.model.GstDetails;
 import com.takeoff.model.ImageDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.ImagesRequest;
@@ -132,12 +133,17 @@ public class Controller {
 	@Autowired
 	StatementService statementService;
 	
+	@RequestMapping("/gstDetails")
+	public List<GstDetails> gstDetails()
+	{
+	return customerService.gstDetails();
+	}
+	
 	@RequestMapping("/takeOffStatement")
 	public List<StatementDTO> takeOffStatement(@RequestParam("customerId") String customerId)
 	{
 	return statementService.takeOffStatement(customerId);
 	}
-	
 	
 	
 	@RequestMapping("/vendorRedemptionProcess")
