@@ -94,7 +94,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ " c.vendor.user.name like :keyword1 or c.vendor.user.name like :keyword2 or c.vendor.user.name like :keyword3 or "
 			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) "
 			
-			+ " order by rand() desc")
+			+ " order by rand()*2+likeCount*10-dislikeCount*5 desc")
 	
 	List<VendorCouponsDTO1> findByLatest1(
 			@Param("userId") Long userId, 
