@@ -15,5 +15,5 @@ public interface StatementRepository extends JpaRepository<Statement,Long> {
 	
 	@Query("select s.amount as amount, s.date as date, s.description as description, s.customer.user.userId as customerId from Statement s where s.customer.user.userId=(:customerId) order by date asc")
 	List<StatementDTO> takeOffStatment(@Param("customerId") Long customerId);
-
+	
 }
