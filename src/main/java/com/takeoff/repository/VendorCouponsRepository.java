@@ -76,6 +76,9 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "(:userId) = 0) and (c.image.subCateogry.category.id=(:category) or (:category=0)) and "
 			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0))  and "
 			
+	       		+ " ((c.couponType.id > 1) or (c.couponType.id = 1 and c.vendor.user.userId not in (select r.vendor.userId from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId)))) and "
+			
+	       
 			+ "( c.image.keywords like :keyword1 or c.image.keywords like :keyword2 or c.image.keywords like :keyword3 or "
 			+ " c.image.keywords like :keyword4 or c.image.keywords like :keyword5 or "
 			
