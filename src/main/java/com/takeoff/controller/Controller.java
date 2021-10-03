@@ -145,6 +145,13 @@ public class Controller {
 	return statementService.takeOffStatement(customerId);
 	}
 	
+	@RequestMapping("/generateMailPasscode")
+	public Boolean generateMailPasscode(@RequestParam("userId") String userId, @RequestParam("email") String email, @RequestParam("city") String city)
+	{
+		System.out.println("Reached the code");
+	return utilService.generateMailPasscode(userId,email,city);
+	}
+	
 	
 	@RequestMapping("/vendorRedemptionProcess")
 	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
@@ -931,6 +938,8 @@ List<Long> couponIds = request.getCouponIds();
 		LoginStatusDTO loginStatus=new LoginStatusDTO();
 		try
 		{
+			username=username.toLowerCase().replaceAll("to","");
+			
 		authenticate(username, password);
 
 		final UserDetails userDetails = userDetailsService

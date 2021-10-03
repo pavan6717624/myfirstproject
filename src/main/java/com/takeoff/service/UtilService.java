@@ -5,12 +5,15 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.takeoff.domain.UserDetails;
+import com.takeoff.repository.UserDetailsRepository;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
 import com.twilio.type.PhoneNumber;
@@ -20,6 +23,13 @@ public class UtilService {
 	
 	  @Autowired
 	    private JavaMailSender javaMailSender;
+	  
+	  @Autowired
+	   private UserDetailsRepository userDetailsRepository;
+	  
+	  @Autowired
+	   private RedemptionService redemptionService;
+	  
 	  
 	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
 	   private final static String AUTH_ID =  System.getenv("TwilioKey");
@@ -112,7 +122,34 @@ public class UtilService {
 		  
 		        return hexString.toString(); 
 		    }
-		  
+
+			public Boolean generateMailPasscode(String userId, String email, String city) 
+			{
+				
+				try
+				{
+				Optional<UserDetails> user = userDetailsRepository.findById(Long.valueOf(userId));
+				
+				System.out.println(user.get().getEmail() +" "+user.get().getCity());
+				
+				if(user.isPresent() && user.get().getEmail().toLowerCase().equals(email.toLowerCase()) && user.get().getCity().toLowerCase().equals(city.toLowerCase()))
+				{
+					
+			String otp = redemptionService.generatePasscode(6);
+			
+			sendMessage(email, "TAKE OFF - Password Change OTP", "Your Password change OTP is " + otp);
+			
+			return true;
+				}
+				}
+				catch(Exception ex)
+				{
+					System.out.println("sending reset passcode :: "+ex);
+				}
+			
+				
+				return false;
+			}
 	
 
 }
