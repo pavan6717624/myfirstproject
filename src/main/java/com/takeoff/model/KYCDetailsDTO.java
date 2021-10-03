@@ -17,6 +17,8 @@ public interface KYCDetailsDTO {
 	public String getBname();
 	
 	public String getAccount();
+	
+	public String getEmail();
 
 
 	public String getIfsc() ;
