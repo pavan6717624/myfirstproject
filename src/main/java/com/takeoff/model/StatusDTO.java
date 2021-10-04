@@ -11,6 +11,14 @@ public class StatusDTO {
 	Long customerId;
 	String message;
 	String referCode;
+	Long loginId;
+
+	public Long getLoginId() {
+		return loginId;
+	}
+	public void setLoginId(Long loginId) {
+		this.loginId = loginId;
+	}
 
 	public Boolean getStatus() {
 		return status;
