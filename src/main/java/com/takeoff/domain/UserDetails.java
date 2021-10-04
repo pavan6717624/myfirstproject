@@ -31,6 +31,16 @@ public class UserDetails implements Serializable {
 	String city="";
 	String message="";
 	
+	Long loginId;
+	
+	public Long getLoginId() {
+		return loginId;
+	}
+
+	public void setLoginId(Long loginId) {
+		this.loginId = loginId;
+	}
+	
 	@Column(columnDefinition="datetime")
 	 Timestamp  joinDate;
 	
