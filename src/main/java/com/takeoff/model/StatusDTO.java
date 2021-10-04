@@ -52,6 +52,7 @@ public class StatusDTO {
 		this.customerId=customer.getUser().getUserId();
 		this.referCode=customer.getReferCode();
 		this.message = customer.getUser().getMessage();
+		this.loginId=customer.getUser().getLoginId();
 	}
 
 	public String getMessage() {
