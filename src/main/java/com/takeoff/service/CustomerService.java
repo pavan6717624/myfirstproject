@@ -154,6 +154,13 @@ public class CustomerService {
 		user.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
 		user = userDetailsRepository.save(user);
 		
+		SecureRandom random = new SecureRandom();
+		
+		 int randomInt = random.nextInt(10);
+		user.setLoginId(Long.valueOf(user.getUserId()+""+randomInt));
+		
+		userDetailsRepository.save(user);
+		
 		
 		CustomerDetails customer=new CustomerDetails(subscription,user);
 		customer.setMappingStatus(false);
@@ -166,8 +173,7 @@ public class CustomerService {
 		
 		if(rows == 1)
 		{
-		Long customerId = customer.getUser().getUserId();
-		customer.setReferCode("TO"+customerId);
+		customer.setReferCode("TO"+customer.getUser().getLoginId());
 		customer.setMappingStatus(true);
 		customer.getUser().setMessage("Mapping Successful");
 		customer.setWalletAmount(0d);
