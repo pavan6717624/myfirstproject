@@ -82,8 +82,15 @@ public Boolean addDesginer(VendorDetailsDTO designer) throws NoSuchAlgorithmExce
 	if(user.getUserId() != null)
 	{
 	
+		SecureRandom random = new SecureRandom();
+		
+		 int randomInt = random.nextInt(10);
+		user.setLoginId(Long.valueOf(user.getUserId()+""+randomInt));
+		
+		userDetailsRepository.save(user);
+		
 	String text="\nCongrats! Your Designer Account got Created in TakeOff\n"
-     		+ "User Id: "+user.getUserId()+"\n"
+     		+ "User Id: "+user.getLoginId()+"\n"
      		+ "Password: "+password+"\n"
      		+ "Login and Enjoy the TakeOff";
 	
@@ -194,9 +201,16 @@ public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmExceptio
 	
 	if(user.getUserId() != null)
 	{
+		
+		SecureRandom random = new SecureRandom();
+		
+		 int randomInt = random.nextInt(10);
+		user.setLoginId(Long.valueOf(user.getUserId()+""+randomInt));
+		
+		userDetailsRepository.save(user);
 	
 	String text="\nCongrats! Your Vendor Account got Created in TakeOff\n"
-     		+ "User Id: "+user.getUserId()+"\n"
+     		+ "User Id: "+user.getLoginId()+"\n"
      		+ "Password: "+password+"\n"
      		+ "Login and Enjoy the TakeOff";
 	
