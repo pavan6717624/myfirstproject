@@ -91,6 +91,11 @@ public class CustomerService {
 		
 	}
 	
+	public Boolean isUser(String username)
+	{
+	  Optional<UserDetails> user = userDetailsRepository.isUser(Long.valueOf(username));
+	  return user.isPresent();
+	}
 	
 	
 	
@@ -114,12 +119,13 @@ public class CustomerService {
 		 {
 			 statusDto.setCustomerId(0L);
 			 statusDto.setReferCode("0");
+			  statusDto.setLoginId(0L);
 			 statusDto.setMessage(" Mapping Failed. If Amount Debited, it will be refunded in 5 Business Days. ");
 		 }
 		 try
 		 {
 		 String text="\nCongrats! Your Account got Created in TakeOff\n"
-		     		+ "User Id: "+statusDto.getCustomerId()+"\n"
+		     		+ "User Id: "+statusDto.getLoginId()+"\n"
 		     		+ "Password: "+password+"\n"
 		     		+ "Login & Enjoy the TakeOff";
 		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff Account", text);
