@@ -21,5 +21,8 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 	  
 	  @Query("select u from UserDetails u where u.role = (:role) and u.isDeleted=false order by u.userId desc")
 	  List<VendorDetailsDTO> findByRole(@Param("role") Roles role);
+	
+	 @Query("select u from UserDetails u where u.loginId=(:userId)")
+	  Optional<UserDetails> isUser(@Param("userId") Long userId);
 		
 }
