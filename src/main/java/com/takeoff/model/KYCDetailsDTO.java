@@ -10,8 +10,6 @@ public interface KYCDetailsDTO {
 	
 	public Long getContact();
 	
-	
-	public String getEmail();
 
 
 	public String getPan() ;

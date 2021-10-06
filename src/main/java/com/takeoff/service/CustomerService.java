@@ -207,7 +207,7 @@ public class CustomerService {
 		statement.setAmount(addAmount);
 		statement.setCustomer(parent);
 		statement.setDate(user.getJoinDate());
-		statement.setDescription("Refered by "+user.getUserId());
+		statement.setDescription("Referral Reward for referring "+user.getUserId());
 		
 		statementRepository.save(statement);
 		
