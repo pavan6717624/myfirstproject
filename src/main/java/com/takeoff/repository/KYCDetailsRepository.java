@@ -14,7 +14,7 @@ import com.takeoff.model.KYCDetailsDTO;
 public interface KYCDetailsRepository  extends JpaRepository<KYCDetails,Long> {
 
 	
-	@Query("select concat((:message),'') as message,k.id as id, k.customer.user.name as name, k.customer.user.userId as customerId, "
+	@Query("select concat((:message),'') as message,k.id as id, k.customer.user.name as name, k.customer.user.email as email, k.customer.user.userId as customerId, "
 		+ "k.customer.user.contact as contact,  k.pan as pan, k.cname as cname, k.bname as bname, k.ifsc as ifsc,k.account as account,"
 		+ " k.customer.walletAmount as walletAmount, k.customer.creditAmount as creditAmount,"
 		+ " k.panStatus as panStatus, k.kycStatus as kycStatus, k.statement as statement "
@@ -24,12 +24,12 @@ public interface KYCDetailsRepository  extends JpaRepository<KYCDetails,Long> {
 	@Query("select k from KYCDetails k where k.customer.user.userId=(:customerId) ")
 	KYCDetails findByCustomerId(@Param("customerId") Long customerId);
 	
-	@Query("select  c.user.name as name, c.user.userId as customerId,"
+	@Query("select  c.user.name as name, c.user.userId as customerId, c.user.email as email, "
 		+ " c.user.contact as contact, c.walletAmount as walletAmount, c.creditAmount as creditAmount "
 		+ " from CustomerDetails c where c.user.userId=(:customerId) order by c.user.userId asc")
 	List<KYCDetailsDTO> getWalletDetails(@Param("customerId") Long customerId);
 	
-	@Query("select  c.user.name as name, c.user.userId as customerId,"
+	@Query("select  c.user.name as name, c.user.userId as customerId, c.user.email as email,"
 			+ " c.user.contact as contact, c.walletAmount as walletAmount, c.creditAmount as creditAmount "
 			+ " from CustomerDetails c where c.user.userId not in (:customerIds) and c.user.role.roleName not like 'Admin' order by c.user.userId asc")
 		List<KYCDetailsDTO> getOtherCustomerDetails(@Param("customerIds") List<Long> customerIds);
