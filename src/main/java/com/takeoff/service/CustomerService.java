@@ -250,4 +250,21 @@ public class CustomerService {
 		return customerDetailsRepository.gstDetails();
 	}
 
+	public Boolean forgetPassword(String userId, String newpassword) {
+		Optional<UserDetails> user=userDetailsRepository.findById(Long.valueOf(userId));
+		
+		Boolean status=false;
+		
+		
+		
+		
+			user.get().setPassword(newpassword);
+			userDetailsRepository.save(user.get());
+			if(user.get().getUserId()!=null)
+				status=true;
+	
+		
+		return status;
+	}
+
 }

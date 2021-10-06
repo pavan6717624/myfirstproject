@@ -5,6 +5,8 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,9 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import com.takeoff.domain.ResetPassword;
 import com.takeoff.domain.UserDetails;
+import com.takeoff.repository.ResetPasswordRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.twilio.Twilio;
 import com.twilio.rest.api.v2010.account.Message;
@@ -29,6 +33,9 @@ public class UtilService {
 	  
 	  @Autowired
 	   private RedemptionService redemptionService;
+	  
+	  @Autowired
+	  private ResetPasswordRepository resetPasswordRepository;
 	  
 	  
 	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
@@ -135,8 +142,19 @@ public class UtilService {
 				if(user.isPresent() && user.get().getEmail().toLowerCase().equals(email.toLowerCase()) && user.get().getCity().toLowerCase().equals(city.toLowerCase()))
 				{
 					
-			String otp = redemptionService.generatePasscode(6);
-			
+					String otp = resetPasswordRepository.getPasscode(Long.valueOf(userId), Timestamp.valueOf(LocalDateTime.now()))+"";
+					
+					
+					if(otp.equals("null"))		
+					{
+						otp = redemptionService.generatePasscode(6);
+						ResetPassword reset= new ResetPassword();
+						reset.setCustomer(user.get());
+						reset.setPasscode(Long.valueOf(otp));
+						reset.setValidTill(Timestamp.valueOf(LocalDateTime.now().plusMinutes(15)));
+						resetPasswordRepository.save(reset);
+						
+					}
 			sendMessage(email, "TAKE OFF - Password Change OTP", "Your Password change OTP is " + otp);
 			
 			return true;
@@ -149,6 +167,19 @@ public class UtilService {
 			
 				
 				return false;
+			}
+
+
+
+
+
+			public Boolean checkPasswordOTP(String userId, String otp) {
+				
+				String dbotp = resetPasswordRepository.getPasscode(Long.valueOf(userId), Timestamp.valueOf(LocalDateTime.now()))+"";
+				
+				return dbotp.equals(otp);
+				
+			
 			}
 	
 

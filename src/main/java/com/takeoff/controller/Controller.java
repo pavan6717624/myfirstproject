@@ -155,6 +155,13 @@ public class Controller {
 	return utilService.generateMailPasscode(userId,email,city);
 	}
 	
+	@RequestMapping("/checkPasswordOTP")
+	public Boolean checkPasswordOTP(@RequestParam("userId") String userId, @RequestParam("otp") String otp)
+	{
+	
+	return utilService.checkPasswordOTP(userId,otp);
+	}
+	
 	
 	@RequestMapping("/vendorRedemptionProcess")
 	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
@@ -632,6 +639,13 @@ List<Long> couponIds = request.getCouponIds();
 	public Boolean changePassword(@RequestParam("userId") String userId, @RequestParam("password") String password, @RequestParam("newpassword") String newpassword) 
 	{
 		return vendorService.changePassword(userId,password,newpassword);
+		
+	}
+	
+	@RequestMapping("/forgetPassword")
+	public Boolean forgetPassword(@RequestParam("userId") String userId, @RequestParam("newpassword") String newpassword) 
+	{
+		return customerService.forgetPassword(userId,newpassword);
 		
 	}
 
