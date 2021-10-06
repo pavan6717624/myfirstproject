@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.security.SecureRandom;
 
 import javax.transaction.Transactional;
 
@@ -90,6 +91,11 @@ public class CustomerService {
 		
 	}
 	
+	public Boolean isUser(String username)
+	{
+	  Optional<UserDetails> user = userDetailsRepository.isUser(Long.valueOf(username));
+	  return user.isPresent();
+	}
 	
 	
 	
@@ -113,12 +119,13 @@ public class CustomerService {
 		 {
 			 statusDto.setCustomerId(0L);
 			 statusDto.setReferCode("0");
+			  statusDto.setLoginId(0L);
 			 statusDto.setMessage(" Mapping Failed. If Amount Debited, it will be refunded in 5 Business Days. ");
 		 }
 		 try
 		 {
 		 String text="\nCongrats! Your Account got Created in TakeOff\n"
-		     		+ "User Id: "+statusDto.getCustomerId()+"\n"
+		     		+ "User Id: "+statusDto.getLoginId()+"\n"
 		     		+ "Password: "+password+"\n"
 		     		+ "Login & Enjoy the TakeOff";
 		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff Account", text);
@@ -154,6 +161,13 @@ public class CustomerService {
 		user.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
 		user = userDetailsRepository.save(user);
 		
+		SecureRandom random = new SecureRandom();
+		
+		 int randomInt = random.nextInt(10);
+		user.setLoginId(Long.valueOf(user.getUserId()+""+randomInt));
+		
+		userDetailsRepository.save(user);
+		
 		
 		CustomerDetails customer=new CustomerDetails(subscription,user);
 		customer.setMappingStatus(false);
@@ -166,8 +180,7 @@ public class CustomerService {
 		
 		if(rows == 1)
 		{
-		Long customerId = customer.getUser().getUserId();
-		customer.setReferCode("TO"+customerId);
+		customer.setReferCode("TO"+customer.getUser().getLoginId());
 		customer.setMappingStatus(true);
 		customer.getUser().setMessage("Mapping Successful");
 		customer.setWalletAmount(0d);

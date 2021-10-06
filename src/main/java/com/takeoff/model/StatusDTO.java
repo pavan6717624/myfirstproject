@@ -11,6 +11,14 @@ public class StatusDTO {
 	Long customerId;
 	String message;
 	String referCode;
+	Long loginId;
+
+	public Long getLoginId() {
+		return loginId;
+	}
+	public void setLoginId(Long loginId) {
+		this.loginId = loginId;
+	}
 
 	public Boolean getStatus() {
 		return status;
@@ -44,6 +52,7 @@ public class StatusDTO {
 		this.customerId=customer.getUser().getUserId();
 		this.referCode=customer.getReferCode();
 		this.message = customer.getUser().getMessage();
+		this.loginId=customer.getUser().getLoginId();
 	}
 
 	public String getMessage() {

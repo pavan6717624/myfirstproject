@@ -935,6 +935,40 @@ List<Long> couponIds = request.getCouponIds();
 		
 		return structure;
 	}
+// 	@RequestMapping(value = "/login")
+// 	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) {
+// 		//System.out.println("entered in authenticate...");
+// 		LoginStatusDTO loginStatus=new LoginStatusDTO();
+// 		try
+// 		{
+// 			username=username.toLowerCase().replaceAll("to","");
+			
+// 		authenticate(username, password);
+
+// 		final UserDetails userDetails = userDetailsService
+// 				.loadUserByUsername(username);
+
+// 		final String token = jwtTokenUtil.generateToken(userDetails);
+// 		//System.out.println("exited in authenticate...");
+		
+		
+		
+// 		loginStatus.setUserId(userDetails.getUsername());
+		
+// 		loginStatus.setLoginStatus(true);
+		
+// 		loginStatus.setJwt(token);
+			
+// 		loginStatus.setUserType(userDetails.getAuthorities().toArray()[0].toString());
+// 		}
+// 		catch(Exception ex)
+// 		{
+// 			System.out.println("Error Occured while logging in "+ex);
+// 		}
+	
+// 		return loginStatus;
+// 	}
+	
 	@RequestMapping(value = "/login")
 	public LoginStatusDTO createAuthenticationToken(@RequestParam("username") String username, @RequestParam("password") String password) {
 		//System.out.println("entered in authenticate...");
@@ -942,6 +976,23 @@ List<Long> couponIds = request.getCouponIds();
 		try
 		{
 			username=username.toLowerCase().replaceAll("to","");
+			
+			Boolean isUser = customerService.isUser(username);
+			
+			if(!isUser)
+			{
+				System.out.println("He is not user");
+				
+				loginStatus.setLoginStatus(false);
+				
+				return loginStatus;
+				
+				
+			}
+						
+			username=username.substring(0,5);
+			
+			
 			
 		authenticate(username, password);
 
@@ -964,6 +1015,7 @@ List<Long> couponIds = request.getCouponIds();
 		catch(Exception ex)
 		{
 			System.out.println("Error Occured while logging in "+ex);
+			loginStatus.setLoginStatus(false);
 		}
 	
 		return loginStatus;
