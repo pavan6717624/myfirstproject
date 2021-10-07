@@ -125,7 +125,7 @@ public class CustomerService {
 		 try
 		 {
 		 String text="\nCongrats! Your Account got Created in TakeOff\n"
-		     		+ "User Id: "+statusDto.getLoginId()+"\n"
+		     		+ "User Id: "+statusDto.getReferCode()+"\n"
 		     		+ "Password: "+password+"\n"
 		     		+ "Login & Enjoy the TakeOff";
 		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff Account", text);
