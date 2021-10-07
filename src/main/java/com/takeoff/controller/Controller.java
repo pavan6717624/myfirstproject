@@ -54,6 +54,7 @@ import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.model.StatementDTO;
+import com.takeoff.model.StatsDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubCategoryDTO;
@@ -140,17 +141,30 @@ public class Controller {
 	@Autowired
 	StatementService statementService;
 	
+	@RequestMapping("/getWalletBalance")
+	public String getWalletBalance()
+	{
+	return "{\"walletBalance\": \""+customerService.getWalletBalance()+"\"}";
+	}
+	
+	@RequestMapping("/getUserStats")
+	public List<StatsDTO> getUserStats()
+	{
+	return customerService.getUserStats();
+	}
+	
 	@RequestMapping("/gstDetails")
 	public List<GstDetails> gstDetails()
 	{
 	return customerService.gstDetails();
 	}
-	
+
 	@RequestMapping("/getAllCustomerAccountDetails")
 	public List<CustomerDetailsDTO> getAllCustomerAccountDetails()
 	{
 	return customerService.getAllCustomerAccountDetails();
 	}
+	
 	
 	@RequestMapping("/takeOffStatement")
 	public List<StatementDTO> takeOffStatement(@RequestParam("customerId") String customerId)
@@ -172,42 +186,6 @@ public class Controller {
 	return utilService.checkPasswordOTP(userId,otp);
 	}
 	
-	 @RequestMapping(value = "/downloadGST", produces = "text/csv")
-	    @ResponseBody
-	    public void downloadGST(@RequestBody List<GstDetailsDTO> gstDetails, HttpServletResponse response) {
-	        response.setContentType("text/plain; charset=utf-8");
-	        StringBuilder csvData = new StringBuilder("");
-
-	      String headers[]= {"SLNO.","Subscription Date","Customer Id","Customer Name","Taxable Amount","CGST (9%)","SGST (9%)","TOTAL GST"};
-	      
-	      for (int i = 0; i < headers.length - 1; i++) {
-	            csvData.append(headers[i] + ",");
-	        }
-	        csvData.append(headers[headers.length - 1] + "\n");
-	        
-	       
-	        
-	        for(int i=0;i<gstDetails.size();i++)
-	        {
-	        	csvData.append((i+1)+",");
-	        	csvData.append(gstDetails.get(i).getDate() + ",");
-			csvData.append(gstDetails.get(i).getId() + ",");
-	        	csvData.append(gstDetails.get(i).getName() + ",");
-	        	csvData.append("1016,");
-	        	csvData.append("91.50,");
-	        	csvData.append("91.50,");
-	        	csvData.append("183\n");
-	        	
-	        }
-
-	        try {
-	            PrintWriter writer = response.getWriter();
-	            writer.write(csvData.toString().trim());
-	            writer.close();
-	        } catch (IOException ex) {
-	            System.out.println(ex.getMessage());
-	        }
-	    }
 	
 	@RequestMapping("/vendorRedemptionProcess")
 	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
@@ -406,6 +384,42 @@ public class Controller {
 		return imageStatus;
 	}
 	
+	 @RequestMapping(value = "/downloadGST", produces = "text/csv")
+	    @ResponseBody
+	    public void downloadGST(@RequestBody List<GstDetailsDTO> gstDetails, HttpServletResponse response) {
+	        response.setContentType("text/plain; charset=utf-8");
+	        StringBuilder csvData = new StringBuilder("");
+
+	      String headers[]= {"SLNO.","Subscription Date","Customer Id","Customer Name","Taxable Amount","CGST (9%)","SGST (9%)","TOTAL GST"};
+	      
+	      for (int i = 0; i < headers.length - 1; i++) {
+	            csvData.append(headers[i] + ",");
+	        }
+	        csvData.append(headers[headers.length - 1] + "\n");
+	        
+	       
+	        
+	        for(int i=0;i<gstDetails.size();i++)
+	        {
+	        	csvData.append((i+1)+",");
+	        	csvData.append(gstDetails.get(i).getDate() + ",");
+	        	csvData.append(gstDetails.get(i).getId() + ",");
+	        	csvData.append(gstDetails.get(i).getName() + ",");
+	        	csvData.append("1016,");
+	        	csvData.append("91.50,");
+	        	csvData.append("91.50,");
+	        	csvData.append("183\n");
+	        	
+	        }
+
+	        try {
+	            PrintWriter writer = response.getWriter();
+	            writer.write(csvData.toString().trim());
+	            writer.close();
+	        } catch (IOException ex) {
+	            System.out.println(ex.getMessage());
+	        }
+	    }
 	
 	@RequestMapping("/getImageStatement")
 	public ImageStatusDTO getImageStatement(@RequestParam("file") MultipartFile file) throws IOException
@@ -1148,8 +1162,8 @@ List<Long> couponIds = request.getCouponIds();
 	
 		
 		String orderid=razorpayService.getOrderId();
-OrderDTO sendOrder = new OrderDTO(orderid);
-return sendOrder;
+		OrderDTO sendOrder = new OrderDTO(orderid);
+		return sendOrder;
 
 
 
