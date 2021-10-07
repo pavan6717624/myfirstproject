@@ -17,8 +17,8 @@ public interface CustomerMappingRepository  extends JpaRepository<CustomerMappin
 			+ "  order by user_id asc")
 	   public List<DisplayDetailsDTO> getTreeStructure(@Param("userId") Long userId);
 	
-	@Query( nativeQuery = true, value = "select user_id as customerId,referer_id as refererId,parent_id as parentId from customer_mapping	"
-			+ "  order by user_id asc")
+	@Query( nativeQuery = true, value = "select m.user_id as customerId,m.referer_id as refererId,parent_id as parentId, "
+			+ "d.refer_code as referCode, u.name as name from customer_mapping m,customer_details d,user_details u where m.user_id = d.user_id and u.user_id=d.user_id order by m.user_id asc")
 	   public List<DisplayDetailsDTO> getTreeStructureNew();
 	
 	

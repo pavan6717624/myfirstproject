@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.takeoff.domain.CustomerDetails;
 import com.takeoff.model.DisplayDetailsDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.CustomerMappingRepository;
@@ -39,7 +40,11 @@ public class DisplayService {
                     
                     
                     Long parentNode = allNodes.stream().filter(n -> n.getCustomerId().equals(Long.valueOf(userDetails.getUsername()))).collect(Collectors. toList()).get(0).getParentId();
-                   
+                    
+                    CustomerDetails parent = customerDetailsRepository.findByUserId(parentNode).get();
+                    
+                    String parentName = parent.getUser().getName();
+                    String referalCode = parent.getReferCode();
 
                     String ret="";
 
@@ -51,7 +56,7 @@ public class DisplayService {
     if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Admin")))
     	return ret;
     else
-    	 return "<ul><li><span class='tf-nc'><font color=blue><b>"+parentNode+"</b></font></span>"+ret+"</li></ul>";
+    	 return "<ul><li><span class='tf-nc'><font color=blue><b>"+referalCode+"<br>"+parentName+"</b></font></span>"+ret+"</li></ul>";
     	
 
 
@@ -85,7 +90,8 @@ public class DisplayService {
                     {
 
                                     Long customerId = displayNodes.get(i).getCustomerId();
-			     String name=customerDetailsRepository.findByUserId(customerId).get().getUser().getName();
+                                    String name=displayNodes.get(i).getName();
+                                    String referralCode=displayNodes.get(i).getReferCode();
 
 
                                    
@@ -106,7 +112,7 @@ public class DisplayService {
 
                                     //System.out.println(userNodes.get(i).getParentId()+" "+userNodes.get(i).getRefererId()+" "+customerId);
 
-                                   ret += "<li><span class='tf-nc'><font color="+color+"><b>"+customerId+"<hr>"+name+"</b></font></span>";
+                                   ret += "<li><span class='tf-nc'><font color="+color+"><b>"+referralCode+"<hr>"+name+"</b></font></span>";
 
                                    
 
