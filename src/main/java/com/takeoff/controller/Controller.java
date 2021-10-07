@@ -185,6 +185,7 @@ public class Controller {
 	        {
 	        	csvData.append((i+1)+",");
 	        	csvData.append(gstDetails.get(i).getDate() + ",");
+			csvData.append(gstDetails.get(i).getId() + ",");
 	        	csvData.append(gstDetails.get(i).getName() + ",");
 	        	csvData.append("1016,");
 	        	csvData.append("91.50,");
