@@ -146,6 +146,12 @@ public class Controller {
 	return customerService.gstDetails();
 	}
 	
+	@RequestMapping("/getAllCustomerAccountDetails")
+	public List<CustomerDetailsDTO> getAllCustomerAccountDetails()
+	{
+	return customerService.getAllCustomerAccountDetails();
+	}
+	
 	@RequestMapping("/takeOffStatement")
 	public List<StatementDTO> takeOffStatement(@RequestParam("customerId") String customerId)
 	{
