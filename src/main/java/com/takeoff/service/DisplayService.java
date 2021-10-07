@@ -85,6 +85,8 @@ public class DisplayService {
                     {
 
                                     Long customerId = displayNodes.get(i).getCustomerId();
+			     String name=customerDetailsRepository.findByUserId(customerId).get().getUser().getName();
+
 
                                    
 
@@ -104,7 +106,7 @@ public class DisplayService {
 
                                     //System.out.println(userNodes.get(i).getParentId()+" "+userNodes.get(i).getRefererId()+" "+customerId);
 
-                                    ret += "<li><span class='tf-nc'><font color="+color+"><b>"+customerId+"</b></font></span>";
+                                   ret += "<li><span class='tf-nc'><font color="+color+"><b>"+customerId+"<hr>"+name+"</b></font></span>";
 
                                    
 
