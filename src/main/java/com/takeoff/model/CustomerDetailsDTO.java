@@ -30,6 +30,7 @@ public interface CustomerDetailsDTO {
 
 	public Double getWalletAmount() ;
 
-	
+	public String getJoinDate();
+
 
 }
