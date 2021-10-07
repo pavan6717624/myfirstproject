@@ -266,5 +266,10 @@ public class CustomerService {
 		
 		return status;
 	}
+	
+	public List<CustomerDetailsDTO> getAllCustomerAccountDetails() {
+		
+		return customerDetailsRepository.getAllCustomerAccountDetails();
+	}
 
 }
