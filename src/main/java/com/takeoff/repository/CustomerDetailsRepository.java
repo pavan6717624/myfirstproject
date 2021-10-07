@@ -14,6 +14,7 @@ import org.springframework.stereotype.Repository;
 import com.takeoff.domain.CustomerDetails;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.GstDetails;
+import com.takeoff.model.StatsDTO;
 
 @Repository
 public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails,Long> {
@@ -41,7 +42,10 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	  @Query("select c.user.userId as userId,DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.razorpay_payment_id as razorpay_payment_id,c.razorpay_order_id as razorpay_order_id,c.refererId as refererId,c.referCode as referCode,c.paymentStatus as paymentStatus,c.mappingStatus as mappingStatus,c.walletAmount as walletAmount from CustomerDetails c order by c.user.userId asc")
 		List<CustomerDetailsDTO> getAllCustomerAccountDetails();
 	  
-	
-
-
+	  
+	  @Query("select u.role.roleName as roleName, sum(case when DATE(u.joinDate)=CURDATE() then 1 else 0 end) as todayCount, sum(case when month(u.joinDate)=month(current_date) then 1 else 0 end) as monthCount, count(*) as totalCount from UserDetails u where u.role.id!=1 group by u.role.roleName")
+		List<StatsDTO> getUserStats();
+	  
+	  @Query("select sum(walletAmount) from CustomerDetails")
+			Long getWalletBalance();
 }
