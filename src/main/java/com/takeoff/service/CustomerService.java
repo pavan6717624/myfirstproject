@@ -2,11 +2,11 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.security.SecureRandom;
 
 import javax.transaction.Transactional;
 
@@ -20,6 +20,7 @@ import com.takeoff.domain.Statement;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.GstDetails;
+import com.takeoff.model.StatsDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
@@ -266,10 +267,20 @@ public class CustomerService {
 		
 		return status;
 	}
-	
+
 	public List<CustomerDetailsDTO> getAllCustomerAccountDetails() {
 		
 		return customerDetailsRepository.getAllCustomerAccountDetails();
+	}
+	
+	public List<StatsDTO> getUserStats() {
+		
+		return customerDetailsRepository.getUserStats();
+	}
+	
+	public Long getWalletBalance() {
+		
+		return customerDetailsRepository.getWalletBalance();
 	}
 
 }
