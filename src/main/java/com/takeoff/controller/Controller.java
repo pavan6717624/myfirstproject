@@ -6,6 +6,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
@@ -13,6 +14,7 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
@@ -27,6 +29,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -40,6 +43,7 @@ import com.takeoff.jwt.JwtTokenUtil;
 import com.takeoff.model.CouponsRequest;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.GstDetails;
+import com.takeoff.model.GstDetailsDTO;
 import com.takeoff.model.ImageDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.ImagesRequest;
@@ -162,6 +166,41 @@ public class Controller {
 	return utilService.checkPasswordOTP(userId,otp);
 	}
 	
+	 @RequestMapping(value = "/downloadGST", produces = "text/csv")
+	    @ResponseBody
+	    public void downloadGST(@RequestBody List<GstDetailsDTO> gstDetails, HttpServletResponse response) {
+	        response.setContentType("text/plain; charset=utf-8");
+	        StringBuilder csvData = new StringBuilder("");
+
+	      String headers[]= {"SLNO.","Subscription Date","Customer Id","Customer Name","Taxable Amount","CGST (9%)","SGST (9%)","TOTAL GST"};
+	      
+	      for (int i = 0; i < headers.length - 1; i++) {
+	            csvData.append(headers[i] + ",");
+	        }
+	        csvData.append(headers[headers.length - 1] + "\n");
+	        
+	       
+	        
+	        for(int i=0;i<gstDetails.size();i++)
+	        {
+	        	csvData.append((i+1)+",");
+	        	csvData.append(gstDetails.get(i).getDate() + ",");
+	        	csvData.append(gstDetails.get(i).getName() + ",");
+	        	csvData.append("1016,");
+	        	csvData.append("91.50,");
+	        	csvData.append("91.50,");
+	        	csvData.append("183\n");
+	        	
+	        }
+
+	        try {
+	            PrintWriter writer = response.getWriter();
+	            writer.write(csvData.toString().trim());
+	            writer.close();
+	        } catch (IOException ex) {
+	            System.out.println(ex.getMessage());
+	        }
+	    }
 	
 	@RequestMapping("/vendorRedemptionProcess")
 	public RedemptionDTO vendorRedemptionProcess(@RequestBody RedemptionDTO redemption)
