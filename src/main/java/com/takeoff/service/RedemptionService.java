@@ -33,16 +33,9 @@ public class RedemptionService {
 	public RedemptionDTO generateRedemption(RedemptionDTO redemptionDTO, int length) {
 		
 		
-		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		String username= "";
-
-		if (principal instanceof UserDetails) {
-		   username = ((org.springframework.security.core.userdetails.UserDetails)principal).getUsername();
-		} else {
-		   username = principal.toString();
-		}
+		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		Long userId=Long.valueOf(username);
+		Long userId=Long.valueOf(userDetails.getUsername());
 		
 		
 		
