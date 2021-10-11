@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.Redemption;
@@ -32,14 +33,25 @@ public class RedemptionService {
 	public RedemptionDTO generateRedemption(RedemptionDTO redemptionDTO, int length) {
 		
 		
+		Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		String username= "";
+
+		if (principal instanceof UserDetails) {
+		   username = ((org.springframework.security.core.userdetails.UserDetails)principal).getUsername();
+		} else {
+		   username = principal.toString();
+		}
+		
+		Long userId=Long.valueOf(username);
+		
 		
 		
 		VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
-		Long otherCount = vendorCouponsRepository.other3456Count(coupon.getVendor().getUser().getUserId());
+		Long otherCount = vendorCouponsRepository.other3456Count(coupon.getVendor().getUser().getUserId(), userId);
 	
 		if(coupon.getCouponType().getId() == 1L)
 		{
-			Long complimentaryCount = vendorCouponsRepository.specific12Count( coupon.getVendor().getUser().getUserId());
+			Long complimentaryCount = vendorCouponsRepository.specific12Count( coupon.getVendor().getUser().getUserId(), userId);
 			
 			
 			if(complimentaryCount >= 1)

@@ -117,11 +117,11 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	@Query("select (case when count(*)>0 then true else false end) from VendorCoupons c where c.vendor.user.userId = (:userId) and c.couponType.id=1")
 	Boolean complimentaryExists(@Param("userId") Long userId);	
 	
-	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.vendor.user.userId = (:vendorId) and r.coupon.couponType.id in (3,4,5,6)")
-	Long other3456Count(@Param("vendorId") Long vendorId);
+	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.vendor.user.userId = (:vendorId) and r.customer.userId = (:userId) and r.coupon.couponType.id in (3,4,5,6)")
+	Long other3456Count(@Param("vendorId") Long vendorId, @Param("userId") Long userId);
 	
-	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.couponType.id=1 and r.coupon.vendor.user.userId = (:vendorId)")
-	Long specific12Count(@Param("vendorId") Long vendorId);
+	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.couponType.id=1  and r.customer.userId = (:userId) and r.coupon.vendor.user.userId = (:vendorId)")
+	Long specific12Count(@Param("vendorId") Long vendorId, @Param("userId") Long userId);
 	
 	
 	
