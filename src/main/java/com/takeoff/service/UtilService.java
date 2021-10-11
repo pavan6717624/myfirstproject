@@ -38,8 +38,12 @@ public class UtilService {
 	  private ResetPasswordRepository resetPasswordRepository;
 	  
 	  
+	  @Autowired
+	  private CustomerService customerService;
+	  
+	  
 	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
-	   private final static String AUTH_ID =  System.getenv("TwilioKey");
+	   private final static String AUTH_ID =  "TwilioKey";
 	   
 	   
 	   static {
@@ -135,6 +139,24 @@ public class UtilService {
 				
 				try
 				{
+					
+					
+					userId=userId.toLowerCase().replaceAll("to","");
+					
+					Boolean isUser = customerService.isUser(userId);
+					
+					if(!isUser)
+					{
+						
+						
+						return false;
+						
+						
+					}
+								
+					userId=userId.substring(0,5);
+					
+					
 				Optional<UserDetails> user = userDetailsRepository.findById(Long.valueOf(userId));
 				
 				System.out.println(user.get().getEmail() +" "+user.get().getCity());
