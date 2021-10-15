@@ -147,6 +147,13 @@ public class Controller {
 	return "{\"walletBalance\": \""+customerService.getWalletBalance()+"\"}";
 	}
 	
+	@RequestMapping("/sendRedemptionCode")
+	public RedemptionDTO sendRedemptionCode(@RequestParam("scanCode") String scanCode, @RequestParam("couponId") String couponId)
+	{
+	return redemptionService.sendRedemptionCode(scanCode,couponId);
+	}
+	
+	
 	@RequestMapping("/getUserStats")
 	public List<StatsDTO> getUserStats()
 	{
@@ -272,7 +279,7 @@ public class Controller {
 	@RequestMapping("/generateRedemption")
 	public RedemptionDTO generateRedemption(@RequestBody RedemptionDTO redemption)
 	{
-	return redemptionService.generateRedemption(redemption,8);
+	return redemptionService.generateRedemption(redemption,8,0);
 	}
 	
 	@RequestMapping("/acceptRedemption")

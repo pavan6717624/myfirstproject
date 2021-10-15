@@ -4,18 +4,18 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.Redemption;
-import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorCoupons;
+import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.repository.RedemptionRepository;
+import com.takeoff.repository.ScanCodeRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorCouponsRepository;
 
@@ -29,8 +29,13 @@ public class RedemptionService {
 	@Autowired
 	RedemptionRepository redemptionRepository;
 	
+	@Autowired
+	ScanCodeRepository scanCodeRepository;
 	
-	public RedemptionDTO generateRedemption(RedemptionDTO redemptionDTO, int length) {
+	@Autowired
+	UtilService utilService;
+	
+	public RedemptionDTO generateRedemption(RedemptionDTO redemptionDTO, int length,int code) {
 		
 		
 		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -95,6 +100,8 @@ public class RedemptionService {
 		
 		redemption.setValidTill(validTill);
 		
+		if(code == 1)
+			redemption.setVendorAccepted(true);
 		
 		redemptionRepository.save(redemption);
 		
@@ -114,6 +121,13 @@ public class RedemptionService {
 			redemptionDTO.setPasscode(redemption.getPasscode().substring(0,4));
 			 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss aa");  
 			 
+			 if(code == 1 && !redemption.getVendorAccepted())
+			 {
+				 redemption.setVendorAccepted(true);
+				 redemptionRepository.save(redemption);
+					
+			 }
+			 
 			 String validTill = formatter.format(redemption.getValidTill());
 				
 				redemptionDTO.setValidTill(validTill);
@@ -121,6 +135,7 @@ public class RedemptionService {
 	
 		redemptionDTO.setStatus(true);
 		redemptionDTO.setMessage("Eligible for Redemption");
+		
 		return redemptionDTO;
 	}
 	
@@ -249,7 +264,7 @@ public Boolean customerRedemption(RedemptionDTO redemptionDTO) {
 	
 	if(redemption!=null)
 	{
-		if(redemption.getPasscode().equals(redemptionDTO.getPasscode()))
+		if(redemption.getPasscode().substring(8-redemptionDTO.getPasscode().length()).equals(redemptionDTO.getPasscode()))
 		{
 			redemption.setUserRedempted(true);
 			redemptionRepository.save(redemption);
@@ -258,6 +273,39 @@ public Boolean customerRedemption(RedemptionDTO redemptionDTO) {
 	}
 	
 	return acceptRedemptionStatus;
+}
+
+
+public RedemptionDTO sendRedemptionCode(String scanCode, String couponId) {
+	
+	Long vendorId = scanCodeRepository.findByCode(scanCode).get().getVendor().getVendorid();
+	
+	VendorCoupons coupon = vendorCouponsRepository.findById(Long.valueOf(couponId)).get();
+	
+	RedemptionDTO redemp = new RedemptionDTO();
+	
+	if(coupon.getVendor().getVendorid().equals(vendorId))
+	{
+		
+org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Long userId=Long.valueOf(userDetails.getUsername());
+		redemp.setCouponId(Long.valueOf(couponId));
+		redemp.setCustomerId(userId);
+		redemp.setVendorId(vendorId);
+		redemp = generateRedemption(redemp, 8, 1);
+		//utilService.sendMessage()
+		redemp.setPasscode("");
+	}
+	else
+		{
+		
+		redemp.setStatus(false);
+		redemp.setMessage("Sorry! Coupon and Vendor Mapping is Incorrect.");
+		}
+	return redemp;
+	
+
 }
 
 
