@@ -43,7 +43,7 @@ public class UtilService {
 	  
 	  
 	  private final static String ACCOUNT_SID = "ACf482a1d636d1f7a1948262ea473b868c";
-	   private final static String AUTH_ID =  "TwilioKey";
+	   private final static String AUTH_ID =  System.getenv("TwilioKey");
 	   
 	   
 	   static {
