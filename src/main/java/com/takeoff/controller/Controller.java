@@ -51,6 +51,7 @@ import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
+import com.takeoff.model.RedemptionSummary;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.model.StatementDTO;
@@ -200,6 +201,11 @@ public class Controller {
 	return redemptionService.vendorRedemptionProcess(redemption);
 	}
 	
+	@RequestMapping("/getRedemptionHistory")
+	public List<RedemptionSummary> getRedemptionSummary()
+	{
+		return redemptionService.getRedemptionSummary();
+	}
 	
 	@RequestMapping("/getCustomerAccountDetails")
 	public CustomerDetailsDTO getCustomerAccountDetails(@RequestParam("userId") String userId)
@@ -274,6 +280,14 @@ public class Controller {
 		//System.out.println("asdfasdf12");
 	return couponService.disLikeCoupon(Long.valueOf(couponId), Long.valueOf(userId), Boolean.parseBoolean(dislike));
 	}
+	
+	@RequestMapping("/getCoupon")
+	public VendorCouponsDTO1 getCoupon(@RequestParam("couponId") String couponId)
+	{
+		//System.out.println("asdfasdf12");
+	return couponService.getCoupon(Long.valueOf(couponId));
+	}
+	
 	
 	
 	@RequestMapping("/generateRedemption")

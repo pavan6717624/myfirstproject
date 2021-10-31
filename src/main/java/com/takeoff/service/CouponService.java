@@ -550,6 +550,11 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 			
 	}
 
+	public VendorCouponsDTO1 getCoupon(Long couponId)
+	{
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		return vendorCouponsRepository.getCoupon(Long.valueOf(userDetails.getUsername()),couponId,Timestamp.valueOf(LocalDateTime.now()));
+	}
 
 
 }

@@ -4,15 +4,17 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.Redemption;
 import com.takeoff.domain.VendorCoupons;
-import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.RedemptionDTO;
+import com.takeoff.model.RedemptionSummary;
 import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.repository.RedemptionRepository;
 import com.takeoff.repository.ScanCodeRepository;
@@ -308,7 +310,28 @@ org.springframework.security.core.userdetails.UserDetails userDetails = (org.spr
 
 }
 
-
+public List<RedemptionSummary> getRedemptionSummary()
+{
+	org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
+	Long userId=Long.valueOf(userDetails.getUsername());
+	
+	Long customerId=0l,vendorId=0l;
+	
+	if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Vendor")))
+			{
+			vendorId=userId;
+			}
+	else if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Customer")))
+			{
+		customerId=userId;
+			}
+	else
+		return null;
+	
+	
+	return redemptionRepository.getRedemptionSummary(customerId,vendorId);
+}
 
 
 }

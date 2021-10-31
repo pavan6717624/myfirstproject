@@ -93,7 +93,7 @@ public Boolean addDesginer(VendorDetailsDTO designer) throws NoSuchAlgorithmExce
 	String text="\nCongrats! Your Designer Account got Created in TakeOff\n"
      		+ "User Id: "+user.getLoginId()+"\n"
      		+ "Password: "+password+"\n"
-     		+ "Login and Enjoy the TakeOff";
+     		+ "Login and Enjoy the TakeOff @ www.thetakeoff.in";
 	
 
      utilService.sendMessage(designer.getEmail(), "TakeOff Designer Account", text);
@@ -213,7 +213,7 @@ public Boolean addVendor(VendorDetailsDTO vendor) throws NoSuchAlgorithmExceptio
 	String text="\nCongrats! Your Vendor Account got Created in TakeOff\n"
      		+ "User Id: "+user.getLoginId()+"\n"
      		+ "Password: "+password+"\n"
-     		+ "Login and Enjoy the TakeOff";
+     		+ "Login and Enjoy the TakeOff @ www.thetakeoff.in";
 	
 
      utilService.sendMessage(vendor.getEmail(), "TakeOff Vendor Account", text);
