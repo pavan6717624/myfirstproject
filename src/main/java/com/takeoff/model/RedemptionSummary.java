@@ -20,5 +20,7 @@ public interface RedemptionSummary {
 	
 	public String getContact();
 	
+	public String getCustomerContact();
+	
 
 }

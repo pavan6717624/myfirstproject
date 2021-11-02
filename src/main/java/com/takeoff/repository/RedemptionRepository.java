@@ -23,7 +23,7 @@ public interface RedemptionRepository extends JpaRepository<Redemption,Long> {
 	@Query("select r.coupon.id as couponId,r.customer.userId as customerId, r.vendor.userId as vendorId, "
 			+ "DATE_FORMAT(r.validTill, '%d %M %Y %h:%i:%s %p') as redemOn, r.vendor.name as vendorName, "
 			+ "r.customer.name as customerName,r.coupon.couponType.couponType as couponType,"
-			+ "r.coupon.vendor.address as address, r.coupon.vendor.user.contact as contact "
+			+ "r.coupon.vendor.address as address, r.coupon.vendor.user.contact as contact, r.customer.contact as customerContact "
 			+ "from Redemption r where r.userRedempted=true and r.vendorAccepted=true and (r.customer.userId = (:customerId) or (:customerId)=0) and (r.vendor.userId = (:vendorId) or (:vendorId)=0) order by r.validTill desc	")
 	List<RedemptionSummary> getRedemptionSummary(@Param("customerId")  Long customerId, @Param("vendorId")  Long vendorId);
 
