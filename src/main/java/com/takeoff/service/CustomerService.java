@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,7 @@ import com.takeoff.model.GstDetails;
 import com.takeoff.model.StatsDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
+import com.takeoff.model.TdsDTO;
 import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.CustomerMappingRepository;
 import com.takeoff.repository.KYCDetailsRepository;
@@ -81,6 +83,12 @@ public class CustomerService {
 	
 	@Autowired
 	StatementRepository statementRepository;
+	
+	public List<TdsDTO> getTDS(String fromDate, String toDate)
+	{
+		DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+		return customerMappingRepository.getTDS(Timestamp.valueOf(LocalDateTime.parse(fromDate,dateFormatter)),Timestamp.valueOf(LocalDateTime.parse(toDate,dateFormatter)));
+	}
 	
 	public Boolean checkRefererId(String refercode)
 	{

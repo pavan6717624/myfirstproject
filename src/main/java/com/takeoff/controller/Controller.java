@@ -60,6 +60,7 @@ import com.takeoff.model.StatusDTO;
 import com.takeoff.model.StructureDTO;
 import com.takeoff.model.SubCategoryDTO;
 import com.takeoff.model.SubscriptionDTO;
+import com.takeoff.model.TdsDTO;
 import com.takeoff.model.VendorCouponsDTO;
 import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.model.VendorDetailsDTO;
@@ -286,6 +287,18 @@ public class Controller {
 	{
 		//System.out.println("asdfasdf12");
 	return couponService.getCoupon(Long.valueOf(couponId));
+	}
+	
+	@RequestMapping("/getTDS")
+	public List<TdsDTO> getTDS(@RequestParam("month") String month)
+	{
+		
+		String fromDate = month.split("-")[0]+"-"+month.split("-")[1]+"-"+"01 00:00";
+		String toDate = month.split("-")[0]+"-"+month.split("-")[1]+"-"+"31 23:59";
+		
+		System.out.println(month+" "+fromDate+" "+toDate);
+		
+		return customerService.getTDS(fromDate,toDate);
 	}
 	
 	

@@ -39,6 +39,8 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	  @Query("select c.user.userId as id,c.user.name as name,c.user.joinDate as date from CustomerDetails c where c.user.userId not in (10001,10147) order by c.user.joinDate asc")
 	  List<GstDetails> gstDetails();
 	  
+	  
+	  
 	  @Query("select c.user.userId as userId,DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.razorpay_payment_id as razorpay_payment_id,c.razorpay_order_id as razorpay_order_id,c.refererId as refererId,c.referCode as referCode,c.paymentStatus as paymentStatus,c.mappingStatus as mappingStatus,c.walletAmount as walletAmount from CustomerDetails c order by c.user.userId asc")
 		List<CustomerDetailsDTO> getAllCustomerAccountDetails();
 	  
