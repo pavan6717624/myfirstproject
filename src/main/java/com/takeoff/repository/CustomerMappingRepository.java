@@ -32,7 +32,7 @@ public interface CustomerMappingRepository  extends JpaRepository<CustomerMappin
 	public Long getParentIdForUserId(@Param("userId") Long userId);
 	
 	
-	@Query("select c.parentId as parentId, d.user.name as name, d.user.email as email, d.user.contact as contact, d.user.city as city, count(*)*(select (case when k.panStatus like 'Approved' then 25 else 100 end)  from KYCDetails k where k.customer.customerId = d.customerId ) as tds from CustomerMapping c, CustomerDetails d where d.user.userId=c.parentId and c.customer.joinDate >= (:fromDate) and c.customer.joinDate <= (:toDate) group by parentId, d.user.name , d.user.email, d.user.contact, d.user.city order by parentId, d.user.name , d.user.email, d.user.contact, d.user.city desc")
+	@Query("select c.parentId as parentId, d.user.name as name, k.pan as pan, d.user.email as email, d.user.contact as contact, d.user.city as city, (count(*)*(case when k.panStatus like 'Approved' then 25 else 100 end))  as tds from CustomerMapping c, CustomerDetails d, KYCDetails k where k.customer.customerId = d.customerId and d.user.userId=c.parentId and c.customer.joinDate >= (:fromDate) and c.customer.joinDate <= (:toDate) group by parentId, d.user.name , d.user.email, d.user.contact, d.user.city order by parentId, d.user.name , d.user.email, d.user.contact, d.user.city desc")
 	public List<TdsDTO> getTDS(@Param("fromDate") Timestamp fromDate, @Param("toDate") Timestamp toDate);
 	
 }

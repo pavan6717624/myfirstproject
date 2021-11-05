@@ -8,5 +8,6 @@ public interface TdsDTO {
 	public String getContact();
 	public String getCity();
 	public String getTds();
+	public String getPan();
 
 }
