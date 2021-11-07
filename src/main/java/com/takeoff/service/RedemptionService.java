@@ -137,6 +137,7 @@ UserDetails customer = userDetailsRepository.findById(userId).get();
 		utilService.sendMessage(email,"Your Redemption Code for Coupon Id: "+coupon.getId()+", Customer Id: "+userId,mailText);
 		}
 		
+		
 		catch(Exception ex)
 		{
 			System.out.println("Could not Send Mail to Vendor on Redemption");
