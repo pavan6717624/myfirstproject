@@ -17,7 +17,7 @@ public interface RedemptionRepository extends JpaRepository<Redemption,Long> {
 	@Query("select r from Redemption r where r.coupon.id=(:couponId) and r.vendor.userId=(:vendorId) and r.customer.userId=(:customerId) and r.validTill >= (:currentTime) and r.userRedempted!=true")
 	Redemption findPasscode(@Param("couponId") Long couponId,@Param("customerId")  Long customerId, @Param("vendorId")  Long vendorId, @Param("currentTime") Timestamp currentTime);
 
-	@Query("select r from Redemption r where r.coupon.id=(:couponId) and r.vendor.userId=(:vendorId) and r.customer.userId=(:customerId) and r.validTill >= (:currentTime) and r.vendorAccepted=true")
+	@Query("select r from Redemption r where r.coupon.id=(:couponId) and r.vendor.userId=(:vendorId) and r.customer.userId=(:customerId) and r.validTill >= (:currentTime) and r.vendorAccepted=true and r.userRedempted!=true")
 	Redemption findVendorAcceptedPasscode(@Param("couponId") Long couponId,@Param("customerId")  Long customerId, @Param("vendorId")  Long vendorId, @Param("currentTime") Timestamp currentTime);
 
 	@Query("select r.coupon.id as couponId,r.customer.userId as customerId, r.vendor.userId as vendorId, "

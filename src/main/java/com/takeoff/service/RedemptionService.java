@@ -12,6 +12,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.Redemption;
+import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorCoupons;
 import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RedemptionSummary;
@@ -115,6 +116,47 @@ public class RedemptionService {
 		String validTillStr = formatter.format(redemption.getValidTill());
 		
 		redemptionDTO.setValidTill(validTillStr);
+		
+String email= coupon.getVendor().getUser().getEmail();
+UserDetails customer = userDetailsRepository.findById(userId).get();
+
+		try
+		{
+		String mailText="\nYour Coupon is Ready for Redemption. Please proceed for Redemption\n"
+			
+				+ "\n\nCoupon Id: "+coupon.getId()
+				+ "\n\nCoupon Description: \n"+coupon.getHeader()+"\n"+coupon.getBody()+"\n"+coupon.getFooter()
+				+ "\n\nCustomer Id: "+customer.getLoginId()
+				+ "\n\nCustomer Name : "+customer.getName()
+				+ "\n\nCustomer Contact :"+customer.getContact()
+				+ "\n\nShare Passcode to Customer for Redemption :: "+passcode.substring(4)
+				+ "\nThis Passcode is valid till "+ validTillStr
+				+ "\n\nFor Concerns : Please contact Customer Care."
+				+" \n\nThanks & Regards,"
+				+ "\nTakeOff Team.";
+		utilService.sendMessage("pvn.kumar4@gmail.com","Your Redemption Code for Coupon Id: "+coupon.getId()+", Customer Id: "+userId,mailText);
+		}
+		
+		catch(Exception ex)
+		{
+			System.out.println("Could not Send Mail to Vendor on Redemption");
+		}
+		try
+		{
+		String smsText = "Id:"+coupon.getId()+""
+				+ "\nDesc: "+coupon.getHeader()+"-"+coupon.getBody()+"-"+coupon.getFooter()
+				+ "\nContact-"+customer.getContact()
+				+ "\nPasscode-"+passcode.substring(4)
+				+ "\nValidTill-"+validTillStr;
+		
+		utilService.sendSMS(coupon.getVendor().getUser().getCity(), smsText);
+		
+		}
+		catch(Exception ex)
+		{
+			System.out.println("Could not Send SMS to Vendor on Redemption");
+		}
+	
 		
 		}
 		else
@@ -255,7 +297,10 @@ public ResponseStatusDTO acceptRedemptionWhatsApp(Long couponId, Long customerId
 }
 
 
-public Boolean customerRedemption(RedemptionDTO redemptionDTO) {
+public RedemptionDTO customerRedemption(RedemptionDTO redemptionDTO) {
+	
+	RedemptionDTO redemp = new RedemptionDTO();
+	
 	Boolean acceptRedemptionStatus = false;
 	
 	VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
@@ -274,17 +319,25 @@ public Boolean customerRedemption(RedemptionDTO redemptionDTO) {
 		}
 	}
 	
-	return acceptRedemptionStatus;
+	redemp.setStatus(acceptRedemptionStatus);
+	redemp.setCouponId(redemptionDTO.getCouponId());
+	
+	return redemp;
 }
 
 
 public RedemptionDTO sendRedemptionCode(String scanCode, String couponId) {
 	
+	RedemptionDTO redemp = new RedemptionDTO();
+	try
+	{
 	Long vendorId = scanCodeRepository.findByCode(scanCode).get().getVendor().getVendorid();
+	
+	System.out.println(scanCode+" "+vendorId);
 	
 	VendorCoupons coupon = vendorCouponsRepository.findById(Long.valueOf(couponId)).get();
 	
-	RedemptionDTO redemp = new RedemptionDTO();
+	
 	
 	if(coupon.getVendor().getVendorid().equals(vendorId))
 	{
@@ -296,8 +349,11 @@ org.springframework.security.core.userdetails.UserDetails userDetails = (org.spr
 		redemp.setCustomerId(userId);
 		redemp.setVendorId(vendorId);
 		redemp = generateRedemption(redemp, 8, 1);
-		//utilService.sendMessage()
-		redemp.setPasscode("");
+		
+		
+
+		
+			redemp.setPasscode("");
 	}
 	else
 		{
@@ -305,6 +361,13 @@ org.springframework.security.core.userdetails.UserDetails userDetails = (org.spr
 		redemp.setStatus(false);
 		redemp.setMessage("Sorry! Coupon and Vendor Mapping is Incorrect.");
 		}
+	}
+	catch(Exception ex)
+	{
+		redemp.setStatus(false);
+		redemp.setMessage("Sorry! Coupon and Vendor Mapping is Incorrect.");
+		
+	}
 	return redemp;
 	
 

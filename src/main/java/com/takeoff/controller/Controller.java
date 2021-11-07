@@ -263,7 +263,7 @@ public class Controller {
 	
 	
 	@RequestMapping("/customerRedemption")
-	public Boolean customerRedemption(@RequestBody RedemptionDTO redemption)
+	public RedemptionDTO customerRedemption(@RequestBody RedemptionDTO redemption)
 	{
 	return redemptionService.customerRedemption(redemption);
 	}
