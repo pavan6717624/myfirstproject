@@ -123,14 +123,15 @@ UserDetails customer = userDetailsRepository.findById(userId).get();
 		try
 		{
 		String mailText="\nYour Coupon is Ready for Redemption. Please proceed for Redemption\n"
-			
+				+ "\n\n------------------------------------------------------------\n"
+				+ "\nShare Passcode to Customer for Redemption :: "+passcode.substring(4)
+				+ "\nThis Passcode is valid till "+ validTillStr	
+				+ "\n------------------------------------------------------------\n"
 				+ "\n\nCoupon Id: "+coupon.getId()
 				+ "\n\nCoupon Description: \n"+coupon.getHeader()+"\n"+coupon.getBody()+"\n"+coupon.getFooter()
 				+ "\n\nCustomer Id: "+customer.getLoginId()
 				+ "\n\nCustomer Name : "+customer.getName()
 				+ "\n\nCustomer Contact :"+customer.getContact()
-				+ "\n\nShare Passcode to Customer for Redemption :: "+passcode.substring(4)
-				+ "\nThis Passcode is valid till "+ validTillStr
 				+ "\n\nFor Concerns : Please contact Customer Care."
 				+" \n\nThanks & Regards,"
 				+ "\nTakeOff Team.";
@@ -144,8 +145,8 @@ UserDetails customer = userDetailsRepository.findById(userId).get();
 		}
 		try
 		{
-		String smsText = "Id:"+coupon.getId()+""
-				+ "\nDesc: "+coupon.getHeader()+"-"+coupon.getBody()+"-"+coupon.getFooter()
+		String smsText = "Id-"+coupon.getId()+""
+				+ "\nDesc-"+coupon.getHeader()
 				+ "\nContact-"+customer.getContact()
 				+ "\nPasscode-"+passcode.substring(4)
 				+ "\nValidTill-"+validTillStr;
