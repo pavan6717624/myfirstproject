@@ -151,7 +151,7 @@ UserDetails customer = userDetailsRepository.findById(userId).get();
 				+ "\nPasscode-"+passcode.substring(4)
 				+ "\nValidTill-"+validTillStr;
 		
-		utilService.sendSMS(coupon.getVendor().getUser().getContact(), smsText);
+		//utilService.sendSMS(coupon.getVendor().getUser().getContact(), smsText);
 		
 		}
 		catch(Exception ex)
