@@ -134,7 +134,7 @@ UserDetails customer = userDetailsRepository.findById(userId).get();
 				+ "\n\nFor Concerns : Please contact Customer Care."
 				+" \n\nThanks & Regards,"
 				+ "\nTakeOff Team.";
-		utilService.sendMessage("pvn.kumar4@gmail.com","Your Redemption Code for Coupon Id: "+coupon.getId()+", Customer Id: "+userId,mailText);
+		utilService.sendMessage(email,"Your Redemption Code for Coupon Id: "+coupon.getId()+", Customer Id: "+userId,mailText);
 		}
 		
 		catch(Exception ex)
