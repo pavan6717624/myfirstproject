@@ -642,6 +642,13 @@ List<Long> couponIds = request.getCouponIds();
 		vendorCoupon.setCouponType(couponTypeService.getCouponType(coupon.getCouponType()));
 
 		vendorCoupon.setKeywords(coupon.getKeywords());
+		String exclusiveFor = coupon.getExclusiveFor();
+		
+		if(exclusiveFor == null || (exclusiveFor+"").trim().length()  == 0)
+			exclusiveFor = "ALL";
+		
+		vendorCoupon.setExclusiveFor(exclusiveFor.toUpperCase());
+
 		
 		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
 		vendorCoupon.setDescription(coupon.getDescription());
@@ -945,6 +952,13 @@ List<Long> couponIds = request.getCouponIds();
 		
 		vendorCoupon.setVendor(vendorService.getVendorDetails(coupon.getVendorId()+""));
 		vendorCoupon.setDescription(coupon.getDescription());
+		
+		String exclusiveFor = coupon.getExclusiveFor();
+		
+		if(exclusiveFor == null || (exclusiveFor+"").trim().length()  == 0)
+			exclusiveFor = "ALL";
+		
+		vendorCoupon.setExclusiveFor(exclusiveFor.toUpperCase());
 		
 		
 		

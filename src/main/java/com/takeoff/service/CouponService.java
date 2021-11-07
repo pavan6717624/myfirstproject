@@ -8,10 +8,8 @@ import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
@@ -35,6 +33,7 @@ import com.takeoff.model.ImageDetailsDTO;
 import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.repository.CategoryRepository;
+import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.ImageDetailsRepository;
 import com.takeoff.repository.LikeCouponRepository;
 import com.takeoff.repository.SubCategoryRepository;
@@ -77,6 +76,11 @@ public class CouponService {
 @Autowired
 
 LikeCouponRepository likeCouponRepository;
+	
+
+@Autowired
+
+CustomerDetailsRepository customerDetailsRepository;
 	
 
 public ImageDetails getImageDetails(Long id)
@@ -179,7 +183,14 @@ public ImageDetails getImageDetails(Long id)
 		for(int i=0;i<keyWords.length && i<5; i++)
 			keyword[i]="%"+keyWords[i]+"%";
 		
-		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4], paging);
+		String refererId="";
+		
+		if(customerId!=0L)
+		refererId = customerDetailsRepository.findByUserId(customerId).get().getRefererId();
+		
+		System.out.println("RefererId:: "+refererId);
+		
+		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],refererId, paging);
 		
 		// coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
 		

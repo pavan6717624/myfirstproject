@@ -76,8 +76,20 @@ public class VendorCouponsDTO {
 	
 
 	Boolean disLikeCoupon;
+
 	
+	String exclusiveFor;
 	
+	public String getExclusiveFor() {
+		return exclusiveFor;
+	}
+
+
+	public void setExclusiveFor(String exclusiveFor) {
+		this.exclusiveFor = exclusiveFor;
+	}
+
+
 	public Boolean getLikeCoupon() {
 		return likeCoupon;
 	}

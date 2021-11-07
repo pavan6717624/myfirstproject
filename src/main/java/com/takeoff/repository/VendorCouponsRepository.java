@@ -68,7 +68,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+" c.couponType.couponType as couponType, c.image.keywords as keywords, c.description as description, "
 			+" c.vendor.user.userId as vendorId, concat('data:image/jpeg;base64,',c.vendor.logo) as logo, "
 			+" c.id as id, c.vendor.user.name as vendorName, (case when (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) then false else true end) as expired, "
-	       		+" c.vendor.address as address, c.vendor.user.contact as contact "
+	       		+" c.vendor.address as address, c.vendor.user.contact as contact,c.exclusiveFor as exclusiveFor "
 			
 			+ " from VendorCoupons c where ((c.fromDate <= (:current_time) and c.toDate >=(:current_time)) or "
 			+ "(:userId)!=0L) and (c.id not in (:couponIds)) and (c.couponType.id = (:couponType) or ((:couponType) = 0 "
@@ -95,7 +95,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "c.keywords like :keyword4 or c.keywords like :keyword5 or  "
 			
 			+ " c.vendor.user.name like :keyword1 or c.vendor.user.name like :keyword2 or c.vendor.user.name like :keyword3 or "
-			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) "
+			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) and "
+			+ " (c.exclusiveFor like 'ALL' or c.exclusiveFor like (:refererId) or (:customerId) = 0) "
 			
 			+ " order by rand() desc")
 	
@@ -112,6 +113,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			@Param("keyword3") String keyword3,
 			@Param("keyword4") String keyword4,
 			@Param("keyword5") String keyword5,
+			@Param("refererId") String refererId,
 			Pageable pageable);
 	
 	@Query("select "
@@ -134,7 +136,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+" c.couponType.couponType as couponType, c.image.keywords as keywords, c.description as description, "
 			+" c.vendor.user.userId as vendorId, concat('data:image/jpeg;base64,',c.vendor.logo) as logo, "
 			+" c.id as id, c.vendor.user.name as vendorName, (case when (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) then false else true end) as expired, "
-	       		+" c.vendor.address as address, c.vendor.user.contact as contact "
+	       		+" c.vendor.address as address, c.vendor.user.contact as contact, c.exclusiveFor as exclusiveFor "
 			
 			+ " from VendorCoupons c where id=(:couponId)")
 	

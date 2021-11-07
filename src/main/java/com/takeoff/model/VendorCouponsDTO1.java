@@ -143,8 +143,8 @@ public interface VendorCouponsDTO1 {
 	public String getAddress();
 	
 	public Long getContact();
-
-
+	
+	public String getExclusiveFor();
 
 
 }

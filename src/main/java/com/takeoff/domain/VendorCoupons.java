@@ -90,6 +90,16 @@ public class VendorCoupons implements Serializable {
 	
 	String description;
 	
+	String exclusiveFor;
+	
+
+	public String getExclusiveFor() {
+		return exclusiveFor;
+	}
+
+	public void setExclusiveFor(String exclusiveFor) {
+		this.exclusiveFor = exclusiveFor;
+	}
 
 	public String getDescription() {
 		return description;

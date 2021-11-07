@@ -92,6 +92,7 @@ public class CustomerService {
 	
 	public Boolean checkRefererId(String refercode)
 	{
+		System.out.println("referral Code :: "+refercode);
 		Optional<CustomerDetails> customerDetails = customerDetailsRepository.findByReferCode(refercode);
 		if(customerDetails.isPresent())
 			return true;
