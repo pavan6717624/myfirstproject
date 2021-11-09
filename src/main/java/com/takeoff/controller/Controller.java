@@ -54,6 +54,7 @@ import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RedemptionSummary;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.ResponseStatusDTO;
+import com.takeoff.model.ScanCodeDTO;
 import com.takeoff.model.StatementDTO;
 import com.takeoff.model.StatsDTO;
 import com.takeoff.model.StatusDTO;
@@ -1215,6 +1216,18 @@ List<Long> couponIds = request.getCouponIds();
 
 
 
+	}
+	
+	@RequestMapping(value="/getScanCodes")
+	public List<ScanCodeDTO> getCodes()
+	{
+		return redemptionService.getCodes();
+	}
+	
+	@RequestMapping(value="/updateScanCode")
+	public RedemptionDTO updateScanCode(@RequestParam("scanCode") String scanCode)
+	{
+		return redemptionService.updateScanCode(scanCode);
 	}
 
 }

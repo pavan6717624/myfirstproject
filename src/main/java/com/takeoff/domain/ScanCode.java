@@ -19,7 +19,7 @@ public class ScanCode  implements Serializable
 	private static final long serialVersionUID = 4212001438797794351L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	Long id;
 	
 	public Long getId() {

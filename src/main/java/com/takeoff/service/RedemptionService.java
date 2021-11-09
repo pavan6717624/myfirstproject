@@ -5,6 +5,7 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -12,15 +13,19 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.Redemption;
+import com.takeoff.domain.ScanCode;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorCoupons;
+import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RedemptionSummary;
 import com.takeoff.model.ResponseStatusDTO;
+import com.takeoff.model.ScanCodeDTO;
 import com.takeoff.repository.RedemptionRepository;
 import com.takeoff.repository.ScanCodeRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorCouponsRepository;
+import com.takeoff.repository.VendorDetailsRepository;
 
 @Service
 public class RedemptionService {
@@ -37,6 +42,10 @@ public class RedemptionService {
 	
 	@Autowired
 	UtilService utilService;
+	
+	@Autowired
+	VendorDetailsRepository vendorDetailsRepository;
+	
 	
 	public RedemptionDTO generateRedemption(RedemptionDTO redemptionDTO, int length,int code) {
 		
@@ -398,5 +407,50 @@ public List<RedemptionSummary> getRedemptionSummary()
 	return redemptionRepository.getRedemptionSummary(customerId,vendorId);
 }
 
+
+public List<ScanCodeDTO> getCodes()
+{
+	return scanCodeRepository.getCodes();
+}
+
+
+public RedemptionDTO updateScanCode(String scanCode) {
+	
+	RedemptionDTO status=new RedemptionDTO();
+	
+	org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
+	Long userId=Long.valueOf(userDetails.getUsername());
+	
+	VendorDetails vendor = vendorDetailsRepository.findByUserId(userId).get();
+	
+	Optional<ScanCode> check = scanCodeRepository.findByCode(scanCode);
+	
+	if(check.isPresent())
+	{
+		status.setStatus(false);
+		status.setMessage("Scan Code already Exists. Please Try New Scan Code.");
+		return status;
+	}
+	
+	ScanCode code=new ScanCode();
+	code.setCode(scanCode);
+	code.setVendor(vendor);
+	
+	scanCodeRepository.save(code);
+	
+	if(code.getId() != null)
+		{
+		status.setStatus(true);
+		status.setMessage("Scan Code Updated Successfully.");
+		return status;
+		}
+	else
+	{
+		status.setStatus(false);
+		status.setMessage("Scan Code Updation Failed. Try Again.");
+		return status;
+		}
+}
 
 }
