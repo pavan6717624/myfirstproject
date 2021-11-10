@@ -424,7 +424,7 @@ public RedemptionDTO updateScanCode(String scanCode) {
 	
 	VendorDetails vendor = vendorDetailsRepository.findByUserId(userId).get();
 	
-	Optional<ScanCode> check = scanCodeRepository.findByCode(scanCode);
+	Optional<ScanCode> check = scanCodeRepository.findByCodeAndVendorId(scanCode , vendor.getVendorId());
 	
 	if(check.isPresent())
 	{
