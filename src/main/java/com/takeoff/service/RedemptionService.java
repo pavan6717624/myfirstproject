@@ -78,19 +78,19 @@ public class RedemptionService {
 			}
 				
 		}
-//		else if(coupon.getCouponType().getId() == 2L)
-//		{
-//			Long freeCount = vendorCouponsRepository.specific12CountFree();
-//			
-//			if(freeCount >= otherCount)
-//			{
-//				redemptionDTO.setStatus(false);
-//				redemptionDTO.setMessage("Sorry! You can redeem ONE Free Coupons ONLY IF ONE of Redeemable, Discount, Limit, Daily Deals got Redemption from the OTHER (than this) OUTLET.");
-//				return redemptionDTO;
-//			}
-//			else if(freeCount < otherCount && coupon.)
-//			
-//		}
+	else if(coupon.getCouponType().getId() == 2L)
+		{
+			Long freeCount = vendorCouponsRepository.freeCount( coupon.getVendor().getUser().getUserId(), userId);
+			
+			if(freeCount >= 1)
+			{
+				redemptionDTO.setStatus(false);
+				redemptionDTO.setMessage("Sorry! You have already Redemed this Free Coupon. Free Coupons can be redemed Only Once.");
+				return redemptionDTO;
+			}
+		
+			
+		}
 		
 		System.out.println(redemptionDTO.getCouponId()+" "+redemptionDTO.getCustomerId()+" "+coupon.getVendor().getUser().getUserId()+" "+LocalDateTime.now());
 		
