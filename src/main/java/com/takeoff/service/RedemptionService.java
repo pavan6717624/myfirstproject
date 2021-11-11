@@ -80,7 +80,7 @@ public class RedemptionService {
 		}
 	else if(coupon.getCouponType().getId() == 2L)
 		{
-			Long freeCount = vendorCouponsRepository.freeCount( coupon.getVendor().getUser().getUserId(), userId);
+			Long freeCount = vendorCouponsRepository.freeCount( coupon.getId(), userId);
 			
 			if(freeCount >= 1)
 			{

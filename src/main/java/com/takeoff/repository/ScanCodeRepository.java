@@ -19,7 +19,7 @@ public interface ScanCodeRepository extends JpaRepository<ScanCode,Long> {
 	@Query("select s from ScanCode s where code like (:scanCode) and s.vendor.vendorid=(:vendorId)")
 	Optional<ScanCode> findByCodeAndVendorId(@Param("scanCode") String scanCode, @Param("vendorId") Long vendorId);
 	
-	@Query("select (case when s.code != null then 'Captured' else 'Not Captured' end) as code, v.user.loginId as vendorId from ScanCode s right join VendorDetails v on s.vendor = v order by code, vendorId")
+	@Query("select (case when s.code != null then 'Captured' else 'Not Captured' end) as code, v.user.loginId as vendorId,v.user.name as vendorName from ScanCode s right join VendorDetails v on s.vendor = v order by code, vendorId")
 	List<ScanCodeDTO> getCodes();
 
 }

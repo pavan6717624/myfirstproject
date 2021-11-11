@@ -35,6 +35,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.razorpay.RazorpayException;
 import com.takeoff.domain.Category;
+import com.takeoff.domain.Contacts;
 import com.takeoff.domain.CouponType;
 import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.SubCategory;
@@ -67,6 +68,7 @@ import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.model.VendorDetailsDTO;
 import com.takeoff.repository.RolesRepository;
 import com.takeoff.service.CategoryService;
+import com.takeoff.service.ContactsService;
 import com.takeoff.service.CouponService;
 import com.takeoff.service.CouponTypeService;
 import com.takeoff.service.CustomerService;
@@ -86,6 +88,9 @@ import com.takeoff.service.VendorService;
 @RestController
 @CrossOrigin(origins = "*")
 public class Controller {
+	
+	@Autowired
+	ContactsService contactsService;
 	
 	@Autowired
 	CustomerService customerService;
@@ -169,6 +174,20 @@ public class Controller {
 	return customerService.gstDetails();
 	}
 
+	
+	@RequestMapping("/addContacts")
+	public String addContacts(
+			@RequestParam("name1") String name1,@RequestParam("contact1") String contact1,
+			@RequestParam("name2") String name2,@RequestParam("contact2") String contact2,
+			@RequestParam("name3") String name3,@RequestParam("contact3") String contact3)
+	{
+		System.out.print("kjlhkj");
+		
+		System.out.println(name1+" "+contact1+" "+name2+" "+contact2+" "+name3+" "+contact3);
+	return contactsService.addContacts(name1,contact1,name2,contact2,name3,contact3);
+	}
+	
+	
 	@RequestMapping("/getAllCustomerAccountDetails")
 	public List<CustomerDetailsDTO> getAllCustomerAccountDetails()
 	{
@@ -1222,6 +1241,12 @@ List<Long> couponIds = request.getCouponIds();
 	public List<ScanCodeDTO> getCodes()
 	{
 		return redemptionService.getCodes();
+	}
+	
+	@RequestMapping(value="/getContacts")
+	public List<Contacts> getContacts()
+	{
+		return contactsService.getContacts();
 	}
 	
 	@RequestMapping(value="/updateScanCode")

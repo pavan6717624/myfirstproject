@@ -66,6 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/generateMailPasscode").permitAll()
 				.antMatchers("/checkPasswordOTP").permitAll()
 				.antMatchers("/forgetPassword").permitAll()
+				.antMatchers("/addContacts").permitAll()
 				
 				// all other requests need to be authenticated
 				.anyRequest().authenticated().and().
