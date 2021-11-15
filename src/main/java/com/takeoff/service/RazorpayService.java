@@ -2,10 +2,14 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.razorpay.Order;
@@ -13,7 +17,9 @@ import com.razorpay.Payment;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
 import com.razorpay.Utils;
+import com.takeoff.domain.HitsReceived;
 import com.takeoff.model.SubscriptionDTO;
+import com.takeoff.repository.HitsReceivedRepository;
 
 @Service
 public class RazorpayService {
@@ -25,7 +31,18 @@ public class RazorpayService {
 	private final String keyId="rzp_live_nWA6UVrzTQFr9W";
 	private final String keySecret="IoKCC6msyc9zduVg5ZK6sIa5";
 	private final Long amount = 119900L;
-
+	
+	@Autowired
+	HitsReceivedRepository hitsReceivedRepository;
+	
+	@Transactional
+	public void recordHits(String referer)
+	{
+		HitsReceived hit = new HitsReceived();
+		hit.setReferer(referer);
+		hit.setHitOn(Timestamp.valueOf(LocalDateTime.now()));
+		hitsReceivedRepository.save(hit);
+	}
 	
 	public Boolean subscribe(SubscriptionDTO subscription) throws RazorpayException, IOException
 	{
