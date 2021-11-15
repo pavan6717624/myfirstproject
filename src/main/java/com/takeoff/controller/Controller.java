@@ -149,6 +149,13 @@ public class Controller {
 	@Autowired
 	StatementService statementService;
 	
+	@RequestMapping("/recordHits")
+	public void recordHits(@RequestParam("referer")  String referer)
+	{
+	
+		razorpayService.recordHits(referer);
+	}
+	
 	@RequestMapping("/getWalletBalance")
 	public String getWalletBalance()
 	{
