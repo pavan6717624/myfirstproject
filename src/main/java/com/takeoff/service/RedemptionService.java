@@ -347,10 +347,11 @@ public RedemptionDTO sendRedemptionCode(String scanCode, String couponId) {
 	System.out.println(scanCode+" "+vendorId);
 	
 	VendorCoupons coupon = vendorCouponsRepository.findById(Long.valueOf(couponId)).get();
+		
+	Optional<ScanCode> checkScanCode= scanCodeRepository.findByCodeAndVendorId(scanCode,coupon.getVendor().getVendorid());
 	
 	
-	
-	if(coupon.getVendor().getVendorid().equals(vendorId))
+	if(checkScanCode.isPresent())
 	{
 		
 org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
