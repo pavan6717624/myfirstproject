@@ -342,13 +342,13 @@ public RedemptionDTO sendRedemptionCode(String scanCode, String couponId) {
 	RedemptionDTO redemp = new RedemptionDTO();
 	try
 	{
-	Long vendorId = scanCodeRepository.findByCode(scanCode).get().getVendor().getVendorid();
+	VendorCoupons coupon = vendorCouponsRepository.findById(Long.valueOf(couponId)).get();
+	
+	Long vendorId = coupon.getVendor().getVendorid();
 	
 	System.out.println(scanCode+" "+vendorId);
 	
-	VendorCoupons coupon = vendorCouponsRepository.findById(Long.valueOf(couponId)).get();
-		
-	Optional<ScanCode> checkScanCode= scanCodeRepository.findByCodeAndVendorId(scanCode,coupon.getVendor().getVendorid());
+	Optional<ScanCode> checkScanCode= scanCodeRepository.findByCodeAndVendorId(scanCode,vendorId);
 	
 	
 	if(checkScanCode.isPresent())
