@@ -374,7 +374,8 @@ org.springframework.security.core.userdetails.UserDetails userDetails = (org.spr
 		}
 	}
 	catch(Exception ex)
-	{
+	{	
+		System.out.println(ex);
 		redemp.setStatus(false);
 		redemp.setMessage("Sorry! Coupon and Vendor Mapping is Incorrect.");
 		
