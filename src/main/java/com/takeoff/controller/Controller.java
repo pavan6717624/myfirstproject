@@ -37,6 +37,7 @@ import com.razorpay.RazorpayException;
 import com.takeoff.domain.Category;
 import com.takeoff.domain.Contacts;
 import com.takeoff.domain.CouponType;
+import com.takeoff.domain.HitsReceived;
 import com.takeoff.domain.ImageDetails;
 import com.takeoff.domain.SubCategory;
 import com.takeoff.domain.VendorCoupons;
@@ -1254,6 +1255,13 @@ List<Long> couponIds = request.getCouponIds();
 	public List<Contacts> getContacts()
 	{
 		return contactsService.getContacts();
+	}
+	
+	
+	@RequestMapping(value="/hitsReceived")
+	public List<HitsReceived> getHitsReceived()
+	{
+		return razorpayService.getHitsReceived();
 	}
 	
 	@RequestMapping(value="/updateScanCode")
