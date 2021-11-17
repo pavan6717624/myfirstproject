@@ -44,6 +44,11 @@ public class RazorpayService {
 		hitsReceivedRepository.save(hit);
 	}
 	
+	public List<HitsReceived> getHitsReceived()
+	{
+		return hitsReceivedRepository.getHitsReceived();
+	}
+	
 	public Boolean subscribe(SubscriptionDTO subscription) throws RazorpayException, IOException
 	{
 	RazorpayClient razorpayClient = new RazorpayClient(keyId, keySecret);
