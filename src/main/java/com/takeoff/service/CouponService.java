@@ -566,6 +566,17 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		return vendorCouponsRepository.getCoupon(Long.valueOf(userDetails.getUsername()),couponId,Timestamp.valueOf(LocalDateTime.now()));
 	}
+	public List<VendorCouponsDTO1> getHomePageCoupons()
+	{
+		
+		Pageable paging = PageRequest.of(0, 10);
+		
+		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.getHomePageCoupons(Timestamp.valueOf(LocalDateTime.now()), paging);
+		
+		// coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
+		
+		return coupons;
+	}
 
 
 }

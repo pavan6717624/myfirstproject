@@ -512,6 +512,13 @@ public class Controller {
 		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l,Arrays.asList(-1l),0l,0l,"","");
 	}
 	
+	@RequestMapping("/getHomePageCoupons")
+	public List<VendorCouponsDTO1> getHomePageCoupons() throws UnsupportedEncodingException 
+	{
+	
+		return couponService.getHomePageCoupons();
+	}
+	
 	@RequestMapping("/getTakeOffRecommendations")
 	public List<VendorCouponsDTO1> getTakeOffRecommendations(@RequestBody CouponsRequest request) throws Exception
 	{

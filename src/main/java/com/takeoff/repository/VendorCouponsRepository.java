@@ -155,6 +155,22 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	
 	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.couponType.id=2  and r.customer.userId = (:userId) and r.coupon.id = (:couponId)")
 	Long freeCount(@Param("couponId") Long couponId, @Param("userId") Long userId);
+
+	
+	@Query("select "
+			+ "c.header as header, c.body as body, "
+			+ " c.header_color as header_color, c.body_color as body_color, "
+			+ "c.header_align as header_align, c.body_align as body_align, "
+			+ "c.header_size as header_size, c.body_size as body_size, "
+			+ "c.header_font as header_font, c.body_font as body_font, "
+			+ "c.header_bold as header_bold, c.body_bold as body_bold,  "
+			+ "c.header_style as header_style, c.body_style as body_style, "
+			+ "c.header_decoration as header_decoration, c.body_decoration as body_decoration, "
+			+" DATE_FORMAT(c.toDate, '%d %M %Y %h:%i:%s %p') as expireTime, "
+			+" c.image.id as imageId, concat('data:image/jpeg;base64,',c.image.image) as image "
+			+ " from VendorCoupons c where (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) order by rand()")
+	
+	List<VendorCouponsDTO1> getHomePageCoupons(@Param("current_time") Timestamp current_time,Pageable pageable );
 	
 	
 	
