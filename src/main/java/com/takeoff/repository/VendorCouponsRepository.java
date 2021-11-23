@@ -168,7 +168,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "c.header_decoration as header_decoration, c.body_decoration as body_decoration, "
 			+" DATE_FORMAT(c.toDate, '%d %M %Y %h:%i:%s %p') as expireTime, "
 			+" c.image.id as imageId, concat('data:image/jpeg;base64,',c.image.image) as image "
-			+ " from VendorCoupons c where c.image.user.role.roleName like 'Designer' and (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) order by rand()")
+			+ " from VendorCoupons c where c.image.user.role.roleName like 'Designer' and c.couponType.id!=2 and (c.fromDate <= (:current_time) and c.toDate >=(:current_time)) order by rand()")
 	
 	List<VendorCouponsDTO1> getHomePageCoupons(@Param("current_time") Timestamp current_time,Pageable pageable );
 	
