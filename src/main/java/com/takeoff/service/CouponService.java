@@ -569,7 +569,7 @@ public Long disLikeCoupon(Long couponId, Long userId, boolean dislike) {
 	public List<VendorCouponsDTO1> getHomePageCoupons()
 	{
 		
-		Pageable paging = PageRequest.of(0, 10);
+		Pageable paging = PageRequest.of(0, 20);
 		
 		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.getHomePageCoupons(Timestamp.valueOf(LocalDateTime.now()), paging);
 		
