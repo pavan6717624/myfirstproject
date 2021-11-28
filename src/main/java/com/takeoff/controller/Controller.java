@@ -519,6 +519,12 @@ public class Controller {
 		return couponService.getHomePageCoupons();
 	}
 	
+	@RequestMapping("/getLogos")
+	public List<String> getLogos()
+	{
+		return vendorService.getLogos();
+	}
+	
 	@RequestMapping("/getTakeOffRecommendations")
 	public List<VendorCouponsDTO1> getTakeOffRecommendations(@RequestBody CouponsRequest request) throws Exception
 	{

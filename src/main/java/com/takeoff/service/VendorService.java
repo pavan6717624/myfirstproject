@@ -284,5 +284,9 @@ public Boolean editVendor(VendorDetailsDTO vendor) throws IOException {
 	return false;
 }
 
+public List<String> getLogos()
+{
+	return vendorDetailsRepository.getLogos();
+}
 
 }
