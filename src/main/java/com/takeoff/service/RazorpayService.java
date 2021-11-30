@@ -30,7 +30,8 @@ public class RazorpayService {
 	
 	private final String keyId="rzp_live_nWA6UVrzTQFr9W";
 	private final String keySecret="IoKCC6msyc9zduVg5ZK6sIa5";
-	private final Long amount = 119900L;
+	//private final Long amount = 119900L;
+	private final Long amount = 99900L;
 	
 	@Autowired
 	HitsReceivedRepository hitsReceivedRepository;
