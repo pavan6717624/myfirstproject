@@ -325,6 +325,7 @@ public RedemptionDTO customerRedemption(RedemptionDTO redemptionDTO) {
 		if(redemption.getPasscode().substring(8-redemptionDTO.getPasscode().length()).equals(redemptionDTO.getPasscode()))
 		{
 			redemption.setUserRedempted(true);
+			redemption.setRedemOn(Timestamp.valueOf(LocalDateTime.now()));
 			redemptionRepository.save(redemption);
 			acceptRedemptionStatus= true;
 		}
