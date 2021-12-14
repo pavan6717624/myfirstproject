@@ -43,6 +43,19 @@ public class Redemption  implements Serializable{
 	Timestamp   validTill;
 	
 	
+	@Column(columnDefinition="datetime")
+	Timestamp   redemOn;
+	
+	
+	public Timestamp getRedemOn() {
+		return redemOn;
+	}
+
+	public void setRedemOn(Timestamp redemOn) {
+		this.redemOn = redemOn;
+	}
+	
+	
 	Boolean vendorAccepted=false;
 	
 	Boolean userRedempted=false;
