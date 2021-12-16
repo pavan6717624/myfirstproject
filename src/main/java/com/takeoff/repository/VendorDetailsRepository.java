@@ -25,12 +25,7 @@ public interface VendorDetailsRepository extends JpaRepository<VendorDetails,Lon
 	List<VendorDetailsDTO> getVendors();
 	
 	@Query("select distinct concat('data:image/jpeg;base64,',v.logo) as logo from VendorDetails v "
-			+ "where v.user.name in ('The Hangout','Green Trends','Beats Fitness','Neera The Bar & Restaurant',"
-			+ "'1947 Hair & Beauty Studio','Drunken Monkey','Biba','AP03 Drive In','Naturals Lounge',"
-			+ "'Relish kafe','Manal Restaurant','Arrow','Aroma Coffee House','Toni & Guy Essensuals',"
-			+ "'Studio11 Salon & Spa','16 Degrees Fitness Home','Bawarchi By Nawaabs','Cream & Crispy Restaurant',"
-			+ "'Vedavyas Yoga Studio','EEMOS unisex salon & Academy','Indian Terrian','Kalyan Residency','Digitalshala',"
-			+ "'Naveen Martial Arts','Kids world','Warriors Men Wear','Sanjeevani Ayurveda center') and v.user.isDeleted!=true")
+			+ "where v.user.isDeleted!=true")
 	List<String> getLogos();
 
 
