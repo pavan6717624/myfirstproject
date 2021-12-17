@@ -98,8 +98,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			
 			+ " c.vendor.user.name like :keyword1 or c.vendor.user.name like :keyword2 or c.vendor.user.name like :keyword3 or "
 			+ "c.vendor.user.name like :keyword4 or c.vendor.user.name like :keyword5 ) and "
-			+ " (c.exclusiveFor like 'ALL' or c.exclusiveFor like (:refererId) or (:customerId) = 0) "
-			
+			+ " (c.exclusiveFor like 'ALL' or c.exclusiveFor like (:refererId) or (:customerId) = 0) and "
+			+ " (c.vendor.user.userId = (:vendorSelected) or (:vendorSelected) = 0) "
 			+ " order by rand() desc")
 	
 	List<VendorCouponsDTO1> findByLatest1(
@@ -116,6 +116,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			@Param("keyword4") String keyword4,
 			@Param("keyword5") String keyword5,
 			@Param("refererId") String refererId,
+			@Param("vendorSelected") Long vendorSelected,
 			Pageable pageable);
 	
 	@Query("select "
