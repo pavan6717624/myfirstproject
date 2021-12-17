@@ -10,7 +10,14 @@ public class CouponsRequest {
 	Long subCategory = 0l;
 	String city = "";
 	String keywords = "";
+	Long vendorSelected = 0l;
 	
+	public Long getVendorSelected() {
+		return vendorSelected;
+	}
+	public void setVendorSelected(Long vendorSelected) {
+		this.vendorSelected = vendorSelected;
+	}
 	public Long getCategory() {
 		return category;
 	}
