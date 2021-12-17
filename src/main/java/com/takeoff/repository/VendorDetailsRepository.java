@@ -11,6 +11,7 @@ import org.springframework.stereotype.Repository;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.VendorDetailsDTO;
+import com.takeoff.model.VendorList;
 @Repository
 public interface VendorDetailsRepository extends JpaRepository<VendorDetails,Long> {
 	
@@ -27,6 +28,9 @@ public interface VendorDetailsRepository extends JpaRepository<VendorDetails,Lon
 	@Query("select distinct concat('data:image/jpeg;base64,',v.logo) as logo from VendorDetails v "
 			+ "where v.user.isDeleted!=true order by rand()")
 	List<String> getLogos();
+	
+	@Query("select v.user.userId as userId, upper(v.user.name) as name ,upper(v.address) as address from VendorDetails v where v.user.isDeleted!=true order by v.user.name asc")
+	List<VendorList> getVendorList();
 
 
 
