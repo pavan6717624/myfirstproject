@@ -2,11 +2,11 @@ package com.takeoff.service;
 
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
+import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.security.SecureRandom;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.domain.VendorDetails;
 import com.takeoff.model.VendorDetailsDTO;
+import com.takeoff.model.VendorList;
 import com.takeoff.repository.RolesRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.VendorDetailsRepository;
@@ -287,6 +288,11 @@ public Boolean editVendor(VendorDetailsDTO vendor) throws IOException {
 public List<String> getLogos()
 {
 	return vendorDetailsRepository.getLogos();
+}
+
+public List<VendorList> getVendorList()
+{
+	return vendorDetailsRepository.getVendorList();
 }
 
 }
