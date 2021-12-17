@@ -67,6 +67,7 @@ import com.takeoff.model.TdsDTO;
 import com.takeoff.model.VendorCouponsDTO;
 import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.model.VendorDetailsDTO;
+import com.takeoff.model.VendorList;
 import com.takeoff.repository.RolesRepository;
 import com.takeoff.service.CategoryService;
 import com.takeoff.service.ContactsService;
@@ -509,7 +510,7 @@ public class Controller {
 	public List<VendorCouponsDTO1> getCoupons(@RequestParam("vendorId") String vendorId) throws UnsupportedEncodingException 
 	{
 	
-		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l,Arrays.asList(-1l),0l,0l,"","");
+		return couponService.getCoupons(Long.valueOf(vendorId),0l,0l,Arrays.asList(-1l),0l,0l,"","",0l);
 	}
 	
 	@RequestMapping("/getHomePageCoupons")
@@ -523,6 +524,12 @@ public class Controller {
 	public List<String> getLogos()
 	{
 		return vendorService.getLogos();
+	}
+	
+	@RequestMapping("/getVendorList")
+	public List<VendorList> getVendorList()
+	{
+		return vendorService.getVendorList();
 	}
 	
 	@RequestMapping("/getTakeOffRecommendations")
@@ -549,7 +556,9 @@ public class Controller {
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,0l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		
+		
+		return couponService.getCoupons(0l,0l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 
 	
@@ -564,7 +573,7 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,1l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		return couponService.getCoupons(0l,1l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 
 	@RequestMapping("/getFreeCoupons")
@@ -578,7 +587,7 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,2l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		return couponService.getCoupons(0l,2l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 	
 	@RequestMapping("/getDailyCoupons")
@@ -592,7 +601,7 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,3l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		return couponService.getCoupons(0l,3l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 	
 	@RequestMapping("/getLimitedCoupons")
@@ -606,7 +615,7 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,4l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		return couponService.getCoupons(0l,4l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 	
 	@RequestMapping("/getRedeemableCoupons")
@@ -620,7 +629,7 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,5l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		return couponService.getCoupons(0l,5l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 	
 	@RequestMapping("/getDiscountCoupons")
@@ -634,7 +643,7 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
-		return couponService.getCoupons(0l,6l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords());
+		return couponService.getCoupons(0l,6l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	
 	
 	}
