@@ -170,7 +170,7 @@ public ImageDetails getImageDetails(Long id)
 // 		return coupons;
 // 	}
 	
-		public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords) throws UnsupportedEncodingException
+		public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords, Long vendorSelected) throws UnsupportedEncodingException
 	{
 		
 		Pageable paging = PageRequest.of(0, 10);
@@ -190,7 +190,7 @@ public ImageDetails getImageDetails(Long id)
 		
 		System.out.println("RefererId:: "+refererId);
 		
-		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],refererId, paging);
+		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],refererId, vendorSelected, paging);
 		
 		// coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
 		
