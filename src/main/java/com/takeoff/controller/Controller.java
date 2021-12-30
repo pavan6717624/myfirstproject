@@ -815,6 +815,13 @@ List<Long> couponIds = request.getCouponIds();
 		return vendorService.addDesginer(designer);
 	}
 	
+	@RequestMapping("/addInvestor")
+	public Boolean addInvestor(@RequestBody VendorDetailsDTO designer) throws NoSuchAlgorithmException 
+	{
+		
+		return vendorService.addInvestor(designer);
+	}
+	
 	@RequestMapping("/addVendor")
 	public Boolean addVendor(@RequestBody VendorDetailsDTO vendor) throws NoSuchAlgorithmException, IOException 
 	{
@@ -951,6 +958,13 @@ List<Long> couponIds = request.getCouponIds();
 	{
 		return vendorService.getDesigners();
 	}
+	
+	@RequestMapping("/getInvestors")
+	public List<VendorDetailsDTO> getInvestors() 
+	{
+		return vendorService.getInvestors();
+	}
+	
 	
 	@RequestMapping("/getVendors")
 	public List<VendorDetailsDTO> getVendors() 

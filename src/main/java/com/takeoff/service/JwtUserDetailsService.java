@@ -34,7 +34,7 @@ public class JwtUserDetailsService implements UserDetailsService {
 		List<GrantedAuthority> roles =new ArrayList<GrantedAuthority>();
 		
 		if (user.isPresent()) {
-			System.out.println("User is " +user.get().toString());
+			System.out.println("User is " +user.get().toString()+" "+user.get().getRole().getRoleName());
 			roles.add(new SimpleGrantedAuthority(user.get().getRole().getRoleName()));
 			return new User(user.get().getUserId()+"", user.get().getPassword(),roles);
 		} else {
