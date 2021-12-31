@@ -12,6 +12,7 @@ import java.util.Optional;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.razorpay.RazorpayException;
@@ -280,6 +281,13 @@ public class CustomerService {
 	public List<CustomerDetailsDTO> getAllCustomerAccountDetails() {
 		
 		return customerDetailsRepository.getAllCustomerAccountDetails();
+	}
+	
+public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails() {
+		
+	org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
+		return customerDetailsRepository.getInvestorCustomerAccountDetails(Long.valueOf(userDetails.getUsername()));
 	}
 	
 	public List<StatsDTO> getUserStats() {
