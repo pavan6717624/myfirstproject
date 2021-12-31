@@ -203,6 +203,13 @@ public class Controller {
 	return customerService.getAllCustomerAccountDetails();
 	}
 	
+	@RequestMapping("/getInvestorCustomerAccountDetails")
+	public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails()
+	{
+	return customerService.getInvestorCustomerAccountDetails();
+	}
+	
+	
 	
 	@RequestMapping("/takeOffStatement")
 	public List<StatementDTO> takeOffStatement(@RequestParam("customerId") String customerId)
