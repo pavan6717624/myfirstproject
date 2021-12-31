@@ -340,5 +340,52 @@ public List<VendorList> getVendorList()
 {
 	return vendorDetailsRepository.getVendorList();
 }
+	
+	public List<VendorDetailsDTO> getExecutives() {
+	
+	return userDetailsRepository.findByRole(rolesRepository.findByRoleName("Executive").get());
+}
+
+
+public Boolean addExecutive(VendorDetailsDTO designer) throws NoSuchAlgorithmException {
+	
+	UserDetails user=new UserDetails();
+	user.setCity(designer.getCity());
+	user.setContact(designer.getContact());
+	user.setEmail(designer.getEmail());
+	user.setName(designer.getName());
+	user.setRole(rolesRepository.findByRoleName("Executive").get());
+	String password=utilService.generatePassword(9);
+	user.setPassword(utilService.getSHA(password));
+	user.setIsDeleted(false);
+	user.setIsDisabled(false);
+	user.setJoinDate(Timestamp.valueOf(LocalDateTime.now()));
+	
+	userDetailsRepository.save(user);
+	
+	if(user.getUserId() != null)
+	{
+	
+		SecureRandom random = new SecureRandom();
+		
+		 int randomInt = random.nextInt(10);
+		user.setLoginId(Long.valueOf(user.getUserId()+""+randomInt));
+		
+		userDetailsRepository.save(user);
+		
+	String text="\nCongrats! Your Executive Account got Created in TakeOff\n"
+     		+ "User Id: "+user.getLoginId()+"\n"
+     		+ "Password: "+password+"\n"
+     		+ "Login and Enjoy the TakeOff @ www.thetakeoff.in";
+	
+
+     utilService.sendMessage(designer.getEmail(), "TakeOff Executive Account", text);
+     
+     utilService.sendSMS(designer.getContact(),text);
+     return true;
+	}
+	else
+	return false;
+}
 
 }
