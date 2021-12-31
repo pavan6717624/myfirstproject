@@ -972,6 +972,18 @@ List<Long> couponIds = request.getCouponIds();
 		return vendorService.getInvestors();
 	}
 	
+	@RequestMapping("/getExecutives")
+	public List<VendorDetailsDTO> getExecutives() 
+	{
+		return vendorService.getExecutives();
+	}
+	
+	@RequestMapping("/addExecutive")
+	public Boolean addExecutive(@RequestBody VendorDetailsDTO designer) throws NoSuchAlgorithmException 
+	{
+		
+		return vendorService.addExecutive(designer);
+	}
 	
 	@RequestMapping("/getVendors")
 	public List<VendorDetailsDTO> getVendors() 
