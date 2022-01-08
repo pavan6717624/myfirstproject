@@ -69,6 +69,9 @@ import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.model.VendorDetailsDTO;
 import com.takeoff.model.VendorList;
 import com.takeoff.repository.RolesRepository;
+import com.takeoff.repository.UserDetailsRepository;
+import com.takeoff.repository.UserDetailsRepository;
+import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.service.CategoryService;
 import com.takeoff.service.ContactsService;
 import com.takeoff.service.CouponService;
@@ -128,6 +131,9 @@ public class Controller {
 	
 	@Autowired
 	RolesRepository rolesRepository;
+	
+	@Autowired
+	UserDetailsRepository userRepository;
 	
 	
 	
@@ -208,6 +214,14 @@ public class Controller {
 	{
 	return customerService.getInvestorCustomerAccountDetails();
 	}
+	
+	@RequestMapping("/getExecutiveCustomerAccountDetails")
+	public List<CustomerDetailsDTO> getExecutiveCustomerAccountDetails()
+	{
+	return customerService.getExecutiveCustomerAccountDetails();
+	}
+	
+	
 	
 	
 	
@@ -1214,7 +1228,9 @@ List<Long> couponIds = request.getCouponIds();
 		loginStatus.setLoginStatus(true);
 		
 		loginStatus.setJwt(token);
-			
+
+		loginStatus.setLoginId(userRepository.findById(Long.valueOf(userDetails.getUsername())).get().getLoginId()+"");
+		
 		loginStatus.setUserType(userDetails.getAuthorities().toArray()[0].toString());
 		}
 		catch(Exception ex)
@@ -1245,12 +1261,16 @@ List<Long> couponIds = request.getCouponIds();
 		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		loginStatus.setUserId(userDetails.getUsername());
+		loginStatus.setUserId("Login id :: "+userDetails.getUsername());
 		
 		loginStatus.setLoginStatus(true);
+		
+		System.out.println(Long.valueOf(userDetails.getUsername()));
+		
+		loginStatus.setLoginId(userRepository.findById(Long.valueOf(userDetails.getUsername())).get().getLoginId()+"");
 			
 		loginStatus.setUserType(userDetails.getAuthorities().toArray()[0].toString());
-		 }
+		 };
 	
 		return loginStatus;
 	}

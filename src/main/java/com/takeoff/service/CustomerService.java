@@ -180,7 +180,13 @@ public class CustomerService {
 		userDetailsRepository.save(user);
 		
 		
-		CustomerDetails customer=new CustomerDetails(subscription,user);
+		UserDetails executive = null;
+		
+		if(subscription.getExecutiveId()!=null && subscription.getExecutiveId().length() > 0)
+		executive = userDetailsRepository.findById(Long.valueOf(subscription.getExecutiveId())).get();
+		
+		
+		CustomerDetails customer=new CustomerDetails(subscription,user,executive);
 		customer.setMappingStatus(false);
 		customer.setPaymentStatus(true);
 		customer.getUser().setMessage("Payment Successful");
@@ -298,6 +304,13 @@ public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails() {
 	public Long getWalletBalance() {
 		
 		return customerDetailsRepository.getWalletBalance();
+	}
+
+	public List<CustomerDetailsDTO> getExecutiveCustomerAccountDetails() {
+		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		return customerDetailsRepository.getExecutiveCustomerAccountDetails(Long.valueOf(userDetails.getUsername()));
+	
 	}
 
 }

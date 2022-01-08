@@ -91,7 +91,19 @@ public class RedemptionService {
 		
 			
 		}
+	else if(coupon.getCouponType().getId() == 3L)
+	{
+		Long dailyDealsCount = vendorCouponsRepository.DailyDealsCount( coupon.getId(), userId);
 		
+		if(dailyDealsCount >= 1)
+		{
+			redemptionDTO.setStatus(false);
+			redemptionDTO.setMessage("Sorry! You have already Redemed this Daily Deal / One Day Deal Coupon. Daily Deal / One Day Deal Coupons can be redemed Only Once Per Day.");
+			return redemptionDTO;
+		}
+	
+		
+	}
 		System.out.println(redemptionDTO.getCouponId()+" "+redemptionDTO.getCustomerId()+" "+coupon.getVendor().getUser().getUserId()+" "+LocalDateTime.now());
 		
 		Redemption redemption = redemptionRepository.findPasscode(redemptionDTO.getCouponId(),redemptionDTO.getCustomerId(),coupon.getVendor().getUser().getUserId(), Timestamp.valueOf(LocalDateTime.now()));

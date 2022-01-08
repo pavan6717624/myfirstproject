@@ -26,7 +26,7 @@ public class CustomerDetails implements Serializable{
 	
 	}
 	
-	public CustomerDetails(SubscriptionDTO subscription, UserDetails user)
+	public CustomerDetails(SubscriptionDTO subscription, UserDetails user,UserDetails executive)
 	{
 		
 		this.profession=subscription.getProfession();
@@ -36,6 +36,9 @@ public class CustomerDetails implements Serializable{
 		this.razorpay_payment_id=subscription.getRazorpay_payment_id();
 		this.razorpay_order_id=subscription.getRazorpay_order_id();
 		this.razorpay_signature=subscription.getRazorpay_signature();
+		
+		
+			this.executive = executive;
 		
 		this.refererId=subscription.getRefererid();
 	}
@@ -73,7 +76,18 @@ public class CustomerDetails implements Serializable{
 	Double walletAmount=0d;
 	
 	
+	public UserDetails getExecutive() {
+		return executive;
+	}
+
+	public void setExecutive(UserDetails executive) {
+		this.executive = executive;
+	}
 	Double creditAmount = 0d;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	 @JoinColumn(name = "executiveId")
+	UserDetails executive;
 	
 
 

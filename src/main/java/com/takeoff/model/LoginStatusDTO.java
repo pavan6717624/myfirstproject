@@ -6,9 +6,16 @@ public class LoginStatusDTO {
 	String userType="NONE";
 	Boolean loginStatus=false;
 	String jwt="";
+	String loginId="0";
 	
 	
 	
+	public String getLoginId() {
+		return loginId;
+	}
+	public void setLoginId(String loginId) {
+		this.loginId = loginId;
+	}
 	public String getJwt() {
 		return jwt;
 	}

@@ -76,9 +76,14 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "(:userId) = 0) and (c.image.subCateogry.category.id=(:category) or (:category=0)) and "
 			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0))  and "
 			
-	       		+ " ((c.couponType.id > 2) or "
+// 	       		+ " ((c.couponType.id > 2) or "
+// 	       		+ "(c.couponType.id = 1 and c.vendor.user.userId not in (select r.vendor.userId from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=1)) or "
+// 	       		+ "(c.couponType.id = 2 and c not in (select r.coupon from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=2))) and "
+			
+	      		+ " ((c.couponType.id > 3) or "
 	       		+ "(c.couponType.id = 1 and c.vendor.user.userId not in (select r.vendor.userId from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=1)) or "
-	       		+ "(c.couponType.id = 2 and c not in (select r.coupon from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=2))) and "
+	       		+ "(c.couponType.id = 2 and c not in (select r.coupon from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=2)) or "
+	       		+ "(c.couponType.id = 3 and c not in (select r.coupon from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=3 and date(r.redemOn)=CURRENT_DATE()))) and "
 			
 	       
 			+ "( c.image.keywords like :keyword1 or c.image.keywords like :keyword2 or c.image.keywords like :keyword3 or "
@@ -173,7 +178,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	
 	List<VendorCouponsDTO1> getHomePageCoupons(@Param("current_time") Timestamp current_time,Pageable pageable );
 	
-	
+	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.couponType.id=3  and r.customer.userId = (:userId) and r.coupon.id = (:couponId) and date(r.redemOn)=CURRENT_DATE() ")
+	Long DailyDealsCount(@Param("couponId") Long couponId, @Param("userId") Long userId);
 	
 	
 	
