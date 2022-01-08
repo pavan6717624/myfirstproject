@@ -565,6 +565,11 @@ public class Controller {
 		   username = principal.toString();
 		}
 		
+	UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		
+		request.setUserId(Long.valueOf(userDetails.getUsername()));
+		
 		if(!username.equals(request.getUserId()+""))
 		{
 			throw new Exception("UnAuthorized Exception");
@@ -572,7 +577,7 @@ public class Controller {
 		
 		List<Long> couponIds = request.getCouponIds();
 		
-		
+	
 		
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
@@ -594,6 +599,13 @@ List<Long> couponIds = request.getCouponIds();
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
 		
+		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		
+		request.setUserId(Long.valueOf(userDetails.getUsername()));
+		
+	//	System.out.println("user id is :: "+request.getUserId());
+		
 		return couponService.getCoupons(0l,1l,request.getUserId(),couponIds,request.getCategory(),request.getSubCategory(), request.getCity(), request.getKeywords(),request.getVendorSelected());
 	}
 
@@ -603,7 +615,10 @@ List<Long> couponIds = request.getCouponIds();
 	
 List<Long> couponIds = request.getCouponIds();
 		
-		
+UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+request.setUserId(Long.valueOf(userDetails.getUsername()));
 		
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
@@ -617,7 +632,10 @@ List<Long> couponIds = request.getCouponIds();
 	
 List<Long> couponIds = request.getCouponIds();
 		
-		
+UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+request.setUserId(Long.valueOf(userDetails.getUsername()));
 		
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
@@ -631,7 +649,10 @@ List<Long> couponIds = request.getCouponIds();
 	
 List<Long> couponIds = request.getCouponIds();
 		
-		
+UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+request.setUserId(Long.valueOf(userDetails.getUsername()));
 		
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
@@ -645,7 +666,10 @@ List<Long> couponIds = request.getCouponIds();
 	
 List<Long> couponIds = request.getCouponIds();
 		
-		
+UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+request.setUserId(Long.valueOf(userDetails.getUsername()));
 		
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
@@ -659,7 +683,10 @@ List<Long> couponIds = request.getCouponIds();
 	
 List<Long> couponIds = request.getCouponIds();
 		
-		
+UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+request.setUserId(Long.valueOf(userDetails.getUsername()));
 		
 		if(couponIds.size() == 0)
 			couponIds=Arrays.asList(-1l);
