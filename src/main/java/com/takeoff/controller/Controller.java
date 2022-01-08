@@ -1288,7 +1288,7 @@ request.setUserId(Long.valueOf(userDetails.getUsername()));
 		
 		UserDetails userDetails = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
-		loginStatus.setUserId("Login id :: "+userDetails.getUsername());
+		loginStatus.setUserId(userDetails.getUsername());
 		
 		loginStatus.setLoginStatus(true);
 		
