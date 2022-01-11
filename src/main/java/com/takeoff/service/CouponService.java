@@ -173,7 +173,11 @@ public ImageDetails getImageDetails(Long id)
 		public List<VendorCouponsDTO1> getCoupons(Long vendorId, Long couponType, Long customerId, List<Long> couponIds, Long category, Long subCategory, String city, String keywords, Long vendorSelected) throws UnsupportedEncodingException
 	{
 		
-		Pageable paging = PageRequest.of(0, 10);
+		Pageable  paging = null;	
+		if(vendorId > 0 && customerId == 0)
+		paging = PageRequest.of(0, 100);
+		else
+		paging = PageRequest.of(0, 10);
 		
 
 		String[] keyWords = keywords.split(",");
