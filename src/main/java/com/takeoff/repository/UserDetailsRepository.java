@@ -24,5 +24,8 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 	
 	 @Query("select u from UserDetails u where u.loginId=(:userId)")
 	  Optional<UserDetails> isUser(@Param("userId") Long userId);
+	
+	 @Query("select u from UserDetails u where u.executiveId=(:executiveId)")
+	Optional<UserDetails> findByExecutiveId(Long executiveId);
 		
 }
