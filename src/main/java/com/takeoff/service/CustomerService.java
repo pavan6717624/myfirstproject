@@ -183,7 +183,7 @@ public class CustomerService {
 		UserDetails executive = null;
 		
 		if(subscription.getExecutiveId()!=null && subscription.getExecutiveId().length() > 0)
-		executive = userDetailsRepository.findById(Long.valueOf(subscription.getExecutiveId())).get();
+		executive = userDetailsRepository.findByExecutiveId(Long.valueOf(subscription.getExecutiveId())).get();
 		
 		
 		CustomerDetails customer=new CustomerDetails(subscription,user,executive);
