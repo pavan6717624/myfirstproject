@@ -124,7 +124,7 @@ public class RedemptionService {
 		
 		redemption.setValidTill(validTill);
 		
-		if(code == 1)
+		//if(code == 1)
 			redemption.setVendorAccepted(true);
 		
 		redemptionRepository.save(redemption);
