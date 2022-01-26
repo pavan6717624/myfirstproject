@@ -19,13 +19,13 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 	  @Query("select u from UserDetails u where u.userId=(:userId) and u.password = (:password) and u.isDeleted=false and u.isDisabled=false")
 			Optional<UserDetails> findByUserIdAndPassword(@Param("userId") Long userId, @Param("password") String password);
 	  
-	  @Query("select u from UserDetails u where u.role = (:role) and u.isDeleted=false order by u.userId desc")
+	  @Query("select u from UserDetails u where u.role = (:role) and u.isDeleted=false and u.isDisabled=false by u.userId desc")
 	  List<VendorDetailsDTO> findByRole(@Param("role") Roles role);
 	
-	 @Query("select u from UserDetails u where u.loginId=(:userId)")
+	 @Query("select u from UserDetails u where u.loginId=(:userId) and u.isDeleted=false and u.isDisabled=false")
 	  Optional<UserDetails> isUser(@Param("userId") Long userId);
 	
-	 @Query("select u from UserDetails u where u.loginId=(:executiveId)")
+	 @Query("select u from UserDetails u where u.loginId=(:executiveId) and u.isDeleted=false and u.isDisabled=false")
 	Optional<UserDetails> findByExecutiveId(Long executiveId);
 		
 }
