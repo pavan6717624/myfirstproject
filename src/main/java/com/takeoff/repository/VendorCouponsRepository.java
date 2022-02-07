@@ -74,7 +74,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "(:userId)!=0L) and (c.id not in (:couponIds)) and (c.couponType.id = (:couponType) or ((:couponType) = 0 "
 			+ "and ((c.couponType.id!=1) or (:userId)!=0 ))) and (c.vendor.user.userId = (:userId) or "
 			+ "(:userId) = 0) and (c.image.subCateogry.category.id=(:category) or (:category=0)) and "
-			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0))  and "
+			+" (c.image.subCateogry.id=(:subCategory) or (:subCategory=0))  and c.vendor.user.isDeleted!=true and c.vendor.user.isDisabled!=true and "
 			
 // 	       		+ " ((c.couponType.id > 2) or "
 // 	       		+ "(c.couponType.id = 1 and c.vendor.user.userId not in (select r.vendor.userId from Redemption r where r.userRedempted = true and r.vendorAccepted = true and r.customer.userId=(:customerId) and r.coupon.couponType=1)) or "
