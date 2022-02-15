@@ -415,6 +415,11 @@ public List<RedemptionSummary> getRedemptionSummary()
 			{
 		customerId=userId;
 			}
+	else if(userDetails.getAuthorities().contains(new SimpleGrantedAuthority("Admin")))
+	{
+		customerId=0l;
+		vendorId=0l;
+	}
 	else
 		return null;
 	
