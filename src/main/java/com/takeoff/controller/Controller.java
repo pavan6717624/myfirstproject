@@ -525,11 +525,11 @@ public class Controller {
 	        	csvData.append((i+1)+",");
 	        	csvData.append(redemptionHistory.get(i).getCouponId() + ",");
 	        	csvData.append(redemptionHistory.get(i).getVendorId() + ",");
-	        	csvData.append(redemptionHistory.get(i).getVendorName() + ",");
-	        	csvData.append(redemptionHistory.get(i).getAddress() + ",");
+	        	csvData.append(redemptionHistory.get(i).getVendorName().replace(","," ") + ",");
+	        	csvData.append(redemptionHistory.get(i).getAddress().replace(","," ") + ",");
 	        	csvData.append(redemptionHistory.get(i).getContact() + ",");
 	        	csvData.append(redemptionHistory.get(i).getCustomerId() + ",");
-	        	csvData.append(redemptionHistory.get(i).getCustomerName() + ",");
+	        	csvData.append(redemptionHistory.get(i).getCustomerName().replace(","," ") + ",");
 	        	csvData.append(redemptionHistory.get(i).getCustomerContact() + ",");
 	        	csvData.append(redemptionHistory.get(i).getCouponType() + ",");
 	        	csvData.append(redemptionHistory.get(i).getRedemOn() + ",");
