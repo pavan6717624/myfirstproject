@@ -53,6 +53,7 @@ import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.model.LoginStatusDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
+import com.takeoff.model.RedemptionHistory;
 import com.takeoff.model.RedemptionSummary;
 import com.takeoff.model.RefererCodeDTO;
 import com.takeoff.model.ResponseStatusDTO;
@@ -69,8 +70,6 @@ import com.takeoff.model.VendorCouponsDTO1;
 import com.takeoff.model.VendorDetailsDTO;
 import com.takeoff.model.VendorList;
 import com.takeoff.repository.RolesRepository;
-import com.takeoff.repository.UserDetailsRepository;
-import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.repository.UserDetailsRepository;
 import com.takeoff.service.CategoryService;
 import com.takeoff.service.ContactsService;
@@ -494,6 +493,48 @@ public class Controller {
 	        	csvData.append("91.50,");
 	        	csvData.append("183\n");
 	        	
+	        }
+
+	        try {
+	            PrintWriter writer = response.getWriter();
+	            writer.write(csvData.toString().trim());
+	            writer.close();
+	        } catch (IOException ex) {
+	            System.out.println(ex.getMessage());
+	        }
+	    }
+	 
+	 
+	 @RequestMapping(value = "/downloadRedemHistory", produces = "text/csv")
+	    @ResponseBody
+	    public void downloadRedemHistory(@RequestBody List<RedemptionHistory> redemptionHistory, HttpServletResponse response) {
+	        response.setContentType("text/plain; charset=utf-8");
+	        StringBuilder csvData = new StringBuilder("");
+
+	      String headers[]= {"SLNO.","Coupon Id","Outlet Id","Outlet Name","Address","Contact","Customer Id","Customer Name","Contact","Coupon Type","Redemption On"};
+	      
+	      for (int i = 0; i < headers.length - 1; i++) {
+	            csvData.append(headers[i] + ",");
+	        }
+	        csvData.append(headers[headers.length - 1] + "\n");
+	        
+	       
+	        
+	        for(int i=0;i<redemptionHistory.size();i++)
+	        {
+	        	csvData.append((i+1)+",");
+	        	csvData.append(redemptionHistory.get(i).getCouponId() + ",");
+	        	csvData.append(redemptionHistory.get(i).getVendorId() + ",");
+	        	csvData.append(redemptionHistory.get(i).getVendorName() + ",");
+	        	csvData.append(redemptionHistory.get(i).getAddress() + ",");
+	        	csvData.append(redemptionHistory.get(i).getContact() + ",");
+	        	csvData.append(redemptionHistory.get(i).getCustomerId() + ",");
+	        	csvData.append(redemptionHistory.get(i).getCustomerName() + ",");
+	        	csvData.append(redemptionHistory.get(i).getCustomerContact() + ",");
+	        	csvData.append(redemptionHistory.get(i).getCouponType() + ",");
+	        	csvData.append(redemptionHistory.get(i).getRedemOn() + ",");
+	   
+	           	csvData.append("\n");
 	        }
 
 	        try {
