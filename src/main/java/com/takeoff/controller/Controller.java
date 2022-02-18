@@ -240,6 +240,9 @@ public class Controller {
 	@RequestMapping("/checkPasswordOTP")
 	public Boolean checkPasswordOTP(@RequestParam("userId") String userId, @RequestParam("otp") String otp)
 	{
+		if(userId.startsWith("TO"))
+			
+            userId=userId.substring(3,7);
 	
 	return utilService.checkPasswordOTP(userId,otp);
 	}
