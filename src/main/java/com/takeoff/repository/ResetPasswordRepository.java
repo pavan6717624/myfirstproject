@@ -10,7 +10,7 @@ import com.takeoff.domain.ResetPassword;
 
 public interface ResetPasswordRepository extends JpaRepository<ResetPassword,Long> {
 	
-	@Query("select passcode from ResetPassword r where r.customer.userId=(:customerId) and r.validTill >= (:currentTime)")
+	@Query("select passcode from ResetPassword r where (r.customer.userId=(:customerId) or r.customer.loginId=(:customerId)) and r.validTill >= (:currentTime)")
 	
 	Long getPasscode(@Param("customerId") Long customerId, @Param("currentTime") Timestamp currentTime);
 
