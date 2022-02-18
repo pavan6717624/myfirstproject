@@ -269,11 +269,16 @@ public class CustomerService {
 
 	public Boolean forgetPassword(String userId, String newpassword) {
 
+			
+		String id=userId;
+		
 		if(userId.startsWith("TO"))
-               String id=userId.substring(3,7);
+			
+            id=id.substring(3,7);
 
 
 		Optional<UserDetails> user=userDetailsRepository.findById(Long.valueOf(id));
+	
 		
 		Boolean status=false;
 		
