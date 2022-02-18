@@ -858,6 +858,13 @@ List<Long> couponIds = request.getCouponIds();
 	@RequestMapping("/forgetPassword")
 	public Boolean forgetPassword(@RequestParam("userId") String userId, @RequestParam("newpassword") String newpassword) 
 	{
+		
+		
+		
+		if(userId.startsWith("TO"))
+			
+            userId=userId.substring(3,7);
+		
 		return customerService.forgetPassword(userId,newpassword);
 		
 	}
