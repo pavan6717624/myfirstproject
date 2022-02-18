@@ -242,7 +242,7 @@ public class Controller {
 	{
 		if(userId.startsWith("TO"))
 			
-            userId=userId.substring(3,7);
+            userId=userId.substring(2,7);
 	
 	return utilService.checkPasswordOTP(userId,otp);
 	}
@@ -866,7 +866,7 @@ List<Long> couponIds = request.getCouponIds();
 		
 		if(userId.startsWith("TO"))
 			
-            userId=userId.substring(3,7);
+            userId=userId.substring(2,7);
 		
 		return customerService.forgetPassword(userId,newpassword);
 		
