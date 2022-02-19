@@ -211,10 +211,10 @@ public class CustomerService {
 		
 		KYCDetails details = kycRepository.findByCustomerId(parentId);
 		
-		Double addAmount = 240d;
+		Double addAmount = 240d; //400d
 		
 		if(details != null && details.getPanStatus().equals("Approved"))
-			addAmount = 285d;
+			addAmount = 285d; //475d
 		
 		parent.setWalletAmount(parent.getWalletAmount()+ addAmount);
 		customerDetailsRepository.save(parent);
