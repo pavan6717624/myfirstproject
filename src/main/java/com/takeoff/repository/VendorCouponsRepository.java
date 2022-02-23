@@ -58,6 +58,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "c.header_style as header_style, c.body_style as body_style, c.footer_style as footer_style, "
 			+ "c.header_decoration as header_decoration, c.body_decoration as body_decoration, c.footer_decoration as footer_decoration, "
 			+ "c.profession as profession, c.gender as gender,  "
+	       		+" (select u.type from UserDetails u where u.userId=(:customerId) or u.loginId=(:customerId)) as subscriptionType, "
 			+" (select l.likeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as likeCoupon, "
 			+" (select l.disLikeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as disLikeCoupon, "
 			+" (select sum(case when l.likeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as likeCount, "
@@ -161,6 +162,9 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	
 	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.couponType.id=2  and r.customer.userId = (:userId) and r.coupon.id = (:couponId)")
 	Long freeCount(@Param("couponId") Long couponId, @Param("userId") Long userId);
+
+	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.customer.userId = (:userId) and MONTH(r.redemOn) = MONTH(CURRENT_DATE) and YEAR(r.redemOn) = YEAR(CURRENT_DATE)")	
+	Long freeSubscriberRedemptionCount(@Param("userId") Long userId);	
 
 	
 	@Query("select "
