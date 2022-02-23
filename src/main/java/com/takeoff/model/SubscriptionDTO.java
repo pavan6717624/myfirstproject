@@ -18,6 +18,13 @@ public class SubscriptionDTO {
 	String razorpay_signature;
 	String message;
 	Roles role;
+	String subscription;
+	public String getSubscription() {
+		return subscription;
+	}
+	public void setSubscription(String subscription) {
+		this.subscription = subscription;
+	}
 	public String getExecutiveId() {
 		return executiveId;
 	}
