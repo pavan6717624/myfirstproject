@@ -21,7 +21,7 @@ public interface VendorCouponsDTO1 {
 	public String getExpireTime() ;
 
 
-	
+	public String getSubscriptionType();
 	
 
 	public String getVendorName() ;
