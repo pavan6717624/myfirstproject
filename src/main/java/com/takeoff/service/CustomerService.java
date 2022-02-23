@@ -163,6 +163,63 @@ public class CustomerService {
 		
 		return statusDto;
 	}
+
+			
+	public StatusDTO subscribeFree(SubscriptionDTO subscription)	
+	{	
+		subscription.setRole(rolesRepository.findByRoleName("Customer").get());	
+		StatusDTO statusDto = new StatusDTO();	
+		System.out.println("in subscribe");	
+			
+		try	
+		{	
+		Boolean paymentStatus = true;		
+		System.out.println("in subscribe " +paymentStatus);	
+			
+		if(paymentStatus)	
+		{		
+			String password=subscription.getPassword();	
+			subscription.setPassword(utilService.getSHA(password));	
+			statusDto = customerService.createCustomer(subscription);	
+		 if(!statusDto.getStatus())	
+		 {	
+			 statusDto.setCustomerId(0L);	
+			 statusDto.setReferCode("0");	
+			  statusDto.setLoginId(0L);	
+			 statusDto.setMessage(" Mapping Failed. Please contact Customer Care.");	
+		 }	
+		 try	
+		 {	
+		 String text="\nCongrats! Your FREE Account got Created in TakeOff\n"	
+		     		+ "Login Id / Referral Code: "+statusDto.getReferCode()+"\n"	
+		     		+ "Password: "+password+"\n\n"	
+		     		+ "NOTE: Only 3 Redemptions per Month\n"	
+		     		+ "Login & Enjoy the TakeOff @ www.thetakeoff.in";	
+		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff FREE Account", text);	
+		 utilService.sendSMS(subscription.getContact(), text);	
+		 	
+		 }	
+		 catch( Exception ex)	
+		 {	
+			 System.out.println("Issue in sending message and sms "+ex);	
+		 }	
+		}	
+		else	
+		{	
+			System.out.println("in subscribe false " +paymentStatus);	
+			statusDto=new StatusDTO(subscription);	
+		}	
+		}	
+		catch( NoSuchAlgorithmException ex)	
+		{	
+				
+			statusDto=new StatusDTO(subscription);	
+			statusDto.setMessage(" User Creation Failed. Please contact Customer Care.");	
+		}	
+			
+		return statusDto;	
+	}	
+	
 	
 	@Transactional
 	public StatusDTO createCustomer(SubscriptionDTO subscription)
@@ -211,29 +268,40 @@ public class CustomerService {
 		
 		KYCDetails details = kycRepository.findByCustomerId(parentId);
 		
-		Double addAmount = 240d; //400d
-		
-		if(details != null && details.getPanStatus().equals("Approved"))
-			addAmount = 285d; //475d
-		
-		parent.setWalletAmount(parent.getWalletAmount()+ addAmount);
-		customerDetailsRepository.save(parent);
-		
-		
-		Statement statement=new Statement();
-		statement.setAmount(addAmount);
-		statement.setCustomer(parent);
-		statement.setDate(user.getJoinDate());
-		statement.setDescription("Referral Reward for referring "+user.getUserId());
-		
-		statementRepository.save(statement);
-		
-		statement=new Statement();
-		statement.setAmount(0d);
-		statement.setCustomer(customer);
-		statement.setDate(user.getJoinDate());
-		statement.setDescription("Subscribed to TakeOff");
-		
+			
+			
+		if(subscription.getSubscription().equalsIgnoreCase("Pay"))	
+		{	
+			
+			Double addAmount = 240d; //addAmount = 400d;	
+		if(details != null && details.getPanStatus().equals("Approved"))	
+			addAmount = 285d; //addAmount = 475d;	
+			
+			
+		parent.setWalletAmount(parent.getWalletAmount()+ addAmount);	
+		customerDetailsRepository.save(parent);	
+			
+			
+			
+		Statement statement=new Statement();	
+		statement.setAmount(addAmount);	
+		statement.setCustomer(parent);	
+		statement.setDate(user.getJoinDate());	
+		statement.setDescription("Referral Reward for referring "+user.getUserId());	
+			
+		statementRepository.save(statement);	
+		}	
+			
+		Statement statement=new Statement();	
+		statement=new Statement();	
+		statement.setAmount(0d);	
+		statement.setCustomer(customer);	
+		statement.setDate(user.getJoinDate());	
+		if(subscription.getSubscription().equalsIgnoreCase("Pay"))	
+		statement.setDescription("Subscribed to TakeOff EXCLUSIVE Account");	
+		else	
+		statement.setDescription("Subscribed to TakeOff FREE Account");	
+			
 		statementRepository.save(statement);
 		
 		
