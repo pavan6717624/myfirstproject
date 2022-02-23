@@ -190,11 +190,11 @@ public class CustomerService {
 		 }	
 		 try	
 		 {	
-		 String text="\nCongrats! Your FREE Account got Created in TakeOff\n"	
+		 String text="Your FREE Account got Created in TakeOff\n"	
 		     		+ "Login Id / Referral Code: "+statusDto.getReferCode()+"\n"	
-		     		+ "Password: "+password+"\n\n"	
-		     		+ "NOTE: Only 3 Redemptions per Month\n"	
-		     		+ "Login & Enjoy the TakeOff @ www.thetakeoff.in";	
+		     		+ "Password: "+password+"\n"	
+		     		+ "Only 3 Redemptions per Month\n"	
+		     		+ "Login to www.thetakeoff.in";	
 		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff FREE Account", text);	
 		 utilService.sendSMS(subscription.getContact(), text);	
 		 	
