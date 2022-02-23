@@ -33,6 +33,17 @@ public class UserDetails implements Serializable {
 	
 	Long loginId;
 	
+	String type="";
+	
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+
+	
 	public Long getLoginId() {
 		return loginId;
 	}
