@@ -57,6 +57,31 @@ public class RedemptionService {
 		
 		
 		VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
+		
+		
+		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
+			
+		if(subscriptionType.equals("free"))	
+		{	
+			Long freeSubscriberRedemptionCount = vendorCouponsRepository.freeSubscriberRedemptionCount(userId);	
+				
+			System.out.println("Free subscription Count :: "+freeSubscriberRedemptionCount);	
+				
+			if(coupon.getCouponType().getId() == 1L)	
+			{	
+			redemptionDTO.setStatus(false);	
+			redemptionDTO.setMessage("Sorry! Complimentary Coupon Redemptions are only for PAID Subscriptions");	
+			return redemptionDTO;	
+			}	
+			else if(freeSubscriberRedemptionCount >= 3)	
+			{	
+				redemptionDTO.setStatus(false);	
+				redemptionDTO.setMessage("Sorry! Your Redemption Limit(3) is already reached for this Month.");	
+				return redemptionDTO;	
+			}	
+		}
+		
+		
 		Long otherCount = vendorCouponsRepository.other3456Count(coupon.getVendor().getUser().getUserId(), userId);
 	
 		if(coupon.getCouponType().getId() == 1L)
