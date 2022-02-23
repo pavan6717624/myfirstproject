@@ -1354,7 +1354,7 @@ List<Long> couponIds = request.getCouponIds();
 	@RequestMapping("/subscribe")
 	public StatusDTO subscribe(@RequestBody SubscriptionDTO subscription)
 	{
-		if(subscription.getSubscription()!= null && subscription.getSubscription().equals("free"))	
+		if(subscription.getSubscription()!= null && subscription.getSubscription().equalsIgnoreCase("free"))	
 		return customerService.subscribeFree(subscription);	
 		else	
 				
