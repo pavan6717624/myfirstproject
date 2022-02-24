@@ -61,6 +61,16 @@ public class VendorDetails implements Serializable{
 	public void setUser(UserDetails user) {
 		this.user = user;
 	}
+	
+	Long rating = 0l;
+
+	public Long getRating() {
+		return rating;
+	}
+
+	public void setRating(Long rating) {
+		this.rating = rating;
+	}
 
 	
 	

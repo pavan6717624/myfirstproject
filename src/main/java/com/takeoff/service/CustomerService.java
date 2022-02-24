@@ -250,7 +250,7 @@ public class CustomerService {
 		customerDetailsRepository.save(customer);
 		
 		int rows = customerDetailsRepository.customerMapping(customer.getUser().getUserId(), 
-				customerDetailsRepository.findByReferCode(customer.getRefererId()).get().getUser().getUserId());
+				customerDetailsRepository.findByReferCode(customer.getRefererId()).get().getUser().getUserId(),subscription.getSubscription());
 		
 		if(rows == 1)
 		{
