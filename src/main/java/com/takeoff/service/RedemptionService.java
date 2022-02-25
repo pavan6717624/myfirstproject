@@ -61,7 +61,7 @@ public class RedemptionService {
 		
 		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
 			
-		if(subscriptionType.equals("free"))	
+		if(subscriptionType.equalsIgnoreCase("free"))	
 		{	
 			Long freeSubscriberRedemptionCount = vendorCouponsRepository.freeSubscriberRedemptionCount(userId);	
 				
