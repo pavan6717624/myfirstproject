@@ -384,6 +384,10 @@ public RedemptionDTO customerRedemption(RedemptionDTO redemptionDTO) {
 	
 	redemp.setStatus(acceptRedemptionStatus);
 	redemp.setCouponId(redemptionDTO.getCouponId());
+	 SimpleDateFormat formatter = new SimpleDateFormat("dd MMMM yyyy hh:mm:ss aa");  
+	 
+		String redemOn = formatter.format(redemption.getRedemOn());
+	redemp.setRedemOn(redemOn);
 	
 	return redemp;
 }

@@ -24,7 +24,18 @@ public class RedemptionDTO {
 	
 	String message;
 	
+	String redemOn;
 	
+	public String getRedemOn() {
+		return redemOn;
+	}
+
+
+	public void setRedemOn(String redemOn) {
+		this.redemOn = redemOn;
+	}
+
+
 	public Boolean getStatus() {
 		return status;
 	}
