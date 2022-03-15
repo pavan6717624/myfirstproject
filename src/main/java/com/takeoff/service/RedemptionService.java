@@ -65,7 +65,7 @@ public class RedemptionService {
 		
 		CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
-		String refererCode = customerDetails.getReferCode();		
+		String refererCode = customerDetails.getRefererId();		
 		
 		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
 			

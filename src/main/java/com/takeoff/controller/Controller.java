@@ -51,6 +51,7 @@ import com.takeoff.model.ImageStatusDTO;
 import com.takeoff.model.ImagesRequest;
 import com.takeoff.model.KYCDetailsDTO;
 import com.takeoff.model.LoginStatusDTO;
+import com.takeoff.model.NotificationDTO;
 import com.takeoff.model.OrderDTO;
 import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RedemptionHistory;
@@ -161,6 +162,13 @@ public class Controller {
 	{
 	
 		razorpayService.recordHits(referer);
+	}
+	
+	@RequestMapping("/getNotification")
+	public NotificationDTO getNotification()
+	{
+		return customerService.getNotification();
+	
 	}
 	
 	@RequestMapping("/getWalletBalance")

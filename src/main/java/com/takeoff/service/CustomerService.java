@@ -22,6 +22,7 @@ import com.takeoff.domain.Statement;
 import com.takeoff.domain.UserDetails;
 import com.takeoff.model.CustomerDetailsDTO;
 import com.takeoff.model.GstDetails;
+import com.takeoff.model.NotificationDTO;
 import com.takeoff.model.StatsDTO;
 import com.takeoff.model.StatusDTO;
 import com.takeoff.model.SubscriptionDTO;
@@ -32,6 +33,7 @@ import com.takeoff.repository.KYCDetailsRepository;
 import com.takeoff.repository.RolesRepository;
 import com.takeoff.repository.StatementRepository;
 import com.takeoff.repository.UserDetailsRepository;
+import com.takeoff.repository.VendorCouponsRepository;
 
 @Service
 public class CustomerService {
@@ -71,6 +73,8 @@ public class CustomerService {
 	@Autowired
 	CategoryService categoryService;
 	
+	@Autowired
+	CustomerDetailsRepository customerRepository;
 	
 	
 	@Autowired
@@ -84,6 +88,10 @@ public class CustomerService {
 	
 	@Autowired
 	StatementRepository statementRepository;
+	
+	@Autowired
+	VendorCouponsRepository vendorCouponsRepository;
+
 	
 	public List<TdsDTO> getTDS(String fromDate, String toDate)
 	{
@@ -385,6 +393,49 @@ public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails() {
 		
 		return customerDetailsRepository.getExecutiveCustomerAccountDetails(Long.valueOf(userDetails.getUsername()));
 	
+	}
+
+	public NotificationDTO getNotification() {
+		
+		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		Long userId=Long.valueOf(userDetails.getUsername());
+		Long freeSubscriberRedemptionCount = vendorCouponsRepository.freeSubscriberRedemptionCount(userId);	
+		
+		NotificationDTO notification=new NotificationDTO();
+		
+		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
+		
+CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
+		
+		String refererCode = customerDetails.getRefererId();		
+		
+		if(subscriptionType.equals("Free") && !refererCode.equals("TO10149"))
+		{
+			
+			notification.setType("");
+			notification.setHeader("Welcome to Customer!");	
+			notification.setMessage("Your Redeemed Coupons for the month:: "+freeSubscriberRedemptionCount+"\nYour Available Redemptions for the Month :: "+(3-freeSubscriberRedemptionCount));	
+			
+			
+		}	
+		else if(subscriptionType.equals("Free") && refererCode.equals("TO10149"))
+		{
+			notification.setType("Special");
+			notification.setHeader("Welcome to Special Customer!");	
+			notification.setMessage("Your Redeemed Coupons for the month:: "+freeSubscriberRedemptionCount+"\nYour Available Redemptions for the Month :: "+(10-freeSubscriberRedemptionCount));	
+			
+		}
+		else
+		{
+			notification.setType("Premium");
+			notification.setHeader("Welcome to Premium Customer!");	
+			notification.setMessage("Your are eligible for Unlimited Redemptions");	
+			
+		}
+		
+		return notification;	
+		
 	}
 
 }
