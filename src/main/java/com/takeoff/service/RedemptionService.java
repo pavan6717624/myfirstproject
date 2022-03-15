@@ -12,6 +12,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.takeoff.domain.CustomerDetails;
 import com.takeoff.domain.Redemption;
 import com.takeoff.domain.ScanCode;
 import com.takeoff.domain.UserDetails;
@@ -21,6 +22,7 @@ import com.takeoff.model.RedemptionDTO;
 import com.takeoff.model.RedemptionSummary;
 import com.takeoff.model.ResponseStatusDTO;
 import com.takeoff.model.ScanCodeDTO;
+import com.takeoff.repository.CustomerDetailsRepository;
 import com.takeoff.repository.RedemptionRepository;
 import com.takeoff.repository.ScanCodeRepository;
 import com.takeoff.repository.UserDetailsRepository;
@@ -46,6 +48,9 @@ public class RedemptionService {
 	@Autowired
 	VendorDetailsRepository vendorDetailsRepository;
 	
+	@Autowired
+	CustomerDetailsRepository customerRepository;
+	
 	
 	public RedemptionDTO generateRedemption(RedemptionDTO redemptionDTO, int length,int code) {
 		
@@ -58,6 +63,9 @@ public class RedemptionService {
 		
 		VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
 		
+		CustomerDetails customer = customerRepository.findByUserId(userId).get();
+		
+		String refererCode = customer.getReferCode();		
 		
 		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
 			
@@ -73,12 +81,18 @@ public class RedemptionService {
 			redemptionDTO.setMessage("Sorry! Complimentary Coupon Redemptions are only for PAID Subscriptions");	
 			return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 3)	
+			else if(freeSubscriberRedemptionCount >= 3 && !refererCode.equals("TO10149"))	
 			{	
 				redemptionDTO.setStatus(false);	
 				redemptionDTO.setMessage("Sorry! Your Redemption Limit(3) is already reached for this Month.");	
 				return redemptionDTO;	
 			}	
+			else if(freeSubscriberRedemptionCount >= 10 && refererCode.equals("TO10149"))	
+			{
+				redemptionDTO.setStatus(false);	
+				redemptionDTO.setMessage("Sorry! Your Redemption Limit(10) is already reached for this Month.");	
+				return redemptionDTO;	
+			}
 		}
 		
 		
