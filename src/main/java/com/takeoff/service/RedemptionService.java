@@ -63,9 +63,9 @@ public class RedemptionService {
 		
 		VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
 		
-		CustomerDetails customer = customerRepository.findByUserId(userId).get();
+		CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
-		String refererCode = customer.getReferCode();		
+		String refererCode = customerDetails.getReferCode();		
 		
 		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
 			
