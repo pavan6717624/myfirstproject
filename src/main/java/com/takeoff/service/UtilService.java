@@ -52,10 +52,10 @@ public class UtilService {
 		   
 	
 	public String generatePassword(int length) throws NoSuchAlgorithmException {
-	      String capitalCaseLetters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-	      String lowerCaseLetters = "abcdefghijklmnopqrstuvwxyz";
-	      String specialCharacters = "!@#$";
-	      String numbers = "1234567890";
+	      String capitalCaseLetters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
+	      String lowerCaseLetters = "";
+	      String specialCharacters = "";
+	      String numbers = "123456789";
 	      String combinedChars = capitalCaseLetters + lowerCaseLetters + specialCharacters + numbers;
 	      SecureRandom random = new SecureRandom();
 	      char[] password = new char[length];
