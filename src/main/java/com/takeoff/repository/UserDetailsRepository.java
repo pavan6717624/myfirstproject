@@ -27,6 +27,8 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 	
 	 @Query("select u from UserDetails u where u.loginId=(:executiveId) and u.isDeleted=false and u.isDisabled=false")
 	Optional<UserDetails> findByExecutiveId(Long executiveId);
+
+	Optional<UserDetails> findByMobile(@Param("username") String username);
 		
 }
 	

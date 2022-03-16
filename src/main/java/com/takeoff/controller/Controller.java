@@ -11,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
@@ -1253,6 +1254,12 @@ List<Long> couponIds = request.getCouponIds();
 		LoginStatusDTO loginStatus=new LoginStatusDTO();
 		try
 		{
+			
+			Optional<com.takeoff.domain.UserDetails> mobile = userRepository.findByMobile(username);
+			
+			if(mobile.isPresent())
+				username=mobile.get().getUserId()+"";
+			
 			username=username.toLowerCase().replaceAll("to","");
 			
 			Boolean isUser = customerService.isUser(username);
