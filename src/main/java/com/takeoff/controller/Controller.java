@@ -1263,7 +1263,7 @@ List<Long> couponIds = request.getCouponIds();
 			List<com.takeoff.domain.UserDetails> mobile = userRepository.findByContactNumber(username);
 			
 			if(mobile.size() == 1)
-				username=mobile.get(0).getUserId()+"";
+				username=mobile.get(0).getLoginId()+"";
 			else if(mobile.size() > 1)
 			{
 				
