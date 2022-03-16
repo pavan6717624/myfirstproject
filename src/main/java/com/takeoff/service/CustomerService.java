@@ -92,6 +92,9 @@ public class CustomerService {
 	
 	@Autowired
 	VendorCouponsRepository vendorCouponsRepository;
+	
+	@Autowired
+	UserDetailsRepository userRepository;
 
 	
 	public List<TdsDTO> getTDS(String fromDate, String toDate)
@@ -171,6 +174,30 @@ public class CustomerService {
 		}
 		
 		return statusDto;
+	}
+	
+	public StatusDTO checkCustomerDetails(String mobileNumber, String email)
+	{
+		StatusDTO status=new StatusDTO();
+		
+		
+		 
+		List<UserDetails> login=userRepository.findByContactNumber(mobileNumber);
+		if(login.size() > 0)
+		{
+			status.setStatus(false);
+			status.setMessage("Provided Mobile Number already Exists.\n");
+		}
+		
+		login=userRepository.findByEmail(email);
+		if(login.size() > 0)
+		{
+			status.setStatus(false);
+			status.setMessage(status.getMessage()+"Provided Email already Exists.");
+		}
+		
+		return status;
+		
 	}
 
 			

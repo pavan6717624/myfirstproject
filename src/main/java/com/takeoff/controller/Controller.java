@@ -165,6 +165,11 @@ public class Controller {
 		razorpayService.recordHits(referer);
 	}
 	
+	public StatusDTO checkCustomerDetails(@RequestParam("mobileNumber") String mobileNumber, @RequestParam("email") String email)
+	{
+		return customerService.checkCustomerDetails(mobileNumber, email);
+	}
+	
 	@RequestMapping("/getNotification")
 	public NotificationDTO getNotification()
 	{
@@ -1259,7 +1264,7 @@ List<Long> couponIds = request.getCouponIds();
 			
 			if(mobile.size() == 1)
 				username=mobile.get(0).getUserId()+"";
-			else
+			else if(mobile.size() > 1)
 			{
 				
 				
