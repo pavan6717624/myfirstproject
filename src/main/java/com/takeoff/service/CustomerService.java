@@ -410,7 +410,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
 		String refererCode = customerDetails.getRefererId();		
 		
-		if(subscriptionType.equals("Free") && !refererCode.equals("TO10149"))
+		if(subscriptionType.equals("Free") && !refererCode.equalsIgnoreCase("TO10149"))
 		{
 			
 			notification.setType("");
@@ -419,7 +419,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 			
 			
 		}	
-		else if(subscriptionType.equals("Free") && refererCode.equals("TO10149"))
+		else if(subscriptionType.equals("Free") && refererCode.equalsIgnoreCase("TO10149"))
 		{
 			notification.setType("Special");
 			notification.setHeader("Welcome to Special Customer!");	

@@ -81,13 +81,13 @@ public class RedemptionService {
 			redemptionDTO.setMessage("Sorry! Complimentary Coupon Redemptions are only for PAID Subscriptions");	
 			return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 3 && !refererCode.equals("TO10149"))	
+			else if(freeSubscriberRedemptionCount >= 3 && !refererCode.equalsIgnoreCase("TO10149"))	
 			{	
 				redemptionDTO.setStatus(false);	
 				redemptionDTO.setMessage("Sorry! Your Redemption Limit(3) is already reached for this Month.");	
 				return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 10 && refererCode.equals("TO10149"))	
+			else if(freeSubscriberRedemptionCount >= 10 && refererCode.equalsIgnoreCase("TO10149"))	
 			{
 				redemptionDTO.setStatus(false);	
 				redemptionDTO.setMessage("Sorry! Your Redemption Limit(10) is already reached for this Month.");	
