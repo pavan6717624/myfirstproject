@@ -1255,10 +1255,19 @@ List<Long> couponIds = request.getCouponIds();
 		try
 		{
 			
-			Optional<com.takeoff.domain.UserDetails> mobile = userRepository.findByContactNumber(username);
+			List<com.takeoff.domain.UserDetails> mobile = userRepository.findByContactNumber(username);
 			
-			if(mobile.isPresent())
-				username=mobile.get().getUserId()+"";
+			if(mobile.size() == 1)
+				username=mobile.get(0).getUserId()+"";
+			else
+			{
+				
+				
+				loginStatus.setLoginStatus(false);
+				
+				loginStatus.setMessage("You have Multiple Accounts with Same Mobile Number. So Please login with Login Id.");
+				return loginStatus;
+			}
 			
 			username=username.toLowerCase().replaceAll("to","");
 			
@@ -1269,6 +1278,8 @@ List<Long> couponIds = request.getCouponIds();
 				System.out.println("He is not user");
 				
 				loginStatus.setLoginStatus(false);
+				loginStatus.setMessage("Invalid Credientails..");
+				
 				
 				return loginStatus;
 				
@@ -1303,6 +1314,7 @@ List<Long> couponIds = request.getCouponIds();
 		{
 			System.out.println("Error Occured while logging in "+ex);
 			loginStatus.setLoginStatus(false);
+			loginStatus.setMessage("Invalid Credientails..");
 		}
 	
 		return loginStatus;

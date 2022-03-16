@@ -29,7 +29,7 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 	Optional<UserDetails> findByExecutiveId(Long executiveId);
 	 
 	 @Query("select u from UserDetails u where u.contact=(:username) and u.role.id=2 and u.isDeleted=false and u.isDisabled=false")
-	Optional<UserDetails> findByContactNumber(@Param("username") String username);
+	List<UserDetails> findByContactNumber(@Param("username") String username);
 		
 }
 	
