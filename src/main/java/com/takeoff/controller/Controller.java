@@ -254,6 +254,18 @@ public class Controller {
 	@RequestMapping("/checkPasswordOTP")
 	public Boolean checkPasswordOTP(@RequestParam("userId") String userId, @RequestParam("otp") String otp)
 	{
+		
+		List<com.takeoff.domain.UserDetails> mobile = userRepository.findByContactNumber(userId);
+		
+		if(mobile.size() == 1)
+			userId=mobile.get(0).getLoginId()+"";
+		else if(mobile.size() > 1)
+		{
+			
+			return false;
+		}
+		
+		
 		if(userId.startsWith("TO"))
 			
             userId=userId.substring(2,7);
