@@ -258,6 +258,8 @@ public class Controller {
 			
             userId=userId.substring(2,7);
 		
+		userId=userId.substring(0,5);
+		
 		System.out.println("User Id is "+userId);
 	
 	return utilService.checkPasswordOTP(userId,otp);
