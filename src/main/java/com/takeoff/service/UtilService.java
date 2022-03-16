@@ -50,6 +50,8 @@ public class UtilService {
 		      Twilio.init(ACCOUNT_SID, AUTH_ID);
 		   }
 		   
+	   
+	   public final static String SPECIAL[]= {"TO10149","TO104034","TO10202"};
 	
 	public String generatePassword(int length) throws NoSuchAlgorithmException {
 	      String capitalCaseLetters = "ABCDEFGHJKLMNPQRSTUVWXYZ";

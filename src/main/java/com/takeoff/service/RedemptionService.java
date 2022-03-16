@@ -4,6 +4,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,13 +82,13 @@ public class RedemptionService {
 			redemptionDTO.setMessage("Sorry! Complimentary Coupon Redemptions are only for PAID Subscriptions");	
 			return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 3 && !refererCode.equalsIgnoreCase("TO10149"))	
+			else if(freeSubscriberRedemptionCount >= 3  && !Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))	
 			{	
 				redemptionDTO.setStatus(false);	
 				redemptionDTO.setMessage("Sorry! Your Redemption Limit(3) is already reached for this Month.");	
 				return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 10 && refererCode.equalsIgnoreCase("TO10149"))	
+			else if(freeSubscriberRedemptionCount >= 10 && Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))	
 			{
 				redemptionDTO.setStatus(false);	
 				redemptionDTO.setMessage("Sorry! Your Redemption Limit(10) is already reached for this Month.");	

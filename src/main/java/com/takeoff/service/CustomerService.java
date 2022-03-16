@@ -6,6 +6,7 @@ import java.security.SecureRandom;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -410,7 +411,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
 		String refererCode = customerDetails.getRefererId();		
 		
-		if(subscriptionType.equals("Free") && !refererCode.equalsIgnoreCase("TO10149"))
+		if(subscriptionType.equals("Free") && !Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))
 		{
 			
 			notification.setType("");
@@ -419,7 +420,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 			
 			
 		}	
-		else if(subscriptionType.equals("Free") && refererCode.equalsIgnoreCase("TO10149"))
+		else if(subscriptionType.equals("Free") && Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))
 		{
 			notification.setType("Special");
 			notification.setHeader("Welcome to Special Customer!");	
