@@ -376,7 +376,11 @@ public class CustomerService {
 	public Boolean forgetPassword(String userId, String newpassword) {
 
 			
+if(userId.startsWith("TO"))
+			
+            userId=userId.substring(2,7);
 		
+		userId=userId.substring(0,5);
 
 
 		Optional<UserDetails> user=userDetailsRepository.findById(Long.valueOf(userId));
