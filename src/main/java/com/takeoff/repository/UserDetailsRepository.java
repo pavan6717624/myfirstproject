@@ -34,6 +34,8 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 	 @Query("select u from UserDetails u where u.email=(:email) and u.role.id=2 and u.isDeleted=false and u.isDisabled=false")
 		List<UserDetails> findByEmail(@Param("email") String email);
 
+	Optional<UserDetails> findByLoginId(@Param("loginId") Long loginId);
+
 	
 }
 	
