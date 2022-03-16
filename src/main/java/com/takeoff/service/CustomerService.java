@@ -180,6 +180,8 @@ public class CustomerService {
 	{
 		StatusDTO status=new StatusDTO();
 		
+		status.setStatus(true);
+		
 		
 		 
 		List<UserDetails> login=userRepository.findByContactNumber(mobileNumber);

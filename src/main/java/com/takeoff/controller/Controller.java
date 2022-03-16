@@ -164,7 +164,7 @@ public class Controller {
 	
 		razorpayService.recordHits(referer);
 	}
-	
+	@RequestMapping("/checkCustomerDetails")
 	public StatusDTO checkCustomerDetails(@RequestParam("mobileNumber") String mobileNumber, @RequestParam("email") String email)
 	{
 		return customerService.checkCustomerDetails(mobileNumber, email);
