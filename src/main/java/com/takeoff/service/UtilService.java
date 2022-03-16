@@ -86,24 +86,42 @@ public class UtilService {
 			   }
 			   catch(Exception ex)
 			   {
-				System.out.println("Error in Sending SMS for "+smsTo+ex);   
+				   try
+				   {
+				   Message.creator(new PhoneNumber("+91"+smsTo), new PhoneNumber("+15128438283"),
+					         text).create();
+				   }
+				   catch(Exception ex1)
+				   {
+					   System.out.println("Error in Sending SMS for "+smsTo+ex);   
+				   }
+				
 			   }
 		   }
 		   
 		   public void sendMessage(String mailTo, String subject, String text)
 		   {
+			   SimpleMailMessage msg = new SimpleMailMessage();
+		     msg.setTo(mailTo);
+			msg.setFrom("support@thetakeoff.in");
+		     msg.setSubject(subject);
+		     msg.setText(text);
 			   try
 			   {
-			   SimpleMailMessage msg = new SimpleMailMessage();
-			     msg.setTo(mailTo);
- 				msg.setFrom("support@thetakeoff.in");
-			     msg.setSubject(subject);
-			     msg.setText(text);
+			  
 			     javaMailSender.send(msg);
 			   }
 			   catch(Exception ex)
 			   {
-				System.out.println("Error in Sending Mail for "+mailTo + "\n"+ex);   
+				   try
+				   {
+				   javaMailSender.send(msg);
+				   }
+				   catch(Exception ex1)
+				   {
+					   System.out.println("Error in Sending Mail for "+mailTo + "\n"+ex);   
+				   }
+				
 			   }
 		   }
 		   
