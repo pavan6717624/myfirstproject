@@ -366,6 +366,12 @@ public RedemptionDTO customerRedemption(RedemptionDTO redemptionDTO) {
 	
 	Boolean acceptRedemptionStatus = false;
 	
+	org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+	
+	Long userId=Long.valueOf(userDetails.getUsername());
+
+	UserDetails customer = userDetailsRepository.findById(userId).get();
+	
 	VendorCoupons coupon =  vendorCouponsRepository.findById(redemptionDTO.getCouponId()).get();
 	
 	System.out.println("customerRedemption "+ redemptionDTO.getCouponId()+" "+redemptionDTO.getCustomerId()+" "+coupon.getVendor().getUser().getUserId());
@@ -389,6 +395,29 @@ public RedemptionDTO customerRedemption(RedemptionDTO redemptionDTO) {
 	 
 		String redemOn = formatter.format(redemption.getRedemOn());
 	redemp.setRedemOn(redemOn);
+	String email= coupon.getVendor().getUser().getEmail();
+	
+	try
+	{
+	
+	String mailText="\nYour Coupon has been Redemmed Successfully on "+ redemOn +".\n"
+			
+			+ "\n\nCoupon Id: "+coupon.getId()
+			+ "\n\nCoupon Description: \n"+coupon.getHeader()+"\n"+coupon.getBody()+"\n"+coupon.getFooter()
+			+ "\n\nCustomer Id: "+customer.getLoginId()
+			+ "\n\nCustomer Name : "+customer.getName()
+			+ "\n\nCustomer Contact :"+customer.getContact()
+			+ "\n\nFor Concerns : Please contact Customer Care."
+			+" \n\nThanks & Regards,"
+			+ "\nTakeOff Team.";
+	utilService.sendMessage(email,"Your Coupon (Id: "+coupon.getId()+") has been Successfully Redemmed by Customer Id: "+userId,mailText);
+	}
+	
+	
+	catch(Exception ex)
+	{
+		System.out.println("Could not Send Succes Mail to Vendor on Redemption");
+	}
 	
 	return redemp;
 }
