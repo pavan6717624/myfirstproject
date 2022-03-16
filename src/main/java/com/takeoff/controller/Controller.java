@@ -1255,7 +1255,7 @@ List<Long> couponIds = request.getCouponIds();
 		try
 		{
 			
-			Optional<com.takeoff.domain.UserDetails> mobile = userRepository.findByMobile(username);
+			Optional<com.takeoff.domain.UserDetails> mobile = userRepository.findByContact(username);
 			
 			if(mobile.isPresent())
 				username=mobile.get().getUserId()+"";
