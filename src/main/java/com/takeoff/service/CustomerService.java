@@ -226,12 +226,20 @@ public class CustomerService {
 			  statusDto.setLoginId(0L);	
 			 statusDto.setMessage(" Mapping Failed. Please contact Customer Care.");	
 		 }	
+
+String subType="FREE";
+int redems=3;
+if(Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))
+{
+subType="SPECIAL";
+redems=10;
+}
 		 try	
 		 {	
-		 String text="Your FREE Account got Created in TakeOff\n"	
+		 String text="Your "+ subType + " Account got Created in TakeOff\n"	
 		     		+ "Login Id / Referral Code: "+statusDto.getReferCode()+"\n"	
 		     		+ "Password: "+password+"\n"	
-		     		+ "Only 3 Redemptions per Month\n"	
+		     		+ "Only " + redems + " Redemptions per Month\n"	
 		     		+ "Login to www.thetakeoff.in";	
 		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff FREE Account", text);	
 		 utilService.sendSMS(subscription.getContact(), text);	
