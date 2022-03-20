@@ -229,7 +229,7 @@ public class CustomerService {
 
 String subType="FREE";
 int redems=3;
-if(Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))
+if(Arrays.asList(UtilService.SPECIAL).contains(subscription.getRefererid().toUpperCase()))
 {
 subType="SPECIAL";
 redems=10;
