@@ -241,7 +241,7 @@ redems=10;
 		     		+ "Password: "+password+"\n"	
 		     		+ "Only " + redems + " Redemptions per Month\n"	
 		     		+ "Login to www.thetakeoff.in";	
-		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff FREE Account", text);	
+		 utilService.sendMessage(subscription.getEmail(), "Your TakeOff "+ subType + " Account", text);	
 		 utilService.sendSMS(subscription.getContact(), text);	
 		 	
 		 }	
