@@ -48,8 +48,9 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 		List<CustomerDetailsDTO> getInvestorCustomerAccountDetails(@Param("userId") Long userId);
 	  
 	  
-	  @Query("select u.role.roleName as roleName, sum(case when DATE(u.joinDate)=CURDATE() then 1 else 0 end) as todayCount, sum(case when month(u.joinDate)=month(current_date) then 1 else 0 end) as monthCount, count(*) as totalCount from UserDetails u where u.role.id!=1 group by u.role.roleName")
+	  @Query("select u.role.roleName as roleName, u.type as type,  sum(case when DATE(u.joinDate)=CURDATE() then 1 else 0 end) as todayCount, sum(case when month(u.joinDate)=month(current_date) then 1 else 0 end) as monthCount, count(*) as totalCount from UserDetails u where u.role.id!=1 group by u.role.roleName, u.type")
 		List<StatsDTO> getUserStats();
+
 	  
 	  @Query("select sum(walletAmount) from CustomerDetails")
 			Long getWalletBalance();
