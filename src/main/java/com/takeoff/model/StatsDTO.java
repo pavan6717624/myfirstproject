@@ -10,6 +10,8 @@ public interface StatsDTO {
 	
 	public Long getTotalCount();
 	
+		public String getType();
+	
 	
 
 }
