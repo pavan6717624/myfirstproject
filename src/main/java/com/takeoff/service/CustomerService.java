@@ -456,22 +456,22 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		{
 			
 			notification.setType("");
-			notification.setHeader("Welcome to Customer!");	
-			notification.setMessage("Your Redeemed Coupons for the month:: "+freeSubscriberRedemptionCount+"\nYour Available Redemptions for the Month :: "+(3-freeSubscriberRedemptionCount));	
+			notification.setHeader("Welcome Customer!");	
+			notification.setMessage("Your Redeemed Coupons for the month:: "+freeSubscriberRedemptionCount+"<br/>Your Available Redemptions for the Month :: "+(3-freeSubscriberRedemptionCount));	
 			
 			
 		}	
 		else if(subscriptionType.equals("Free") && Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))
 		{
 			notification.setType("Special");
-			notification.setHeader("Welcome to Special Customer!");	
-			notification.setMessage("Your Redeemed Coupons for the month:: "+freeSubscriberRedemptionCount+"\nYour Available Redemptions for the Month :: "+(10-freeSubscriberRedemptionCount));	
+			notification.setHeader("Welcome Special Customer!");	
+			notification.setMessage("Your Redeemed Coupons for the month:: "+freeSubscriberRedemptionCount+"<br/>Your Available Redemptions for the Month :: "+(10-freeSubscriberRedemptionCount));	
 			
 		}
 		else
 		{
 			notification.setType("Premium");
-			notification.setHeader("Welcome to Premium Customer!");	
+			notification.setHeader("Welcome Premium Customer!");	
 			notification.setMessage("Your are eligible for Unlimited Redemptions");	
 			
 		}
