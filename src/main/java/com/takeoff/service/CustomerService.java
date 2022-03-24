@@ -457,7 +457,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 			
 			notification.setType("");
 			notification.setHeader("Welcome Customer!");	
-			notification.setMessage("Redeemed Coupons(this month) - "+freeSubscriberRedemptionCount+"<br/>Available Redemptions(this Month) - "+(3-freeSubscriberRedemptionCount));	
+			notification.setMessage("For This Month :: <br/>Redeemed Coupons - "+freeSubscriberRedemptionCount+"<br/>Available Redemptions - "+(3-freeSubscriberRedemptionCount));	
 			
 			
 		}	
@@ -465,7 +465,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		{
 			notification.setType("Special");
 			notification.setHeader("Welcome Special Customer!");	
-			notification.setMessage("Redeemed Coupons(this month) - "+freeSubscriberRedemptionCount+"<br/>Available Redemptions(this Month) - "+(10-freeSubscriberRedemptionCount));	
+			notification.setMessage("For This Month :: <br/>Redeemed Coupons - "+freeSubscriberRedemptionCount+"<br/>Available Redemptions - "+(10-freeSubscriberRedemptionCount));	
 			
 		}
 		else
