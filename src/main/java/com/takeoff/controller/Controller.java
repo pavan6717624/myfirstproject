@@ -1409,6 +1409,15 @@ List<Long> couponIds = request.getCouponIds();
 		return customerService.subscribe(subscription);
 	}
 	
+	@RequestMapping("/upgradeSubscription")
+	public StatusDTO upgradeSubscription(@RequestBody SubscriptionDTO subscription)
+	{
+		
+				
+		return customerService.upgradeSubscription(subscription);
+	}
+	
+	
 	@RequestMapping(value="/getOrderId")
 	public OrderDTO getOrderId() throws RazorpayException
 	{

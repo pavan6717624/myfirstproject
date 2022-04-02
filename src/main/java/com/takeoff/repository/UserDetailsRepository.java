@@ -35,6 +35,8 @@ public interface UserDetailsRepository  extends JpaRepository<UserDetails,Long> 
 		List<UserDetails> findByEmail(@Param("email") String email);
 
 	Optional<UserDetails> findByLoginId(@Param("loginId") Long loginId);
+	
+	Optional<UserDetails> findByUserId(@Param("userId") Long userId);
 
 	
 }

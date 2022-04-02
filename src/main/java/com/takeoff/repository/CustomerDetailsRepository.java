@@ -26,8 +26,11 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	    @Query( nativeQuery = true, value = "insert into customer_mapping(user_id,referer_id,parent_id,type) select (:userId) as user_id,  (:refererId) as referer_id,(case when (:type)='Free' then (:refererId) else case when (count(*) > 0 && (count(*)=1 || count(*) = 3 || count(*) = 5 ||(count(*)-5)%5=0)) then (select parent_id from customer_mapping where user_id like (:refererId)) else (:refererId) end end)   as parent_id,(:type) from customer_mapping where referer_id like (:refererId) and type like 'Pay'")
 	    public int customerMapping(@Param("userId") Long userId, @Param("refererId") Long refererId,@Param("type") String type);
 	  
+	  @Modifying
+	  @Transactional
+	    @Query( nativeQuery = true, value = "UPDATE customer_mapping AS s, (select (:userId) as user_id, (case when (count(*) > 0 && (count(*)=1 || count(*) = 3 || count(*) = 5 ||(count(*)-5)%5=0)) then (select parent_id from customer_mapping where user_id like (:refererId)) else (:refererId) end) as parent_id from customer_mapping where referer_id like (:refererId) and type like 'Pay') AS p SET s.parent_id = p.parent_id WHERE s.user_id = p.user_id")
+	    public int upgradeCustomerMapping(@Param("userId") Long userId, @Param("refererId") Long refererId);
 	  
-	
 
 	  @Query("select c from CustomerDetails c where c.user.userId=(:userId)")
 		Optional<CustomerDetails> findByUserId(@Param("userId") Long userId);

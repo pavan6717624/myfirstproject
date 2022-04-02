@@ -2,6 +2,7 @@ package com.takeoff.repository;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -9,6 +10,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import com.takeoff.domain.CustomerMapping;
+import com.takeoff.domain.UserDetails;
 import com.takeoff.model.DisplayDetailsDTO;
 import com.takeoff.model.TdsDTO;
 @Repository
@@ -34,5 +36,7 @@ public interface CustomerMappingRepository  extends JpaRepository<CustomerMappin
 	
 	@Query("select c.parentId as parentId, d.user.name as name, k.pan as pan, d.user.email as email, d.user.contact as contact, d.user.city as city, (count(*)*(case when k.panStatus like 'Approved' then 25 else 100 end))  as tds from CustomerMapping c, CustomerDetails d, KYCDetails k where k.customer.customerId = d.customerId and d.user.userId=c.parentId and c.customer.joinDate >= (:fromDate) and c.customer.joinDate <= (:toDate) group by parentId, d.user.name , d.user.email, d.user.contact, d.user.city order by parentId, d.user.name , d.user.email, d.user.contact, d.user.city desc")
 	public List<TdsDTO> getTDS(@Param("fromDate") Timestamp fromDate, @Param("toDate") Timestamp toDate);
+	
+	Optional<CustomerMapping> findByCustomer(@Param("customer") UserDetails customer);
 	
 }

@@ -18,6 +18,7 @@ import org.springframework.stereotype.Service;
 
 import com.razorpay.RazorpayException;
 import com.takeoff.domain.CustomerDetails;
+import com.takeoff.domain.CustomerMapping;
 import com.takeoff.domain.KYCDetails;
 import com.takeoff.domain.Statement;
 import com.takeoff.domain.UserDetails;
@@ -478,6 +479,64 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
 		return notification;	
 		
+	}
+@Transactional
+	public StatusDTO upgradeSubscription(SubscriptionDTO subscription) {
+		
+		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		StatusDTO statusDto = new StatusDTO();
+		Long userId=Long.valueOf(userDetails.getUsername());
+		
+		
+		Optional<UserDetails> optUser = userDetailsRepository.findByUserId(userId);
+		
+		if(optUser.isEmpty() || (optUser.isPresent() && !optUser.get().getType().toLowerCase().equals("free")))
+		{
+			statusDto.setStatus(false);
+			statusDto.setMessage("You are not Eligible User for Premium Subscription.");
+			return statusDto;
+		}
+		Boolean paymentStatus=false;
+		
+		try {
+			paymentStatus =razorpayService.subscribe(subscription);
+		} catch (RazorpayException | IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			statusDto.setStatus(false);
+			statusDto.setMessage("Issue Occured while Upgrading...Please contact Customer Care.");
+	
+		}	
+		
+		if(paymentStatus)
+		{
+			UserDetails user=optUser.get();
+			user.setType("Pay");
+			userDetailsRepository.save(user);
+			CustomerDetails customer = customerDetailsRepository.findByUserId(userId).get();
+			CustomerMapping custMapping = customerMappingRepository.findByCustomer(user).get();
+			customer.setRazorpay_order_id(subscription.getRazorpay_order_id());
+			customer.setRazorpay_payment_id(subscription.getRazorpay_payment_id());
+			customer.setRazorpay_signature(subscription.getRazorpay_signature());
+			customerDetailsRepository.upgradeCustomerMapping(userId, custMapping.getRefererId());
+			custMapping.setType("Pay");
+			userDetailsRepository.save(user);
+			customerDetailsRepository.save(customer);
+			customerMappingRepository.save(custMapping);
+			
+			statusDto.setStatus(true);
+			statusDto.setMessage("Your Account Upgraded to Premium Subscription.");
+			
+		
+		}
+		else
+		{
+			statusDto.setStatus(false);
+			statusDto.setMessage("Error Occured while Upgrading...Please contact Customer Care.");
+		}
+	
+		return statusDto;
 	}
 
 }
