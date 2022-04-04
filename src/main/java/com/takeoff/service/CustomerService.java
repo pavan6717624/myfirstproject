@@ -491,7 +491,7 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
 		Optional<UserDetails> optUser = userDetailsRepository.findByUserId(userId);
 		
-		if(optUser.isEmpty() || (optUser.isPresent() && !optUser.get().getType().toLowerCase().equals("free")))
+		if(!optUser.isPresent() || (optUser.isPresent() && !optUser.get().getType().toLowerCase().equals("free")))
 		{
 			statusDto.setStatus(false);
 			statusDto.setMessage("You are not Eligible User for Premium Subscription.");
