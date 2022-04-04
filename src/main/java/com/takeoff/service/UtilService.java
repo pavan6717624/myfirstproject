@@ -179,7 +179,7 @@ public class UtilService {
 					
 				Optional<UserDetails> user = userDetailsRepository.findById(Long.valueOf(userId));
 				
-				System.out.println(user.get().getEmail() +" "+user.get().getCity());
+				System.out.println(user.get().getEmail() +" "+user.get().getCity()+" "+email+" "+city);
 				
 				if(user.isPresent() && user.get().getEmail().toLowerCase().equals(email.toLowerCase()) && user.get().getCity().toLowerCase().equals(city.toLowerCase()))
 				{
