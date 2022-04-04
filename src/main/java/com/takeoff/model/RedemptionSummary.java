@@ -22,5 +22,10 @@ public interface RedemptionSummary {
 	
 	public String getCustomerContact();
 	
+		
+	public String getCategory();
+	
+	public String getSubCategory();
+	
 
 }
