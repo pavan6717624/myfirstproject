@@ -102,4 +102,21 @@ public Long couponId;
 	
 	public String customerContact;
 	
+	public String category;
+	
+	public String subCategory;
+
+	@Override
+	public String getCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public String getSubCategory() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	
 }
