@@ -544,8 +544,8 @@ public class Controller {
 	        response.setContentType("text/plain; charset=utf-8");
 	        StringBuilder csvData = new StringBuilder("");
 
-	      String headers[]= {"SLNO.","Coupon Id","Outlet Id","Outlet Name","Address","Contact","Customer Id","Customer Name","Contact","Coupon Type","Redemption On"};
-	      
+	     String headers[]= {"SLNO.","Coupon Id","Outlet Id","Outlet Name","Address","Contact","Customer Id","Customer Name","Contact","Coupon Type","Coupon Category", "Coupon Sub Category","Redemption On"};
+	       
 	      for (int i = 0; i < headers.length - 1; i++) {
 	            csvData.append(headers[i] + ",");
 	        }
@@ -565,6 +565,8 @@ public class Controller {
 	        	csvData.append(redemptionHistory.get(i).getCustomerName().replace(","," ") + ",");
 	        	csvData.append(redemptionHistory.get(i).getCustomerContact() + ",");
 	        	csvData.append(redemptionHistory.get(i).getCouponType() + ",");
+			csvData.append(redemptionHistory.get(i).getCategory() + ",");
+	        	csvData.append(redemptionHistory.get(i).getSubCategory() + ",");
 	        	csvData.append(redemptionHistory.get(i).getRedemOn() + ",");
 	   
 	           	csvData.append("\n");
