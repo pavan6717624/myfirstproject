@@ -181,7 +181,7 @@ public class UtilService {
 				
 				System.out.println(user.get().getEmail() +" "+user.get().getCity()+" "+email+" "+city);
 				
-				if(user.isPresent() && user.get().getEmail().toLowerCase().equals(email.toLowerCase()) && user.get().getCity().toLowerCase().equals(city.toLowerCase()))
+				if(user.isPresent() && user.get().getEmail().trim().toLowerCase().equals(email.trim().toLowerCase()) && user.get().getCity().trim().toLowerCase().equals(city.trim().toLowerCase()))
 				{
 					
 					String otp = resetPasswordRepository.getPasscode(Long.valueOf(userId), Timestamp.valueOf(LocalDateTime.now()))+"";
