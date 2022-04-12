@@ -51,7 +51,7 @@ public class UtilService {
 		   }
 		   
 	   
-	   public final static String SPECIAL[]= {"TO10149","TO104034","TO10202"};
+	   public final static String SPECIAL[]= {"TO10149","TO104034","TO10202","TO106635"};
 	
 	public String generatePassword(int length) throws NoSuchAlgorithmException {
 	      String capitalCaseLetters = "ABCDEFGHJKLMNPQRSTUVWXYZ";
