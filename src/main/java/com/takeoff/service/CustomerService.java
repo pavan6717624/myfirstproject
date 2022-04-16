@@ -443,13 +443,20 @@ public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails() {
 		org.springframework.security.core.userdetails.UserDetails userDetails = (org.springframework.security.core.userdetails.UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		
 		Long userId=Long.valueOf(userDetails.getUsername());
-		Long freeSubscriberRedemptionCount = vendorCouponsRepository.freeSubscriberRedemptionCount(userId);	
+		Long freeSubscriberRedemptionCount = vendorCouponsRepository.freeSubscriberRedemptionCount(userId);
+		
+		
+		
+		
 		
 		NotificationDTO notification=new NotificationDTO();
 		
 		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
 		
 CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
+
+Long freeSubscriptionsCount= customerDetailsRepository.getFreeSubscriptionsCount(customerDetails.getRefererId());
+Long premiumSubscriptionsCount= customerDetailsRepository.getPremiumSubscriptionsCount(customerDetails.getRefererId());
 		
 		String refererCode = customerDetails.getRefererId();		
 		
@@ -458,7 +465,11 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 			
 			notification.setType("");
 			notification.setHeader("Welcome Customer!");	
-			notification.setMessage("For This Month :: <br/>Redeemed Coupons - "+freeSubscriberRedemptionCount+"<br/>Available Redemptions - "+(3-freeSubscriberRedemptionCount));	
+			if(premiumSubscriptionsCount <= 0l)
+			notification.setMessage("For This Month :: <br/>Redeemed Coupons - "+freeSubscriberRedemptionCount+"<br/>Free Subscriptions Added: "+freeSubscriptionsCount+"<br/>Available Redemptions - "+(((freeSubscriptionsCount+1)*3)-freeSubscriberRedemptionCount));
+			else
+				notification.setMessage("You are eligible for Unlimited Redemptions (Other Than Complimentaries) for this Month.");	
+				
 			
 			
 		}	
@@ -466,14 +477,17 @@ CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		{
 			notification.setType("Special");
 			notification.setHeader("Welcome Special Customer!");	
-			notification.setMessage("For This Month :: <br/>Redeemed Coupons - "+freeSubscriberRedemptionCount+"<br/>Available Redemptions - "+(10-freeSubscriberRedemptionCount));	
+			if(premiumSubscriptionsCount <= 0l)
+			notification.setMessage("For This Month :: <br/>Redeemed Coupons - "+freeSubscriberRedemptionCount+"<br/>Free Subscriptions Added: "+freeSubscriptionsCount+"<br/>Available Redemptions - "+((10+(freeSubscriptionsCount*3))-freeSubscriberRedemptionCount));
+			else
+				notification.setMessage("You are eligible for Unlimited Redemptions (Other Than Complimentaries) for this Month.");	
 			
 		}
 		else
 		{
 			notification.setType("Premium");
 			notification.setHeader("Welcome Premium Customer!");	
-			notification.setMessage("Your are eligible for Unlimited Redemptions");	
+			notification.setMessage("You are eligible for Unlimited Redemptions");	
 			
 		}
 		
