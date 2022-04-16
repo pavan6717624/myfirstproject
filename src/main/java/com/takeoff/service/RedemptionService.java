@@ -66,8 +66,9 @@ public class RedemptionService {
 		
 		CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
-		Long freeSubscriptionsCount= customerRepository.getFreeSubscriptionsCount(customerDetails.getRefererId());
-		Long premiumSubscriptionsCount= customerRepository.getPremiumSubscriptionsCount(customerDetails.getRefererId());
+		Long freeSubscriptionsCount= customerRepository.getFreeSubscriptionsCount(customerDetails.getReferCode());
+		Long premiumSubscriptionsCount= customerRepository.getPremiumSubscriptionsCount(customerDetails.getReferCode());		
+
 				
 
 		
