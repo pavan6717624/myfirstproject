@@ -51,7 +51,7 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 		List<CustomerDetailsDTO> getInvestorCustomerAccountDetails(@Param("userId") Long userId);
 	  
 	  
-	  @Query("select u.role.roleName as roleName, u.type as type,  sum(case when DATE(u.joinDate)=CURDATE() then 1 else 0 end) as todayCount, sum(case when month(u.joinDate)=month(current_date) then 1 else 0 end) as monthCount, count(*) as totalCount from UserDetails u where u.role.id!=1 group by u.role.roleName, u.type")
+	  @Query("select u.role.roleName as roleName, u.type as type,  sum(case when DATE(u.joinDate)=CURDATE() and month(u.joinDate)=month(current_date) and YEAR(u.joinDate) = YEAR(CURRENT_DATE) then 1 else 0 end) as todayCount, sum(case when month(u.joinDate)=month(current_date) and YEAR(u.joinDate) = YEAR(CURRENT_DATE) then 1 else 0 end) as monthCount, count(*) as totalCount from UserDetails u where u.role.id!=1 group by u.role.roleName, u.type")
 		List<StatsDTO> getUserStats();
 
 	  
@@ -60,4 +60,10 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	  
 	  @Query("select c.user.userId as userId,DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.refererId as refererId,c.referCode as referCode from CustomerDetails c where c.executive.userId=(:executiveId) order by c.user.userId desc")
 		List<CustomerDetailsDTO> getExecutiveCustomerAccountDetails(@Param("executiveId") Long executiveId);
+
+	  @Query("select count(c) from CustomerDetails c where c.refererId=(:refererId) and MONTH(c.user.joinDate) = MONTH(CURRENT_DATE) and YEAR(c.user.joinDate) = YEAR(CURRENT_DATE) and c.user.type like 'Free'")
+	  Long getFreeSubscriptionsCount(String refererId);
+	  
+	  @Query("select count(c) from CustomerDetails c where c.refererId=(:refererId) and MONTH(c.user.joinDate) = MONTH(CURRENT_DATE) and YEAR(c.user.joinDate) = YEAR(CURRENT_DATE) and c.user.type like 'Pay'")
+	  Long getPremiumSubscriptionsCount(String refererId);
 }
