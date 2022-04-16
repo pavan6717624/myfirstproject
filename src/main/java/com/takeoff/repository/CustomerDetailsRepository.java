@@ -61,9 +61,9 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	  @Query("select c.user.userId as userId,DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.refererId as refererId,c.referCode as referCode from CustomerDetails c where c.executive.userId=(:executiveId) order by c.user.userId desc")
 		List<CustomerDetailsDTO> getExecutiveCustomerAccountDetails(@Param("executiveId") Long executiveId);
 
-	  @Query("select count(c) from CustomerDetails c where c.refererId=(:refererId) and MONTH(c.user.joinDate) = MONTH(CURRENT_DATE) and YEAR(c.user.joinDate) = YEAR(CURRENT_DATE) and c.user.type like 'Free'")
+	  @Query("select count(c) from CustomerDetails c where c.refererId=(:refererId) and MONTH(c.user.joinDate) = MONTH(CURRENT_DATE) and YEAR(c.user.joinDate) = YEAR(CURRENT_DATE) and c.user.type like 'Free' and c.user.isDeleted!=true and c.user.isDisabled!=true")
 	  Long getFreeSubscriptionsCount(String refererId);
 	  
-	  @Query("select count(c) from CustomerDetails c where c.refererId=(:refererId) and MONTH(c.user.joinDate) = MONTH(CURRENT_DATE) and YEAR(c.user.joinDate) = YEAR(CURRENT_DATE) and c.user.type like 'Pay'")
+	  @Query("select count(c) from CustomerDetails c where c.refererId=(:refererId) and MONTH(c.user.joinDate) = MONTH(CURRENT_DATE) and YEAR(c.user.joinDate) = YEAR(CURRENT_DATE) and c.user.type like 'Pay' and c.user.isDeleted!=true and c.user.isDisabled!=true")
 	  Long getPremiumSubscriptionsCount(String refererId);
 }
