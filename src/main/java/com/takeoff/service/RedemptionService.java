@@ -66,6 +66,11 @@ public class RedemptionService {
 		
 		CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 		
+		Long freeSubscriptionsCount= customerRepository.getFreeSubscriptionsCount(customerDetails.getRefererId());
+		Long premiumSubscriptionsCount= customerRepository.getPremiumSubscriptionsCount(customerDetails.getRefererId());
+				
+
+		
 		String refererCode = customerDetails.getRefererId();		
 		
 		String subscriptionType = userDetailsRepository.findById(userId).get().getType();	
@@ -82,16 +87,16 @@ public class RedemptionService {
 			redemptionDTO.setMessage("Sorry! Complimentary Coupon Redemptions are only for PAID Subscriptions");	
 			return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 3  && !Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))	
+			else if(premiumSubscriptionsCount ==0l && freeSubscriberRedemptionCount >= ((freeSubscriptionsCount+1)*3)  && !Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))	
 			{	
 				redemptionDTO.setStatus(false);	
-				redemptionDTO.setMessage("Sorry! Your Redemption Limit(3) is already reached for this Month.");	
+				redemptionDTO.setMessage("Sorry! Your Redemption Limit("+((freeSubscriptionsCount+1)*3)+") is already reached for this Month.");	
 				return redemptionDTO;	
 			}	
-			else if(freeSubscriberRedemptionCount >= 10 && Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))	
+			else if(premiumSubscriptionsCount ==0l && freeSubscriberRedemptionCount >= (10+(freeSubscriptionsCount*3)) && Arrays.asList(UtilService.SPECIAL).contains(refererCode.toUpperCase()))	
 			{
 				redemptionDTO.setStatus(false);	
-				redemptionDTO.setMessage("Sorry! Your Redemption Limit(10) is already reached for this Month.");	
+				redemptionDTO.setMessage("Sorry! Your Redemption Limit("+(10+(freeSubscriptionsCount*3))+") is already reached for this Month.");	
 				return redemptionDTO;	
 			}
 		}
