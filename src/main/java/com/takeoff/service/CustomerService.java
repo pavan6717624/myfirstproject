@@ -455,8 +455,8 @@ public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails() {
 		
 CustomerDetails customerDetails = customerRepository.findByUserId(userId).get();
 
-Long freeSubscriptionsCount= customerDetailsRepository.getFreeSubscriptionsCount(customerDetails.getRefererId());
-Long premiumSubscriptionsCount= customerDetailsRepository.getPremiumSubscriptionsCount(customerDetails.getRefererId());
+Long freeSubscriptionsCount= customerDetailsRepository.getFreeSubscriptionsCount(customerDetails.getReferCode());
+Long premiumSubscriptionsCount= customerDetailsRepository.getPremiumSubscriptionsCount(customerDetails.getReferCode());
 		
 		String refererCode = customerDetails.getRefererId();		
 		
