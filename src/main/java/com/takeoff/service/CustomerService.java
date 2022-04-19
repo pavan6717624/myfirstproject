@@ -411,7 +411,7 @@ if(userId.startsWith("TO"))
 
 	public List<CustomerDetailsDTO> getAllCustomerAccountDetails() {
 		
-		return customerDetailsRepository.getAllCustomerAccountDetails();
+				return customerDetailsRepository.getAllCustomerAccountDetails(Arrays.asList(utilService.SPECIAL));
 	}
 	
 public List<CustomerDetailsDTO> getInvestorCustomerAccountDetails() {
