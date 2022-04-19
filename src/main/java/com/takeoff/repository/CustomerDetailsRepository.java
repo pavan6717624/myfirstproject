@@ -44,8 +44,9 @@ public interface CustomerDetailsRepository extends JpaRepository<CustomerDetails
 	  
 	  
 	  
-	  @Query("select c.user.userId as userId,DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.razorpay_payment_id as razorpay_payment_id,c.razorpay_order_id as razorpay_order_id,c.refererId as refererId,c.referCode as referCode,c.paymentStatus as paymentStatus,c.mappingStatus as mappingStatus,c.walletAmount as walletAmount from CustomerDetails c order by c.user.userId asc")
-		List<CustomerDetailsDTO> getAllCustomerAccountDetails();
+	  @Query("select c.user.userId as userId,(case when (c.user.type like 'Free' and Upper(c.refererId) in (:special)) then 'Special' else c.user.type end) as type, DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.razorpay_payment_id as razorpay_payment_id,c.razorpay_order_id as razorpay_order_id,c.refererId as refererId,c.referCode as referCode,c.paymentStatus as paymentStatus,c.mappingStatus as mappingStatus,c.walletAmount as walletAmount from CustomerDetails c order by c.user.userId asc")
+		List<CustomerDetailsDTO> getAllCustomerAccountDetails(@Param("special") List special);
+	
 	  
 	  @Query("select c.user.userId as userId,DATE_FORMAT(c.user.joinDate, '%d %M %Y %h:%i:%s %p') as joinDate, c.user.name as name,c.user.contact as contact,c.user.email as email,c.user.city as city,c.profession as profession,c.gender as gender,c.refererId as refererId,c.referCode as referCode from CustomerDetails c where c.user.joinDate >= (select u.joinDate from UserDetails u where u.userId=(:userId)) order by c.user.userId desc")
 		List<CustomerDetailsDTO> getInvestorCustomerAccountDetails(@Param("userId") Long userId);
