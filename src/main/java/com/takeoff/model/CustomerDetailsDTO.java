@@ -11,6 +11,8 @@ public interface CustomerDetailsDTO {
 	public String getEmail();
 
 	public String getCity() ;
+	
+		public String getType();
 
 
 	public String getProfession() ;
