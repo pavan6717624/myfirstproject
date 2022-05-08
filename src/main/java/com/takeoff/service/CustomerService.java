@@ -217,7 +217,8 @@ public class CustomerService {
 			
 		if(paymentStatus)	
 		{		
-			String password=utilService.generatePassword(8);	
+			//String password=utilService.generatePassword(8);	
+			String password=subscription.getPassword();
 			subscription.setPassword(utilService.getSHA(password));	
 			statusDto = customerService.createCustomer(subscription);	
 		 if(!statusDto.getStatus())	
