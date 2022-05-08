@@ -58,7 +58,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "c.header_style as header_style, c.body_style as body_style, c.footer_style as footer_style, "
 			+ "c.header_decoration as header_decoration, c.body_decoration as body_decoration, c.footer_decoration as footer_decoration, "
 			+ "c.profession as profession, c.gender as gender,  "
-	       		+" (select (case when ((u.type='free' or u.type='Free') and c.exclusiveFor = 'ALL' and c.vendor.user.loginId in (10013, 10145, 102936, 103043, 10117, 102570, 103136, 10128, 104382,10025) and c.couponType.id != 1) then 'Pay' else u.type end) from UserDetails u where u.userId=(:customerId) or u.loginId=(:customerId)) as subscriptionType, "
+			//10013, 10145, 102936, 103043, 10117, 102570, 103136, 10128, 104382,10025
+	       		+" (select (case when ((u.type='free' or u.type='Free') and c.exclusiveFor = 'ALL' and c.vendor.user.loginId in (10013, 106598,103144,103043,10180,10145,10144,10117,10118) and c.couponType.id != 1) then 'Pay' else u.type end) from UserDetails u where u.userId=(:customerId) or u.loginId=(:customerId)) as subscriptionType, "
 			+" (select l.likeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as likeCoupon, "
 			+" (select l.disLikeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as disLikeCoupon, "
 			+" (select sum(case when l.likeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as likeCount, "
