@@ -159,7 +159,22 @@ public class UtilService {
 				
 				try
 				{
-					
+					List<com.takeoff.domain.UserDetails> mobile = userDetailsRepository.findByContactNumber(userId);
+		
+		if(mobile.size() == 1)
+			userId=mobile.get(0).getLoginId()+"";
+		else if(mobile.size() > 1)
+		{
+			
+			return false;
+		}
+		
+		
+		if(userId.startsWith("TO"))
+			
+            userId=userId.substring(2,7);
+		
+		userId=userId.substring(0,5);
 					
 					userId=userId.toLowerCase().replaceAll("to","");
 					
