@@ -60,7 +60,7 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 			+ "c.profession as profession, c.gender as gender,  "
 			//10013, 10145, 102936, 103043, 10117, 102570, 103136, 10128, 104382,10025
 	       //	+" (select (case when ((u.type='free' or u.type='Free') and c.exclusiveFor = 'ALL' and c.vendor.user.loginId in (10013, 102936, 109375, 10145,109309, 106598, 103200, 103136, 10028, 105035,109451,109440) and c.couponType.id != 1) then 'Pay' else u.type end) from UserDetails u where u.userId=(:customerId) or u.loginId=(:customerId)) as subscriptionType, "
-	       		+ " (select 'Pay' from dual) as subscriptionType, "
+	       		+ " 'Pay' as subscriptionType, "
 			+" (select l.likeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as likeCoupon, "
 			+" (select l.disLikeCoupon from LikeCoupons l where l.coupon=c and l.customer.userId=(:customerId)) as disLikeCoupon, "
 			+" (select sum(case when l.likeCoupon=true then 1 else 0 end) from LikeCoupons l where l.coupon=c) as likeCount, "
