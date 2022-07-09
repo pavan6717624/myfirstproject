@@ -26,7 +26,7 @@ public interface VendorDetailsRepository extends JpaRepository<VendorDetails,Lon
 	List<VendorDetailsDTO> getVendors();
 	
 	@Query("select distinct concat('data:image/jpeg;base64,',v.logo) as logo from VendorDetails v "
-			+ "where v.user.isDeleted!=true order by rand() limit 10")
+			+ "where v.user.isDeleted!=true order by rand()")
 	List<String> getLogos();
 	
 	@Query("select v.user.userId as userId, upper(v.user.name) as name ,upper(v.address) as address from VendorDetails v where v.user.isDeleted!=true order by v.user.name asc")
