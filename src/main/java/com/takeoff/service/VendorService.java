@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.takeoff.domain.UserDetails;
@@ -333,7 +335,8 @@ public Boolean editVendor(VendorDetailsDTO vendor) throws IOException {
 
 public List<String> getLogos()
 {
-	return vendorDetailsRepository.getLogos();
+	Pageable  paging = PageRequest.of(0, 10);
+	return vendorDetailsRepository.getLogos(paging);
 }
 
 public List<VendorList> getVendorList()
