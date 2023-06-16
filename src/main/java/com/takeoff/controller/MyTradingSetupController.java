@@ -47,7 +47,7 @@ public class MyTradingSetupController {
 
 	{
 		headers.set("Authorization",
-				"enctoken laq/6VTgJYyqqX3418piVfBoDRQW9QZSKWhloDc3dBeSWNgaShNte1/gRToO2KgzmVOc1gkHPRnSi2HuDtICI39hOveCdAp0a6skK3pANY81PTPJImdEDw==");
+				"enctoken T2626D5L/vhwSKTtSMQEptpmIKv8H2/WxI+Fe1s1kUaj1HQXBJ/z3vfrPpDXNoqphUyfDrAkthjDkmy7/ey1bv5iYhcDIMA3zKUlRYR9BWSDqOU1BEfaVQ==");
 		headers.set("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 		entity = new HttpEntity<String>(headers);
