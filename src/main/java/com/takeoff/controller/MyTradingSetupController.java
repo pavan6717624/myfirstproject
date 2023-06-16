@@ -98,7 +98,7 @@ public class MyTradingSetupController {
 
 				String output = template.exchange(
 						"https://kite.zerodha.com/oms/instruments/historical/" + oiData.getInstrument()
-								+ "/minute?user_id=IO7052&oi=1&from=2023-06-06&to=2023-06-15",
+								+ "/minute?user_id=IO7052&oi=1&from=2023-06-08&to=2023-06-23",
 						HttpMethod.GET, entity, String.class).getBody();
 
 				// //System.out.println(output);
@@ -149,7 +149,7 @@ public class MyTradingSetupController {
 
 		String output = template.exchange(
 				"https://kite.zerodha.com/oms/instruments/historical/" + instrument
-						+ "/minute?user_id=IO7052&oi=1&from=2023-06-01&to=2023-06-15",
+						+ "/minute?user_id=IO7052&oi=1&from=2023-06-08&to=2023-06-23",
 				HttpMethod.GET, entity, String.class).getBody();
 
 		int index = output.indexOf("candles");
