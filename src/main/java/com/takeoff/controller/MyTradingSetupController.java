@@ -52,6 +52,7 @@ public class MyTradingSetupController {
 	@Autowired
     public MyTradingSetupController(TokenRepository trepository)    
 	{
+		System.out.println("Token is : "+trepository.findAll().get(0).getToken());
 		headers.set("Authorization",
 				"enctoken "+trepository.findAll().get(0).getToken());
 		headers.set("User-Agent",
