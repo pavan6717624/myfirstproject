@@ -25,36 +25,37 @@ import com.takeoff.repository.TokenRepository;
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "MYTRADE")
 public class MyTradingSetupController {
-	
+
 	@Autowired
 	FnoStockRepository repository;
-	
+
 	@RequestMapping(value = "demo")
 	public String demo() {
 		return "demo";
 
 	}
-	
+
 	@RequestMapping(value = "getFnoList")
 	public List<String> getFnoList() {
-		
-		return repository.findAll().stream().map(o-> {  return o.getItoken()+"#"+o.getSymbol()+"#"+getLastPrice(o.getItoken()+""); }).collect(Collectors.toList());
-		
+
+		return repository.findAll().stream().map(o -> {
+			return o.getItoken() + "#" + o.getSymbol() + "#" + getLastPrice(o.getItoken() + "");
+		}).collect(Collectors.toList());
+
 	}
 
 	static RestTemplate template = new RestTemplate();
 	static HttpHeaders headers = new HttpHeaders();
 	static HttpEntity<String> entity = null;
 	static List<ZData> zdata = null;
-	static LocalDate fromDate=LocalDate.now().minusDays(5);
-	static LocalDate toDate=LocalDate.now().plusDays(5);
-	
+	static LocalDate fromDate = LocalDate.now().minusDays(5);
+	static LocalDate toDate = LocalDate.now().plusDays(5);
+
 	@Autowired
-    public MyTradingSetupController(TokenRepository trepository)    
-	{
-		System.out.println("Token is :: "+trepository.findAll().get(0).getToken());
-		headers.set("Authorization",
-				"enctoken "+trepository.findAll().get(0).getToken());
+	public MyTradingSetupController(TokenRepository trepository) {
+		String token = trepository.findAll().get(0).getToken();
+		System.out.println("Token is :: " + token);
+		headers.set("Authorization", "enctoken " + token);
 		headers.set("User-Agent",
 				"Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.95 Safari/537.11");
 		entity = new HttpEntity<String>(headers);
@@ -96,12 +97,10 @@ public class MyTradingSetupController {
 				oiData.setPrice(Double.parseDouble(spiltData[0]));
 				oiData.setInstrument(Long.valueOf(spiltData[1 + k]));
 				oiData.setCall(call[k]);
-				
-				
 
 				String output = template.exchange(
 						"https://kite.zerodha.com/oms/instruments/historical/" + oiData.getInstrument()
-								+ "/minute?user_id=IO7052&oi=1&from="+fromDate+"&to="+toDate,
+								+ "/minute?user_id=IO7052&oi=1&from=" + fromDate + "&to=" + toDate,
 						HttpMethod.GET, entity, String.class).getBody();
 
 				// //System.out.println(output);
@@ -135,7 +134,7 @@ public class MyTradingSetupController {
 				oiData.setOpen(data.stream().map(o -> o.getOpen()).collect(Collectors.toList()));
 				oiData.setHigh(data.stream().map(o -> o.getHigh()).collect(Collectors.toList()));
 				oiData.setLow(data.stream().map(o -> o.getLow()).collect(Collectors.toList()));
-				oiData.setOi(data.stream().map(o -> o.getOi()/50).collect(Collectors.toList()));
+				oiData.setOi(data.stream().map(o -> o.getOi() / 50).collect(Collectors.toList()));
 				oiData.setVol(data.stream().map(o -> o.getVolume()).collect(Collectors.toList()));
 				oiData.setDate(data.stream().map(o -> o.getDate().replaceAll("\"", "").substring(11, 19))
 						.collect(Collectors.toList()));
@@ -152,7 +151,7 @@ public class MyTradingSetupController {
 
 		String output = template.exchange(
 				"https://kite.zerodha.com/oms/instruments/historical/" + instrument
-						+ "/minute?user_id=IO7052&oi=1&from="+fromDate+"&to="+toDate,
+						+ "/minute?user_id=IO7052&oi=1&from=" + fromDate + "&to=" + toDate,
 				HttpMethod.GET, entity, String.class).getBody();
 
 		int index = output.indexOf("candles");
@@ -169,8 +168,8 @@ public class MyTradingSetupController {
 		String expiryDate = zdata.stream()
 				.filter(o -> o.getName().equals("\"" + name + "\"") && o.getItype().equals("CE"))
 				.map(o -> o.getExpiry()).sorted().limit(1).collect(Collectors.toList()).get(0);
-		
-		System.out.println(name+" "+expiryDate);
+
+		System.out.println(name + " " + expiryDate);
 		List<Double> prices = zdata.stream()
 				.filter(o -> o.getName().equals("\"" + name + "\"") && o.getExpiry().equals(expiryDate)
 						&& o.getStrike().compareTo(lastPrice) >= 0)
@@ -182,9 +181,9 @@ public class MyTradingSetupController {
 				.collect(Collectors.toList()));
 		prices = prices.stream().distinct().sorted().collect(Collectors.toList());
 
-		for (int i = 0; i < prices.size() && i<7; i++) {
+		for (int i = 0; i < prices.size() && i < 7; i++) {
 			String pricestr = prices.get(i) + "";
-			//System.out.println(pricestr);
+			// System.out.println(pricestr);
 			String CE = (zdata.stream()
 					// .peek(o->System.out.println(o.getStrike().toString() + " "+ (pricestr) + "
 					// "+o.getStrike().toString().equals(pricestr)))
