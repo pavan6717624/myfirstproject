@@ -53,7 +53,7 @@ public class MyTradingSetupController {
 
 	@Autowired
 	public MyTradingSetupController(TokenRepository trepository) {
-		String token = "TmR2efAHsFrYIrBK7YFTD+t3juzQl6lYW2JUFkeAHF0xvcHKbEAk2xmUs+HGMZslKiMw4kRfkQnfxSeGFjqFR3jGA8t70YOQRq55r5570qWvnx+kffhsDQ==";
+		String token = "I4o0TOBrPVYKP9jpNKRhHsW2/xS2iDKDscT5N/Ln4iMCYVqXnVO8vaTUiEmfjgB8LhmkCXDljlnUKqV7rIrXLej2lmn4YnR9/jTS60RNhZt+N9zXHsvj2w==";
 		System.out.println("Token is :: " + token);
 		headers.set("Authorization", "enctoken " + token);
 		headers.set("User-Agent",
