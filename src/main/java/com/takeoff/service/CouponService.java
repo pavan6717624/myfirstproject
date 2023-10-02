@@ -192,11 +192,14 @@ public ImageDetails getImageDetails(Long id)
 		if(customerId!=0L)
 		refererId = customerDetailsRepository.findByUserId(customerId).get().getRefererId();
 		
-		                                                                                                                                             
+		String contact="";
+		if(customerId!=0L)
+			contact = customerDetailsRepository.findByUserId(customerId).get().getUser().getContact();
+			                                                                                                                      
 	//	System.out.println("RefererId:: "+refererId+", City : "+ customerDetailsRepository.findByUserId(customerId).get().getUser().getCity());      
-                                                                                                                                             
+                            
 		
-		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],refererId, vendorSelected, paging);
+		List<VendorCouponsDTO1> coupons = vendorCouponsRepository.findByLatest1(vendorId,couponType,customerId,couponIds,Timestamp.valueOf(LocalDateTime.now()),category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],refererId, vendorSelected, contact, paging);
 		
 		// coupons=coupons.stream().filter( c -> check(c,keyWords)).collect(Collectors.toList());
 		
