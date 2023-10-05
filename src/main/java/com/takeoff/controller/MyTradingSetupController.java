@@ -1,26 +1,37 @@
 package com.takeoff.controller;
 
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.URL;
+import java.net.URLConnection;
+import java.time.DayOfWeek;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.takeoff.model.Data;
-import com.takeoff.model.OIData;
-import com.takeoff.model.ZData;
-import com.takeoff.repository.FnoStockRepository;
-import com.takeoff.repository.TokenRepository;
-
+import com.mytradingsetup.model.Data;
+import com.mytradingsetup.model.Fno;
+import com.mytradingsetup.model.Futures;
+import com.mytradingsetup.model.MapData;
+import com.mytradingsetup.model.Stock;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "MYTRADE")
