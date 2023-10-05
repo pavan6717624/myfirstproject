@@ -1,4 +1,4 @@
-package com.takeoff.domain;
+package com.mytradingsetup.domain;
 
 import java.io.Serializable;
 
