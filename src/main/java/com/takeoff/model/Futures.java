@@ -1,4 +1,4 @@
-package com.mytradingsetup.model;
+package com.takeoff.model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
