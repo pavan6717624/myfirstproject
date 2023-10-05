@@ -1,4 +1,4 @@
-package com.takeoff.model;
+package com.mytradingsetup.model;
 
 public class ZData {
 
