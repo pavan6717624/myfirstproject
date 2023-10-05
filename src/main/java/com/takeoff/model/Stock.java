@@ -1,4 +1,4 @@
-package com.mytradingsetup.model;
+package com.takeoff.model;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
