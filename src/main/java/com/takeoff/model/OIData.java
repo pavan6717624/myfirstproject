@@ -1,4 +1,4 @@
-package com.mytradingsetup.model;
+package com.takeoff.model;
 
 import java.util.Comparator;
 import java.util.List;
