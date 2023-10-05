@@ -27,11 +27,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.mytradingsetup.model.Data;
-import com.mytradingsetup.model.Fno;
-import com.mytradingsetup.model.Futures;
-import com.mytradingsetup.model.MapData;
-import com.mytradingsetup.model.Stock;
+import com.takeoff.model.Data;
+import com.takeoff.model.Fno;
+import com.takeoff.model.Futures;
+import com.takeoff.model.MapData;
+import com.takeoff.model.Stock;
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "MYTRADE")
