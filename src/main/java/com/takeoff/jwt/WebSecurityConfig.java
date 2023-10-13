@@ -61,6 +61,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()
 				.antMatchers("/login").permitAll()
 				.antMatchers("/GMAPI/**").permitAll()
+				.antMatchers("/Heidigi/**").permitAll()
 				.antMatchers("/MYTRADE/**").permitAll()
 				.antMatchers("/approveSMS").permitAll()
 				.antMatchers("/getOrderId").permitAll()
