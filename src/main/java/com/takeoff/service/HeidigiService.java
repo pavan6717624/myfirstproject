@@ -1,5 +1,7 @@
 package com.takeoff.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,6 +43,11 @@ public class HeidigiService {
 	
 		return userRepository.findByMobileAndPassword(Long.valueOf(login.getMobile()), login.getPassword()).isPresent();
 		
+	}
+
+	public List<String> getImages() {
+		
+		return userRepository.getRandomImages();
 	}
 
 }

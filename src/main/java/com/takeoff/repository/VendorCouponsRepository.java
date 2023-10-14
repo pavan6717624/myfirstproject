@@ -188,6 +188,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.couponType.id=3  and r.customer.userId = (:userId) and r.coupon.id = (:couponId) and date(r.redemOn)=CURRENT_DATE() ")
 	Long DailyDealsCount(@Param("couponId") Long couponId, @Param("userId") Long userId);
 	
+
+	
 	
 	
 }
