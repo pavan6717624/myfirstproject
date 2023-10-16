@@ -154,7 +154,8 @@ public interface VendorCouponsRepository  extends PagingAndSortingRepository<Ven
 	
 	VendorCouponsDTO1 getCoupon(@Param("customerId") Long customerId, @Param("couponId") Long couponId,@Param("current_time") Timestamp current_time );
 	
-	@Query("select (case when count(*)>0 then true else false end) from VendorCoupons c where c.vendor.user.userId = (:userId) and c.couponType.id=1")
+	//@Query("select (case when count(*)>0 then true else false end) from VendorCoupons c where c.vendor.user.userId = (:userId) and c.couponType.id=1")
+	@Query("select (case when count(*)>0 then true else true end) from VendorCoupons c where c.vendor.user.userId = (:userId) and c.couponType.id=1")
 	Boolean complimentaryExists(@Param("userId") Long userId);	
 	
 	@Query("select count(*) from Redemption r where r.vendorAccepted=true and r.userRedempted= true and r.coupon.vendor.user.userId = (:vendorId) and r.customer.userId = (:userId) and r.coupon.couponType.id in (3,4,5,6)")
