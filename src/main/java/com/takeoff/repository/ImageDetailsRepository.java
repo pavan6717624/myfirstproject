@@ -22,7 +22,7 @@ public interface ImageDetailsRepository  extends PagingAndSortingRepository<Imag
 			+ " and i.id not in (:imageIds) and i.deleted=false and (i.subCateogry.category.id=(:category) or (:category=0)) and "
 			+" (i.subCateogry.id=(:subCategory) or (:subCategory=0)) and "
 			+ "( i.keywords like :keyword1 or i.keywords like :keyword2 or i.keywords like :keyword3 or "
-			+ " i.keywords like :keyword4 or i.keywords like :keyword5 ) and i.keywords not like '' "
+			+ " i.keywords like :keyword4 or i.keywords like :keyword5 ) "
 			+ " order by id desc")
 	List<ImageDetailsDTO> findByLatest(@Param("userId") Long userid,
 			@Param("imageIds") List<Long> imageIds, 

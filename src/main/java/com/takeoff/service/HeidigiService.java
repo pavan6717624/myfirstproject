@@ -49,5 +49,10 @@ public class HeidigiService {
 		
 		return userRepository.getRandomImages();
 	}
+	
+	public String appendProfileData(String image)
+	{
+		return null;
+	}
 
 }

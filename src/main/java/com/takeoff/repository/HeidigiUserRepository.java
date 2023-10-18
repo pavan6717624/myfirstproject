@@ -12,7 +12,7 @@ public interface HeidigiUserRepository extends JpaRepository<HeidigiUser, Long> 
 
 	Optional<HeidigiUser> findByMobileAndPassword(Long mobile, String password);
 	
-	@Query( nativeQuery = true, value = "select image from image_details order by rand() limit 365")
+	@Query( nativeQuery = true, value = "select image from image_details order by rand() limit 10")
 	List<String> getRandomImages();
 
 }

@@ -108,7 +108,7 @@ public ImageDetails getImageDetails(Long id)
 		
 		for(int i=0;i<keyWords.length && i<5; i++)
 			keyword[i]="%"+keyWords[i]+"%";
-		
+		System.out.println("vendorId size :: "+vendorId);
 		List<ImageDetailsDTO> images = 
 		couponDetailsRepository.findByLatest(vendorId,imageIds,category, subCategory, keyword[0], keyword[1],keyword[2],keyword[3],keyword[4],paging);
 		
