@@ -29,8 +29,8 @@ public class HeidigiRole implements Serializable
 	 */
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	Long roleId;
 	String roleName="";
 	String displayName="";
 

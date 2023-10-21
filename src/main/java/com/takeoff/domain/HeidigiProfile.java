@@ -2,6 +2,7 @@ package com.takeoff.domain;
 
 import java.io.Serializable;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,36 +13,25 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Data;
+
 @Entity
 @Data
-@Table(name = "hd_users")
-public class HeidigiUser implements Serializable {
-
-	/**
+@Table(name = "hd_profile")
+public class HeidigiProfile implements Serializable {/**
 	 * 
 	 */
-	private static final long serialVersionUID = 6871647410790643083L;
-	/**
-	 * 
-	 */
+	private static final long serialVersionUID = -4794458072958828709L;
 	
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long id;
-	String password = "";
-	String name = "";
-	Long mobile = 0l;
-	String email = "";
-	
-	String message = "";
-
-	
-
+	Long profileId;
 	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "roleId")
-	HeidigiRole role;
+	@JoinColumn(name = "userId")
+	HeidigiUser user;
 	
+	@Column(length = 100000)
+	String image;
+	String address;
 	
 
 }

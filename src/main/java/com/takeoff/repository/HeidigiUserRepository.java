@@ -5,7 +5,9 @@ import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
+import com.takeoff.domain.HeidigiRole;
 import com.takeoff.domain.HeidigiUser;
 
 public interface HeidigiUserRepository extends JpaRepository<HeidigiUser, Long> {
@@ -14,5 +16,7 @@ public interface HeidigiUserRepository extends JpaRepository<HeidigiUser, Long> 
 	
 	@Query( nativeQuery = true, value = "select image from image_details order by rand() limit 10")
 	List<String> getRandomImages();
+
+	Optional<HeidigiUser> findByMobile(@Param("mobile") Long mobile);
 
 }
