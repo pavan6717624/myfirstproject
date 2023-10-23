@@ -96,7 +96,7 @@ public class HeidigiService {
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
 		HeidigiProfile profile = null;
 
-		if (profileOpt.isEmpty()) {
+		if (!profileOpt.isPresent()) {
 			profile = new HeidigiProfile();
 			profile.setUser(userRepository.findByMobile(9449840144L).get());
 		} else
