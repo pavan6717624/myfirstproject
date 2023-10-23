@@ -73,10 +73,12 @@ public class HeidigiService {
 		System.out.println(image);
 
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
+
 		HeidigiProfile profile = null;
 
 		if (!profileOpt.isPresent()) {
 			profile = new HeidigiProfile();
+
 			profile.setUser(userRepository.findByMobile(9449840144L).get());
 		} else
 			profile = profileOpt.get();
