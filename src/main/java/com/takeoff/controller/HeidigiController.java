@@ -55,6 +55,13 @@ public class HeidigiController {
 		System.out.println("came here");
 		return service.uploadLogo(file);
 	}
+	@RequestMapping(value = "editAddress")
+	public ProfileDTO uploadLogo(@RequestParam("address") String address) throws IOException {
+		
+		
+		System.out.println("came here1");
+		return service.editAddress(address);
+	}
 
 	@RequestMapping(value = "downloadImage")
 	public String downloadImage(@RequestParam("image") String image) throws IOException {
