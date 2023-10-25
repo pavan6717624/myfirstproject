@@ -94,6 +94,7 @@ public class HeidigiController {
 		try {
 			System.out.println("Started.."+new Date());
 			ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+			System.out.println("location is ::" +processBuilder.directory().getAbsolutePath());
 			Process process = processBuilder.start();
 			process.waitFor();
 			System.out.println("Ended.."+new Date());
