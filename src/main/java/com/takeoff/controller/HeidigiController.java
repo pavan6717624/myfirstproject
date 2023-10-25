@@ -89,7 +89,7 @@ public class HeidigiController {
 		String text = "Pavankumar123";
 		String imageOverlayPath = "logo.png";
 
-		String command = "ffmpeg -i input.mp4 -i logo.png -filter_complex \"overlay=5:5\" -codec:a copy outputVideo_demo.mp4";
+		String command = "ffmpeg -i i.mp4 -i l.png -filter_complex \"overlay=5:5\" -codec:a copy o4.mp4";
 
 		try {
 			System.out.println("Started.."+new Date());
