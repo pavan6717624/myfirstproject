@@ -89,11 +89,7 @@ public class HeidigiController {
 		String text = "Pavankumar123";
 		String imageOverlayPath = "logo.png";
 
-		String command = "ffmpeg -i " + inputVideoPath + " -i " + imageOverlayPath
-				+ " -filter_complex \"[0:v][1:v]overlay=5:5,drawtext=fontfile=C\\\\:/Windows/fonts/consola.ttf:text='"
-				+ text
-				+ "':x=(w-text_w)/2:y=(h-text_h-5):fontsize=22:fontcolor=black:box=1:boxcolor=white@0.5: boxborderw=5\" -c:a copy -movflags +faststart "
-				+ outputVideoPath;
+		String command = "ffmpeg -i input.mp4 -i logo.png -filter_complex \"overlay=5:5\" -codec:a copy outputVideo_demo.mp4";
 
 		try {
 			System.out.println("Started.."+new Date());
