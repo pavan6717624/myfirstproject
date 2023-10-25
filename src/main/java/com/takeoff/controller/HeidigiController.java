@@ -83,6 +83,7 @@ public class HeidigiController {
 
 	@RequestMapping(value = "videoConvert")
 	public void videoConvert() throws Exception, IOException {
+		System.out.println("Reached.."+new Date());
 		String inputVideoPath = "input.mp4";
 		String outputVideoPath = "outputVideo_"+UUID.randomUUID()+".mp4";
 		String text = "Pavankumar123";
