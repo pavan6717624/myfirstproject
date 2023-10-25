@@ -1,8 +1,17 @@
 package com.takeoff.controller;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import javax.imageio.ImageIO;
+
+import org.bytedeco.javacv.FFmpegFrameGrabber;
+import org.bytedeco.javacv.Frame;
+import org.bytedeco.javacv.Java2DFrameConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -72,6 +81,31 @@ public class HeidigiController {
 	public ProfileDTO getProfile() throws IOException {
 		
 		return service.getProfile();
+	}
+
+	@RequestMapping(value = "videoConvert")
+	public void videoConvert() throws Exception, IOException {
+		String inputVideoPath = "input.mp4";
+		String outputVideoPath = "outputVideo_"+UUID.randomUUID()+".mp4";
+		String text = "Pavankumar123";
+		String imageOverlayPath = "logo.png";
+
+		String command = "ffmpeg -i " + inputVideoPath + " -i " + imageOverlayPath
+				+ " -filter_complex \"[0:v][1:v]overlay=5:5,drawtext=fontfile=C\\\\:/Windows/fonts/consola.ttf:text='"
+				+ text
+				+ "':x=(w-text_w)/2:y=(h-text_h-5):fontsize=22:fontcolor=black:box=1:boxcolor=white@0.5: boxborderw=5\" -c:a copy -movflags +faststart "
+				+ outputVideoPath;
+
+		try {
+			System.out.println("Started.."+new Date());
+			ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
+			Process process = processBuilder.start();
+			process.waitFor();
+			System.out.println("Ended.."+new Date());
+			// process.waitFor();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 }
