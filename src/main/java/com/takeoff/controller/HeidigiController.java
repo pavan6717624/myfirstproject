@@ -3,6 +3,7 @@ package com.takeoff.controller;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -93,11 +94,17 @@ public class HeidigiController {
 
 		try {
 			System.out.println("Started.."+new Date());
-			ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));
-			
-			Process process = processBuilder.start();
-			process.waitFor();
-			System.out.println("Ended.."+new Date());
+			 ProcessBuilder pb = new ProcessBuilder(command.split(" "));
+			    pb = pb.redirectErrorStream(true);
+			    Process proc = pb.start();
+			    InputStream is = proc.getInputStream();
+			    int c;
+			    while ((c = is.read()) != -1) {
+			      System.out.print((char) c);
+			    }
+			    int exitVal = proc.waitFor();
+			    
+			System.out.println("Ended.. "+exitVal+" "+new Date());
 			// process.waitFor();
 		} catch (IOException e) {
 			e.printStackTrace();
