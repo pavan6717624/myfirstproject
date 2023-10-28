@@ -90,7 +90,7 @@ public class HeidigiController {
 		String text = "Pavankumar123";
 		String imageOverlayPath = "logo.png";
 
-		String command = "ffmpeg -i i.mp4 -i l.png -filter_complex overlay=5:5 -codec:a copy /app/pvan0.mp4";
+		String command = "ffmpeg -i i.mp4 -i l.png -filter_complex overlay=5:5 -codec:a copy /app/pvan10.mp4";
 
 		try {
 			System.out.println("Started.."+new Date());
@@ -113,6 +113,9 @@ public class HeidigiController {
 		      System.out.print((char) c);
 		    }
 		     exitVal = proc.waitFor();
+
+			File fcheck=new File("/app/pvan10.mp4");
+			System.out.println(fcheck.getAbsolutePath());
 			    
 			System.out.println("Ended.. "+exitVal+" "+new Date());
 			// process.waitFor();
