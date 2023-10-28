@@ -103,6 +103,16 @@ public class HeidigiController {
 			      System.out.print((char) c);
 			    }
 			    int exitVal = proc.waitFor();
+
+				     pb = new ProcessBuilder("ls");
+		    pb = pb.redirectErrorStream(true);
+		     proc = pb.start();
+		     is = proc.getInputStream();
+		   
+		    while ((c = is.read()) != -1) {
+		      System.out.print((char) c);
+		    }
+		     exitVal = proc.waitFor();
 			    
 			System.out.println("Ended.. "+exitVal+" "+new Date());
 			// process.waitFor();
