@@ -1,15 +1,7 @@
 package com.takeoff.controller;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.util.Date;
 import java.util.List;
-import java.util.UUID;
-
-import javax.imageio.ImageIO;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -19,9 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.utils.ObjectUtils;
 import com.takeoff.model.GMLoginStatusDTO;
 import com.takeoff.model.HeidigiLoginDTO;
 import com.takeoff.model.HeidigiSignupDTO;
+import com.takeoff.model.ImageDTO;
 import com.takeoff.model.ProfileDTO;
 import com.takeoff.service.HeidigiService;
 
@@ -30,9 +25,11 @@ import com.takeoff.service.HeidigiService;
 @RequestMapping(value = "Heidigi")
 public class HeidigiController {
 
-
 	@Autowired
 	HeidigiService service;
+
+	public static Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", "hwlyozehf", "api_key",
+			"453395666963287", "api_secret", "Q-kgBVQlRlGtdccq-ATYRFSoR8s"));
 
 	@RequestMapping(value = "check")
 	public GMLoginStatusDTO check() {
@@ -52,76 +49,51 @@ public class HeidigiController {
 	}
 
 	@RequestMapping(value = "getImages")
-	public List<String> getImages() {
+	public List<ImageDTO> getImages() {
 		return service.getImages();
 	}
-	
-	@RequestMapping(value = "uploadLogo")
-	public String uploadLogo(@RequestParam("file") MultipartFile file) throws IOException {
-		
-		
-		System.out.println("came here");
-		return service.uploadLogo(file);
-	}
+
+//	@RequestMapping(value = "uploadLogo1")
+//	public String uploadLogo1(@RequestParam("file") MultipartFile file) throws IOException {
+//
+//		System.out.println("came here");
+//		return service.uploadLogo1(file);
+//	}
+
 	@RequestMapping(value = "editAddress")
-	public ProfileDTO uploadLogo(@RequestParam("address") String address) throws IOException {
-		
-		
+	public ProfileDTO uploadLogo(@RequestParam("address") String address) throws Exception {
+
 		System.out.println("came here1");
 		return service.editAddress(address);
 	}
 
-	@RequestMapping(value = "downloadImage")
-	public String downloadImage(@RequestParam("image") String image) throws IOException {
-		
-		return service.downloadImage(image);
-	}
+//	@RequestMapping(value = "downloadImage")
+//	public String downloadImage(@RequestParam("image") String image) throws IOException {
+//
+//		return service.downloadImage(image);
+//	}
+
 	@RequestMapping(value = "getProfile")
-	public ProfileDTO getProfile() throws IOException {
-		
+	public ProfileDTO getProfile() throws Exception {
+
 		return service.getProfile();
 	}
 
-	@RequestMapping(value = "videoConvert")
-	public void videoConvert() throws Exception, IOException {
-		System.out.println("Reached.."+new Date());
-		String inputVideoPath = "input.mp4";
-		String outputVideoPath = "outputVideo_"+UUID.randomUUID()+".mp4";
-		String text = "Pavankumar123";
-		String imageOverlayPath = "logo.png";
+	@RequestMapping(value = "uploadLogo")
 
-		String command = "ffmpeg -i i.mp4 -i l.png -filter_complex overlay=5:5 -codec:a copy /app/pvan10.mp4";
-
-		try {
-			System.out.println("Started.."+new Date());
-			 ProcessBuilder pb = new ProcessBuilder(command.split(" "));
-			    pb = pb.redirectErrorStream(true);
-			    Process proc = pb.start();
-			    InputStream is = proc.getInputStream();
-			    int c;
-			    while ((c = is.read()) != -1) {
-			      System.out.print((char) c);
-			    }
-			    int exitVal = proc.waitFor();
-
-				     pb = new ProcessBuilder("ls");
-		    pb = pb.redirectErrorStream(true);
-		     proc = pb.start();
-		     is = proc.getInputStream();
-		   
-		    while ((c = is.read()) != -1) {
-		      System.out.print((char) c);
-		    }
-		     exitVal = proc.waitFor();
-
-			File fcheck=new File("/app/pvan10.mp4");
-			System.out.println(fcheck.getAbsolutePath());
-			    
-			System.out.println("Ended.. "+exitVal+" "+new Date());
-			// process.waitFor();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	public String uploadLogo(@RequestParam("file") MultipartFile file) throws Exception {
+		return service.uploadLogo(file);
 	}
-	
+
+	@RequestMapping(value = "uploadImage")
+	public String uploadImage(@RequestParam("file") MultipartFile file) throws Exception {
+		return service.uploadImage(file);
+	}
+
+	@RequestMapping(value = "downloadImage")
+	public String downloadImage(@RequestParam("image") String image) throws IOException {
+
+		return service.downloadImage(image);
+	}
+
 }
