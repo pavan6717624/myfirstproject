@@ -1,26 +1,36 @@
 package com.takeoff.service;
 
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.List;
-import java.util.Optional;
 
-import javax.imageio.ImageIO;
+
+import java.util.Map;
+import java.util.Optional;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 import org.apache.commons.codec.binary.Base64;
-import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.cloudinary.Cloudinary;
+import com.cloudinary.Transformation;
+import com.cloudinary.transformation.Layer;
+import com.cloudinary.transformation.TextLayer;
+import com.cloudinary.utils.ObjectUtils;
+import com.takeoff.domain.HeidigiImage;
 import com.takeoff.domain.HeidigiProfile;
 import com.takeoff.domain.HeidigiUser;
 import com.takeoff.model.HeidigiLoginDTO;
 import com.takeoff.model.HeidigiSignupDTO;
+import com.takeoff.model.ImageDTO;
 import com.takeoff.model.ProfileDTO;
+import com.takeoff.repository.HeidigiImageRepository;
 import com.takeoff.repository.HeidigiProfileRepository;
 import com.takeoff.repository.HeidigiRoleRepository;
 import com.takeoff.repository.HeidigiUserRepository;
@@ -30,6 +40,10 @@ public class HeidigiService {
 
 	@Autowired
 	LogoService logoService;
+	@Autowired
+	HeidigiImageRepository heidigiImageRepository;
+
+	static RestTemplate restTemplate = new RestTemplate();
 
 	@Autowired
 	HeidigiUserRepository userRepository;
@@ -37,6 +51,14 @@ public class HeidigiService {
 	HeidigiRoleRepository roleRepository;
 	@Autowired
 	HeidigiProfileRepository profileRepository;
+
+	public static Cloudinary cloudinary1 = new Cloudinary(ObjectUtils.asMap("cloud_name", "hwlyozehf", "api_key",
+			"453395666963287", "api_secret", "Q-kgBVQlRlGtdccq-ATYRFSoR8s"));
+
+	public static Cloudinary cloudinary2 = new Cloudinary(ObjectUtils.asMap("cloud_name", "hu4jsyyt8", "api_key",
+			"491845868955893", "api_secret", "oYgotm7eQgCcLzffOoo7oHPJ874"));
+
+	public static Cloudinary cloudinary[] = { cloudinary1, cloudinary2 };
 
 	public Boolean signup(HeidigiSignupDTO signup) {
 
@@ -52,46 +74,58 @@ public class HeidigiService {
 
 		return userRepository.findByMobileAndPassword(user.getMobile(), user.getPassword()).isPresent();
 	}
+	
+	public String uploadImage(MultipartFile file) throws Exception 
+	{
+		HeidigiImage image=uploadImage(file,"","","Image");
+		return "";
+	}
 
-	public String uploadLogo(MultipartFile file) throws IOException {
+	public HeidigiImage uploadImage(MultipartFile file, String category, String subCategory, String type)
+			throws Exception {
 
-		InputStream is = new ByteArrayInputStream(file.getBytes());
-		BufferedImage img = ImageIO.read(is);
+		File convFile = new File(UUID.randomUUID() + "" + file.getOriginalFilename());
+		FileOutputStream fos = new FileOutputStream(convFile);
+		fos.write(file.getBytes());
+		fos.close();
 
-		String extension = file.getOriginalFilename().split("\\.")[1].toLowerCase();
+		Map uploadResult1 = cloudinary1.uploader().upload(convFile, ObjectUtils.emptyMap());
+		Map uploadResult2 = cloudinary2.uploader().upload(convFile, ObjectUtils.emptyMap());
 
-		System.out.println(extension);
-		ByteArrayOutputStream bos = new ByteArrayOutputStream();
-		if (extension.equals("png"))
-			ImageIO.write(img, "PNG", bos);
-		else
-			ImageIO.write(img, "JPEG", bos);
-		img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
-		String image = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
-		image = "data:image/" + extension + ";base64," + image;
+		HeidigiImage image = new HeidigiImage();
+		image.setCategory(category);
+		image.setSubcategory(subCategory);
+		image.setType(type);
+		image.setPublicId(uploadResult1.get("public_id") + "");
+		image.setBackupPublicId(uploadResult2.get("public_id") + "");
+		image.setResponse(uploadResult1.toString());
+		image.setBackupResponse(uploadResult2.toString());
+		image.setExtension(file.getOriginalFilename().split("\\.")[1].toLowerCase());
+		image.setUser(userRepository.findByMobile(9449840144L).get());
 
-		System.out.println(image);
+		heidigiImageRepository.save(image);
 
-		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
+		return image;
+	}
+
+	public String uploadLogo(MultipartFile file) throws Exception {
 
 		HeidigiProfile profile = null;
-
+		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
 		if (!profileOpt.isPresent()) {
 			profile = new HeidigiProfile();
 
 			profile.setUser(userRepository.findByMobile(9449840144L).get());
 		} else
 			profile = profileOpt.get();
-		System.out.println(image);
-		profile.setImage(image);
-		profileRepository.save(profile);
 
-		System.out.println(file);
+		profile.setLogo(uploadImage(file, "Logo", "Logo", "Logo"));
+		profileRepository.save(profile);
 
 		return "";
 	}
 
-	public ProfileDTO editAddress(String address) throws IOException {
+	public ProfileDTO editAddress(String address) throws Exception {
 
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
 		HeidigiProfile profile = null;
@@ -114,45 +148,135 @@ public class HeidigiService {
 
 	}
 
-	public List<String> getImages() {
+	public List<ImageDTO> getImages() {
 
-		return userRepository.getRandomImages();
+		List<HeidigiImage> images=heidigiImageRepository.getImageIds();
+		return images.stream().map(o->new ImageDTO(getImage(o.getPublicId(),o.getExtension()), o.getPublicId())).collect(Collectors.toList());
 	}
 
-	public ProfileDTO getProfile() {
+	public ProfileDTO getProfile() throws Exception {
 
 		HeidigiProfile profile = profileRepository.findByMobile(9449840144L).get();
 
 		ProfileDTO profileDTO = new ProfileDTO();
 		profileDTO.setAddress(profile.getAddress());
-		profileDTO.setImage(profile.getImage());
+		profileDTO.setImage(getImage(profile.getLogo().getPublicId(), profile.getLogo().getExtension()));
 		profileDTO.setMobile(profile.getUser().getMobile() + "");
 
 		return profileDTO;
 	}
-
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String downloadImage(String image) throws IOException {
-		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
+		
+		String logoId=profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
+		
+		System.out.println(logoId);
 
-		String logo = "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\\";
-		String address = "&nbsp;";
-		if (profileOpt.isPresent()) {
-			logo = profileOpt.get().getImage();
-			address = profileOpt.get().getAddress();
+		String imageUrl = cloudinary1.url().transformation(new Transformation().height(1080).width(1080).crop("scale")
+				.chain()
+
+				// logo
+				.overlay(new Layer().publicId(logoId)).chain().flags("layer_apply", "relative")
+				.gravity("north_west").opacity(100).radius(30).width(0.15).x(10).y(10).crop("scale").chain()
+
+				// 65% bottom background
+				.overlay(new Layer().publicId("akdvbdniqfbncjrapghb")).chain().flags("layer_apply", "relative")
+				.gravity("south_west").width(0.65).height(0.18).opacity(100).chain()
+
+				// 35% bottom background
+				.overlay(new Layer().publicId("tff8vf9ciycuste9iupb")).chain().flags("layer_apply", "relative")
+				.gravity("south_east").width(0.35).height(0.18).opacity(100).chain()
+
+				// icon1: Envelope
+				.overlay(new Layer().publicId("azzoweqhsszdzcyq3vwg")).width(20).height(20).chain()
+				.flags("layer_apply", "relative").gravity("south_east").x(340).y(110).chain()
+
+				// icon2: Internet Globe
+				.overlay(new Layer().publicId("idgvptysiagpsvw9me0p")).width(20).height(20).chain()
+				.flags("layer_apply", "relative").gravity("south_east").x(340).y(80).chain()
+
+				// icon3: Red Map Marker
+				.overlay(new Layer().publicId("mi1ksk75cvoujbvgtmnc")).width(20).height(20).chain()
+				.flags("layer_apply", "relative").gravity("south_east").x(340).y(50).chain()
+
+				// Person Photo
+				.overlay(new Layer().publicId("ex39k6jv0cerrdrhujis")).aspectRatio("1.0").gravity("faces").width(0.5)
+				.zoom(0.7).crop("thumb").chain().flags("layer_apply", "relative").gravity("south_west").opacity(100)
+				.radius("max").width(0.15).x(10).y(15).crop("scale").chain()
+
+				// Text: Line 1
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(30).fontWeight("bold").textAlign("center")
+						.text("Dr. Shravan Krishna Reddy"))
+				.flags("layer_apply", "relative").gravity("south_west").x(200).y(120).color("white").chain()
+
+				// Text: Line 2
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center")
+						.text("MBBS, MD Pediatrics, FIPM Neonatology, PGPN (BOSTAN, USA)"))
+				.gravity("south_west").x(200).y(90).color("white").chain()
+
+				// Text: Line 3
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center")
+						.text("Ex - Fellow Neonatologist, Rainbow Children's Hospital"))
+				.gravity("south_west").x(200).y(65).color("white").chain()
+
+				// Text: Line 4
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(18).textAlign("center")
+						.text("Pediatrician & Neonatologist"))
+				.gravity("south_west").x(250).y(37).color("white").chain()
+
+				// Text: Mail
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
+						.text("thefamilytreehospital@gmail.com"))
+				.gravity("south_west").x(750).y(110).color("black").chain()
+
+				// Text: Website
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
+						.text("www.thefamilytreehospital.com  "))
+				.gravity("south_west").x(750).y(80).color("black").chain()
+
+				// Text: Address
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
+						.text("Near MR Palli Police Station, Tirupati"))
+				.gravity("south_west").x(750).y(50).color("black").chain()
+
+		).imageTag(image+".jpg");
+		
+		imageUrl=URLDecoder.decode(imageUrl.substring(10,imageUrl.length()-3), "UTF-8");
+		String imageStr=getImage(imageUrl);
+		return imageStr;
+
+	}
+
+	public String getImage(String id, String ext) {
+
+		try {
+
+			String url = "https://res.cloudinary.com/hwlyozehf/image/upload/" + id + ".jpg";
+			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+
+			String image = new String(Base64.encodeBase64(imageBytes), "UTF-8");
+
+			return "data:image/" + ext + ";base64," + image;
+		} catch (Exception ex) {
+			return "";
 		}
 
-		String htmlData = "<html><body style=\" margin: 0; padding-left:2px\">"
-				// +"<link rel=\"stylesheet\"
-				// href=\"https://fonts.googleapis.com/css?family=Sofia\"></link>"
-				+ "<div style=' padding: 0px; position: relative;width:300px;height:300px;'>"
-				+ "<img style='width:300px;height:300px;' src='data:image/jpeg;base64," + image + "'></img>"
-				+ " <img src=\"" + logo
-				+ "\" style=' position: absolute;    top: 2%;    left: 2%;max-height: 50px;border: 1px solid  #bbb;'></img> </div>"
-				+ " <div style='font-family: Times New Roman, Times, serif; font-size:10px;background-color:black;width:300px;color:white;text-align:center'> "
-				+ address + "</div></body></html>" + "";
-		System.out.println("HtmlData:: " + htmlData);
+	}
+	
+	public String getImage(String url) {
 
-		return "{\"img\":\"" + "data:image/jpeg;base64," + logoService.createImage(htmlData, true) + "\"}";
+		try {
+			
+			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+
+			String image = new String(Base64.encodeBase64(imageBytes), "UTF-8");
+
+			return "{\"img\":\"" + "data:image/jpeg;base64," + image + "\"}";
+			
+		} catch (Exception ex) {
+			return "";
+		}
+
 	}
 
 }
