@@ -1,3 +1,4 @@
+
 package com.takeoff.model;
 
 import java.util.List;
@@ -16,3 +17,4 @@ public class FuturesData {
 	}
 
 }
+

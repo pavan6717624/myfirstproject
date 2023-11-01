@@ -1,3 +1,4 @@
+
 package com.takeoff.model;
 
 import java.math.BigDecimal;
@@ -20,3 +21,4 @@ public class Futures {
 	}
 
 }
+

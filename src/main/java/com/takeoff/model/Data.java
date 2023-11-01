@@ -1,3 +1,4 @@
+
 package com.takeoff.model;
 
 import java.util.List;
@@ -14,3 +15,4 @@ public class Data {
 		data=new OIData(mapData);
 	}
 }
+

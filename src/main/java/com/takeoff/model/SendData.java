@@ -1,3 +1,4 @@
+
 package com.takeoff.model;
 
 import java.util.List;
@@ -15,3 +16,4 @@ public class SendData {
 	List<String> date;
 	List<Double> price;
 }
+

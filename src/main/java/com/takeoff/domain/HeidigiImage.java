@@ -16,24 +16,22 @@ import lombok.Data;
 
 @Entity
 @Data
-@Table(name = "hd_profile")
-public class HeidigiProfile implements Serializable {/**
-	 * 
-	 */
-	private static final long serialVersionUID = -4794458072958828709L;
-	
+@Table(name = "hd_image")
+public class HeidigiImage implements Serializable {
+
+	private static final long serialVersionUID = 1886651889937787385L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	Long profileId;
+	Long imageId;
+
+	String category, subcategory, type, publicId, backupPublicId;
+	
+	@Column(length = 100000)
+	String response, backupResponse;
+	
+	String extension;
+	
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	HeidigiUser user;
-	
-	
-	@OneToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "logoId")
-	HeidigiImage logo;
-	String address;
-	
-
 }

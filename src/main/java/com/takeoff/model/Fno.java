@@ -1,3 +1,4 @@
+
 package com.takeoff.model;
 
 import java.time.LocalDate;
