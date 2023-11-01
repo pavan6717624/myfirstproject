@@ -186,19 +186,19 @@ public class HeidigiService {
 				.gravity("south_east").width(0.35).height(0.18).opacity(100).chain()
 
 				// icon1: Envelope
-				.overlay(new Layer().publicId("azzoweqhsszdzcyq3vwg")).width(20).height(20).chain()
+				.overlay(new Layer().publicId("dt7fah8qrkeleor3gpq3")).width(20).height(20).chain()
 				.flags("layer_apply", "relative").gravity("south_east").x(340).y(110).chain()
 
 				// icon2: Internet Globe
-				.overlay(new Layer().publicId("idgvptysiagpsvw9me0p")).width(20).height(20).chain()
+				.overlay(new Layer().publicId("rnxve3ik0plwyrvh3whh")).width(20).height(20).chain()
 				.flags("layer_apply", "relative").gravity("south_east").x(340).y(80).chain()
 
 				// icon3: Red Map Marker
-				.overlay(new Layer().publicId("mi1ksk75cvoujbvgtmnc")).width(20).height(20).chain()
+				.overlay(new Layer().publicId("b5dnqxn9rd21wpekin6w")).width(20).height(20).chain()
 				.flags("layer_apply", "relative").gravity("south_east").x(340).y(50).chain()
 
 				// Person Photo
-				.overlay(new Layer().publicId("ex39k6jv0cerrdrhujis")).aspectRatio("1.0").gravity("faces").width(0.5)
+				.overlay(new Layer().publicId("zzmpsaqmdzz4lv2a0y9l")).aspectRatio("1.0").gravity("faces").width(0.5)
 				.zoom(0.7).crop("thumb").chain().flags("layer_apply", "relative").gravity("south_west").opacity(100)
 				.radius("max").width(0.15).x(10).y(15).crop("scale").chain()
 
