@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import org.apache.commons.codec.binary.Base64;
 import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -43,6 +44,10 @@ import com.takeoff.repository.HeidigiUserRepository;
 
 @Service
 public class HeidigiService {
+	
+	 @Lazy
+	    @Autowired
+	    private HeidigiService hService;
 
 	@Autowired
 	LogoService logoService;
@@ -129,14 +134,14 @@ public class HeidigiService {
 		
 		System.out.println("Backup started");
 		
-		backupUploadedImage(convFile,image);
+		hService.backupUploadedImage(convFile,image);
 		
 		System.out.println("Backup Ended");
 
 		return image;
 	}
 
-	@Async("asyncExecutor")
+	@Async
 	public void backupUploadedImage(File convFile, HeidigiImage image) throws Exception {
 		
 		System.out.println("In Backup started");
