@@ -1,8 +1,12 @@
 package com.takeoff.service;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
@@ -10,8 +14,12 @@ import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import javax.imageio.ImageIO;
+
 import org.apache.commons.codec.binary.Base64;
+import org.imgscalr.Scalr;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
@@ -72,10 +80,9 @@ public class HeidigiService {
 
 		return userRepository.findByMobileAndPassword(user.getMobile(), user.getPassword()).isPresent();
 	}
-	
-	public String uploadImage(MultipartFile file) throws Exception 
-	{
-		HeidigiImage image=uploadImage(file,"","","Image");
+
+	public String uploadImage(MultipartFile file) throws Exception {
+		HeidigiImage image = uploadImage(file, "", "", "Image");
 		return "";
 	}
 
@@ -87,23 +94,60 @@ public class HeidigiService {
 		fos.write(file.getBytes());
 		fos.close();
 
+		InputStream is = new ByteArrayInputStream(file.getBytes());
+		BufferedImage img = ImageIO.read(is);
+
+		img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
+
+		String extension = file.getOriginalFilename().split("\\.")[1].toLowerCase();
+
+		ByteArrayOutputStream bos = new ByteArrayOutputStream();
+		if (extension.toLowerCase().equals("jpg"))
+			ImageIO.write(img, "JPEG", bos);
+		else if (extension.toLowerCase().equals("png"))
+			ImageIO.write(img, "PNG", bos);
+
+		String imageText = new String(Base64.encodeBase64(bos.toByteArray()), "UTF-8");
+
+		System.out.println(imageText);
+
 		Map uploadResult1 = cloudinary1.uploader().upload(convFile, ObjectUtils.emptyMap());
-		Map uploadResult2 = cloudinary2.uploader().upload(convFile, ObjectUtils.emptyMap());
 
 		HeidigiImage image = new HeidigiImage();
 		image.setCategory(category);
 		image.setSubcategory(subCategory);
 		image.setType(type);
 		image.setPublicId(uploadResult1.get("public_id") + "");
-		image.setBackupPublicId(uploadResult2.get("public_id") + "");
+
 		image.setResponse(uploadResult1.toString());
-		image.setBackupResponse(uploadResult2.toString());
-		image.setExtension(file.getOriginalFilename().split("\\.")[1].toLowerCase());
+
+		image.setExtension(extension);
 		image.setUser(userRepository.findByMobile(9449840144L).get());
+		image.setImageText(imageText);
 
 		heidigiImageRepository.save(image);
+		
+		System.out.println("Backup started");
+		
+		backupUploadedImage(convFile,image);
+		
+		System.out.println("Backup Ended");
 
 		return image;
+	}
+
+	@Async("asyncExecutor")
+	public void backupUploadedImage(File convFile, HeidigiImage image) throws Exception {
+		
+		System.out.println("In Backup started");
+		Map uploadResult2 = cloudinary2.uploader().upload(convFile, ObjectUtils.emptyMap());
+
+		image.setBackupPublicId(uploadResult2.get("public_id") + "");
+
+		image.setBackupResponse(uploadResult2.toString());
+
+		heidigiImageRepository.save(image);
+		System.out.println("In Backup ended");
 	}
 
 	public String uploadLogo(MultipartFile file) throws Exception {
@@ -148,8 +192,10 @@ public class HeidigiService {
 
 	public List<ImageDTO> getImages() {
 
-		List<HeidigiImage> images=heidigiImageRepository.getImageIds();
-		return images.stream().map(o->new ImageDTO(getImage(o.getPublicId(),o.getExtension()), o.getPublicId())).collect(Collectors.toList());
+		List<HeidigiImage> images = heidigiImageRepository.getImageIds();
+		return images.stream().map(
+				o -> new ImageDTO("data:image/" + o.getExtension() + ";base64," + o.getImageText(), o.getPublicId()))
+				.collect(Collectors.toList());
 	}
 
 	public ProfileDTO getProfile() throws Exception {
@@ -158,24 +204,27 @@ public class HeidigiService {
 
 		ProfileDTO profileDTO = new ProfileDTO();
 		profileDTO.setAddress(profile.getAddress());
-		profileDTO.setImage(getImage(profile.getLogo().getPublicId(), profile.getLogo().getExtension()));
+//		profileDTO.setImage(getImage(profile.getLogo().get, profile.getLogo().getExtension()));
+		profileDTO.setImage(
+				"data:image/" + profile.getLogo().getExtension() + ";base64," + profile.getLogo().getImageText());
 		profileDTO.setMobile(profile.getUser().getMobile() + "");
 
 		return profileDTO;
 	}
+
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public String downloadImage(String image) throws IOException {
-		
-		String logoId=profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
-		
+
+		String logoId = profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
+
 		System.out.println(logoId);
 
 		String imageUrl = cloudinary1.url().transformation(new Transformation().height(1080).width(1080).crop("scale")
 				.chain()
 
 				// logo
-				.overlay(new Layer().publicId(logoId)).chain().flags("layer_apply", "relative")
-				.gravity("north_west").opacity(100).radius(30).width(0.15).x(10).y(10).crop("scale").chain()
+				.overlay(new Layer().publicId(logoId)).chain().flags("layer_apply", "relative").gravity("north_west")
+				.opacity(100).radius(30).width(0.15).x(10).y(10).crop("scale").chain()
 
 				// 65% bottom background
 				.overlay(new Layer().publicId("akdvbdniqfbncjrapghb")).chain().flags("layer_apply", "relative")
@@ -237,10 +286,10 @@ public class HeidigiService {
 						.text("Near MR Palli Police Station, Tirupati"))
 				.gravity("south_west").x(750).y(50).color("black").chain()
 
-		).imageTag(image+".jpg");
-		
-		imageUrl=URLDecoder.decode(imageUrl.substring(10,imageUrl.length()-3), "UTF-8");
-		String imageStr=getImage(imageUrl);
+		).imageTag(image + ".jpg");
+
+		imageUrl = URLDecoder.decode(imageUrl.substring(10, imageUrl.length() - 3), "UTF-8");
+		String imageStr = getImage(imageUrl);
 		return imageStr;
 
 	}
@@ -260,17 +309,17 @@ public class HeidigiService {
 		}
 
 	}
-	
+
 	public String getImage(String url) {
 
 		try {
-			
+
 			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
 
 			String image = new String(Base64.encodeBase64(imageBytes), "UTF-8");
 
 			return "{\"img\":\"" + "data:image/jpeg;base64," + image + "\"}";
-			
+
 		} catch (Exception ex) {
 			return "";
 		}

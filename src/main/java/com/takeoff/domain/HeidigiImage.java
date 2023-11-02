@@ -27,7 +27,9 @@ public class HeidigiImage implements Serializable {
 	String category, subcategory, type, publicId, backupPublicId;
 	
 	@Column(length = 100000)
-	String response, backupResponse;
+	String response, backupResponse, imageText;
+	
+	
 	
 	String extension;
 	

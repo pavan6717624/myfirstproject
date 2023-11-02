@@ -12,7 +12,7 @@ import com.takeoff.domain.HeidigiImage;
 public interface HeidigiImageRepository  extends JpaRepository<HeidigiImage,Long> {
 	
 	
-	@Query("select h from HeidigiImage h where h.type='Image'")
+	@Query("select h from HeidigiImage h where h.type='Image' and length(trim(h.imageText)) > 3")
 	List<HeidigiImage> getImageIds();
 
 }
