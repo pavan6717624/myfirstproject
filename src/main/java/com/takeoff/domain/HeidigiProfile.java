@@ -33,7 +33,12 @@ public class HeidigiProfile implements Serializable {/**
 	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "logoId")
 	HeidigiImage logo;
-	String address;
+	
+	@OneToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "photoId")
+	HeidigiImage photo;
+	
+	String line1,line2,line3,line4,email,website,address;
 	
 
 }

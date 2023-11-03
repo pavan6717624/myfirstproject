@@ -60,11 +60,13 @@ public class HeidigiController {
 //		return service.uploadLogo1(file);
 //	}
 
-	@RequestMapping(value = "editAddress")
-	public ProfileDTO uploadLogo(@RequestParam("address") String address) throws Exception {
+	@RequestMapping(value = "editContent")
+	public ProfileDTO editContent(@RequestParam("line1") String line1,@RequestParam("line2") String line2,@RequestParam("line3") String line3,
+			@RequestParam("line4") String line4,@RequestParam("email") String email,@RequestParam("website") String website,
+			@RequestParam("address") String address) throws Exception {
 
-		System.out.println("came here1");
-		return service.editAddress(address);
+		
+		return service.editContent(line1,line2,line3,line4,email,website,address);
 	}
 
 //	@RequestMapping(value = "downloadImage")
@@ -88,6 +90,11 @@ public class HeidigiController {
 	@RequestMapping(value = "uploadImage")
 	public String uploadImage(@RequestParam("file") MultipartFile file) throws Exception {
 		return service.uploadImage(file);
+	}
+	
+	@RequestMapping(value = "uploadPhoto")
+	public String uploadPhoto(@RequestParam("file") MultipartFile file) throws Exception {
+		return service.uploadPhoto(file);
 	}
 
 	@RequestMapping(value = "downloadImage")

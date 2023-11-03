@@ -172,6 +172,24 @@ public class HeidigiService {
 		return "";
 	}
 
+	public String uploadPhoto(MultipartFile file) throws Exception {
+		
+		HeidigiProfile profile = null;
+		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
+		if (!profileOpt.isPresent()) {
+			profile = new HeidigiProfile();
+
+			profile.setUser(userRepository.findByMobile(9449840144L).get());
+		} else
+			profile = profileOpt.get();
+
+		profile.setPhoto(uploadImage(file, "Photo", "Photo", "Photo"));
+		profileRepository.save(profile);
+
+		return "";
+		
+	}
+	
 	public ProfileDTO editAddress(String address) throws Exception {
 
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
@@ -213,6 +231,14 @@ public class HeidigiService {
 		profileDTO.setImage(
 				"data:image/" + profile.getLogo().getExtension() + ";base64," + profile.getLogo().getImageText());
 		profileDTO.setMobile(profile.getUser().getMobile() + "");
+		profileDTO.setEmail(profile.getEmail());
+		profileDTO.setWebsite(profile.getWebsite());
+		profileDTO.setLine1(profile.getLine1());
+		profileDTO.setLine2(profile.getLine2());
+		profileDTO.setLine3(profile.getLine3());
+		profileDTO.setLine4(profile.getLine4());
+		
+		
 
 		return profileDTO;
 	}
@@ -221,7 +247,18 @@ public class HeidigiService {
 	public String downloadImage(String image) throws IOException {
 
 		String logoId = profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
-
+		
+		String photoId = profileRepository.findByMobile(9449840144L).get().getPhoto().getPublicId();
+		
+		String line1=profileRepository.findByMobile(9449840144L).get().getLine1();
+		String line2=profileRepository.findByMobile(9449840144L).get().getLine2();
+		String line3=profileRepository.findByMobile(9449840144L).get().getLine3();
+		String line4=profileRepository.findByMobile(9449840144L).get().getLine4();
+		
+		String email=profileRepository.findByMobile(9449840144L).get().getEmail();
+		String address=profileRepository.findByMobile(9449840144L).get().getAddress();
+		String website=profileRepository.findByMobile(9449840144L).get().getWebsite();
+		
 		System.out.println(logoId);
 
 		String imageUrl = cloudinary1.url().transformation(new Transformation().height(1080).width(1080).crop("scale")
@@ -252,43 +289,43 @@ public class HeidigiService {
 				.flags("layer_apply", "relative").gravity("south_east").x(340).y(50).chain()
 
 				// Person Photo
-				.overlay(new Layer().publicId("zzmpsaqmdzz4lv2a0y9l")).aspectRatio("1.0").gravity("faces").width(0.5)
+				.overlay(new Layer().publicId(photoId)).aspectRatio("1.0").gravity("faces").width(0.5)
 				.zoom(0.7).crop("thumb").chain().flags("layer_apply", "relative").gravity("south_west").opacity(100)
 				.radius("max").width(0.15).x(10).y(15).crop("scale").chain()
 
 				// Text: Line 1
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(30).fontWeight("bold").textAlign("center")
-						.text("Dr. Shravan Krishna Reddy"))
+						.text(line1))
 				.flags("layer_apply", "relative").gravity("south_west").x(200).y(120).color("white").chain()
 
 				// Text: Line 2
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center")
-						.text("MBBS, MD Pediatrics, FIPM Neonatology, PGPN (BOSTAN, USA)"))
+						.text(line2))
 				.gravity("south_west").x(200).y(90).color("white").chain()
 
 				// Text: Line 3
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center")
-						.text("Ex - Fellow Neonatologist, Rainbow Children's Hospital"))
+						.text(line3))
 				.gravity("south_west").x(200).y(65).color("white").chain()
 
 				// Text: Line 4
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(18).textAlign("center")
-						.text("Pediatrician & Neonatologist"))
+						.text(line4))
 				.gravity("south_west").x(250).y(37).color("white").chain()
 
 				// Text: Mail
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
-						.text("thefamilytreehospital@gmail.com"))
+						.text(email))
 				.gravity("south_west").x(750).y(110).color("black").chain()
 
 				// Text: Website
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
-						.text("www.thefamilytreehospital.com  "))
+						.text(website))
 				.gravity("south_west").x(750).y(80).color("black").chain()
 
 				// Text: Address
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
-						.text("Near MR Palli Police Station, Tirupati"))
+						.text(address))
 				.gravity("south_west").x(750).y(50).color("black").chain()
 
 		).imageTag(image + ".jpg");
@@ -330,5 +367,32 @@ public class HeidigiService {
 		}
 
 	}
+
+	public ProfileDTO editContent(String line1, String line2, String line3, String line4, String email, String website,
+			String address) throws Exception {
+		
+		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
+		HeidigiProfile profile = null;
+
+		if (!profileOpt.isPresent()) {
+			profile = new HeidigiProfile();
+			profile.setUser(userRepository.findByMobile(9449840144L).get());
+		} else
+			profile = profileOpt.get();
+		
+		profile.setAddress(address);
+		profile.setLine1(line1);
+		profile.setLine2(line2);
+		profile.setLine3(line3);
+		profile.setLine4(line4);
+		profile.setEmail(email);
+		profile.setWebsite(website);
+		
+		profileRepository.save(profile);
+		
+		return getProfile();
+	}
+
+	
 
 }
