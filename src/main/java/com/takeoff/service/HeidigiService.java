@@ -309,7 +309,7 @@ public class HeidigiService {
 				.gravity("south_west").x(200).y(65).color("white").chain()
 
 				// Text: Line 4
-				.overlay(new TextLayer().fontFamily("montserrat").fontSize(18).textAlign("center")
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(18).fontWeight("bold").textAlign("center")
 						.text(line4))
 				.gravity("south_west").x(200).y(37).color("white").chain()
 
