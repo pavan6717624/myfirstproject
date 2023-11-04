@@ -311,7 +311,7 @@ public class HeidigiService {
 				// Text: Line 4
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(18).textAlign("center")
 						.text(line4))
-				.gravity("south_west").x(250).y(37).color("white").chain()
+				.gravity("south_west").x(200).y(37).color("white").chain()
 
 				// Text: Mail
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
