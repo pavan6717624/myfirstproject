@@ -145,8 +145,17 @@ public class MyTradingSetupController {
 			while ((line = br.readLine()) != null)
 				if (line.indexOf(",EQ,") != -1)
 					stocks.add(new Stock(line));
+			try
+			{
 
 			url = new URL(urls[1].trim());
+			}
+			catch(Exception ex)
+			{
+				System.out.println(ex);
+				localDate = localDate.minusDays(1);
+				continue;
+			}
 
 			con = url.openConnection();
 			con.setRequestProperty("User-Agent",
