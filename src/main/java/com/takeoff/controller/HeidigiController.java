@@ -9,10 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import com.takeoff.model.FacebookDTO;
 import com.takeoff.model.GMLoginStatusDTO;
 import com.takeoff.model.HeidigiLoginDTO;
 import com.takeoff.model.HeidigiSignupDTO;
@@ -98,9 +100,16 @@ public class HeidigiController {
 	}
 
 	@RequestMapping(value = "downloadImage")
-	public String downloadImage(@RequestParam("image") String image) throws IOException {
+	public String downloadImage(@RequestParam("image") String image) throws Exception {
 
 		return service.downloadImage(image);
+	}
+	
+	@RequestMapping(value = "postToFacebook")
+	public String postToFacebook(@RequestParam("image") String image) throws Exception {
+		
+		
+		return service.postToFacebook(image);
 	}
 
 }

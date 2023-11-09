@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,7 @@ import com.cloudinary.utils.ObjectUtils;
 import com.takeoff.domain.HeidigiImage;
 import com.takeoff.domain.HeidigiProfile;
 import com.takeoff.domain.HeidigiUser;
+import com.takeoff.model.FacebookDTO;
 import com.takeoff.model.HeidigiLoginDTO;
 import com.takeoff.model.HeidigiSignupDTO;
 import com.takeoff.model.ImageDTO;
@@ -43,11 +45,12 @@ import com.takeoff.repository.HeidigiRoleRepository;
 import com.takeoff.repository.HeidigiUserRepository;
 
 @Service
+@SuppressWarnings({ "unchecked", "rawtypes" })
 public class HeidigiService {
-	
-	 @Lazy
-	    @Autowired
-	    private HeidigiService hService;
+
+	@Lazy
+	@Autowired
+	private HeidigiService hService;
 
 	@Autowired
 	LogoService logoService;
@@ -102,9 +105,9 @@ public class HeidigiService {
 		InputStream is = new ByteArrayInputStream(file.getBytes());
 		BufferedImage img = ImageIO.read(is);
 
-		img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
+		//img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
 
-		String extension = file.getOriginalFilename().split("\\.")[1].toLowerCase();
+		String extension = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1].toLowerCase();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		if (extension.toLowerCase().equals("jpg"))
@@ -131,11 +134,11 @@ public class HeidigiService {
 		image.setImageText(imageText);
 
 		heidigiImageRepository.save(image);
-		
+
 		System.out.println("Backup started");
-		
-		hService.backupUploadedImage(convFile,image);
-		
+
+		hService.backupUploadedImage(convFile, image);
+
 		System.out.println("Backup Ended");
 
 		return image;
@@ -143,7 +146,7 @@ public class HeidigiService {
 
 	@Async
 	public void backupUploadedImage(File convFile, HeidigiImage image) throws Exception {
-		
+
 		System.out.println("In Backup started");
 		Map uploadResult2 = cloudinary2.uploader().upload(convFile, ObjectUtils.emptyMap());
 
@@ -173,7 +176,7 @@ public class HeidigiService {
 	}
 
 	public String uploadPhoto(MultipartFile file) throws Exception {
-		
+
 		HeidigiProfile profile = null;
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
 		if (!profileOpt.isPresent()) {
@@ -187,9 +190,9 @@ public class HeidigiService {
 		profileRepository.save(profile);
 
 		return "";
-		
+
 	}
-	
+
 	public ProfileDTO editAddress(String address) throws Exception {
 
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
@@ -237,28 +240,24 @@ public class HeidigiService {
 		profileDTO.setLine2(profile.getLine2());
 		profileDTO.setLine3(profile.getLine3());
 		profileDTO.setLine4(profile.getLine4());
-		
-		
 
 		return profileDTO;
 	}
 
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public String downloadImage(String image) throws IOException {
-
+	public String getImageUrl(String image) throws Exception {
 		String logoId = profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
-		
+
 		String photoId = profileRepository.findByMobile(9449840144L).get().getPhoto().getPublicId();
-		
-		String line1=profileRepository.findByMobile(9449840144L).get().getLine1();
-		String line2=profileRepository.findByMobile(9449840144L).get().getLine2();
-		String line3=profileRepository.findByMobile(9449840144L).get().getLine3();
-		String line4=profileRepository.findByMobile(9449840144L).get().getLine4();
-		
-		String email=profileRepository.findByMobile(9449840144L).get().getEmail();
-		String address=profileRepository.findByMobile(9449840144L).get().getAddress();
-		String website=profileRepository.findByMobile(9449840144L).get().getWebsite();
-		
+
+		String line1 = profileRepository.findByMobile(9449840144L).get().getLine1();
+		String line2 = profileRepository.findByMobile(9449840144L).get().getLine2();
+		String line3 = profileRepository.findByMobile(9449840144L).get().getLine3();
+		String line4 = profileRepository.findByMobile(9449840144L).get().getLine4();
+
+		String email = profileRepository.findByMobile(9449840144L).get().getEmail();
+		String address = profileRepository.findByMobile(9449840144L).get().getAddress();
+		String website = profileRepository.findByMobile(9449840144L).get().getWebsite();
+
 		System.out.println(logoId);
 
 		String imageUrl = cloudinary1.url().transformation(new Transformation().height(1080).width(1080).crop("scale")
@@ -289,9 +288,9 @@ public class HeidigiService {
 				.flags("layer_apply", "relative").gravity("south_east").x(340).y(50).chain()
 
 				// Person Photo
-				.overlay(new Layer().publicId(photoId)).aspectRatio("1.0").gravity("faces").width(0.5)
-				.zoom(0.7).crop("thumb").chain().flags("layer_apply", "relative").gravity("south_west").opacity(100)
-				.radius("max").width(0.15).x(10).y(15).crop("scale").chain()
+				.overlay(new Layer().publicId(photoId)).aspectRatio("1.0").gravity("faces").width(0.5).zoom(0.7)
+				.crop("thumb").chain().flags("layer_apply", "relative").gravity("south_west").opacity(100).radius("max")
+				.width(0.15).x(10).y(15).crop("scale").chain()
 
 				// Text: Line 1
 				.overlay(new TextLayer().fontFamily("montserrat").fontSize(30).fontWeight("bold").textAlign("center")
@@ -299,13 +298,11 @@ public class HeidigiService {
 				.flags("layer_apply", "relative").gravity("south_west").x(200).y(120).color("white").chain()
 
 				// Text: Line 2
-				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center")
-						.text(line2))
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center").text(line2))
 				.gravity("south_west").x(200).y(90).color("white").chain()
 
 				// Text: Line 3
-				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center")
-						.text(line3))
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(15).textAlign("center").text(line3))
 				.gravity("south_west").x(200).y(65).color("white").chain()
 
 				// Text: Line 4
@@ -314,23 +311,30 @@ public class HeidigiService {
 				.gravity("south_west").x(200).y(37).color("white").chain()
 
 				// Text: Mail
-				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
-						.text(email))
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center").text(email))
 				.gravity("south_west").x(750).y(110).color("black").chain()
 
 				// Text: Website
-				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
-						.text(website))
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center").text(website))
 				.gravity("south_west").x(750).y(80).color("black").chain()
 
 				// Text: Address
-				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center")
-						.text(address))
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(16).textAlign("center").text(address))
 				.gravity("south_west").x(750).y(50).color("black").chain()
 
 		).imageTag(image + ".jpg");
 
-		imageUrl = URLDecoder.decode(imageUrl.substring(10, imageUrl.length() - 3), "UTF-8");
+		imageUrl = imageUrl.substring(10, imageUrl.length() - 3);
+
+		return imageUrl;
+	}
+
+	public String downloadImage(String image) throws Exception {
+
+		
+		String imageUrl = URLDecoder.decode(getImageUrl(image), "UTF-8");
+		
+		System.out.println("Download :: "+imageUrl);
 		String imageStr = getImage(imageUrl);
 		return imageStr;
 
@@ -370,7 +374,7 @@ public class HeidigiService {
 
 	public ProfileDTO editContent(String line1, String line2, String line3, String line4, String email, String website,
 			String address) throws Exception {
-		
+
 		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
 		HeidigiProfile profile = null;
 
@@ -379,7 +383,7 @@ public class HeidigiService {
 			profile.setUser(userRepository.findByMobile(9449840144L).get());
 		} else
 			profile = profileOpt.get();
-		
+
 		profile.setAddress(address);
 		profile.setLine1(line1);
 		profile.setLine2(line2);
@@ -387,12 +391,31 @@ public class HeidigiService {
 		profile.setLine4(line4);
 		profile.setEmail(email);
 		profile.setWebsite(website);
-		
+
 		profileRepository.save(profile);
-		
+
 		return getProfile();
 	}
 
-	
+	public String postToFacebook(String image) throws Exception {
+
+		FacebookDTO fdto = new FacebookDTO();
+		fdto.setAccess_token(
+				"EAAEEWuiBKkIBO35ZAYc7Pz36ShOFZA5ysEMHkMGrdVHbRUZCEADVfWcRFUZBGUiHp8wrnN6RoP4RuVawMPXTlJtLNxCgx22YWFJErPZBx9wcypNyL7gQV8qjbXz0nZClcnFtd8slZBDA0kZBaj5l7B4GsMP7enkT6AaKZAbiDZAXPqgmvZArfwDsKZBQJ1En0F7I");
+		fdto.setMessage("This is Testing");
+		
+		String imageUrl=getImageUrl(image);
+		
+		System.out.println("Facebook :: "+imageUrl);
+		
+		fdto.setUrl(imageUrl);
+
+		String result = new RestTemplate()
+				.postForEntity("https://graph.facebook.com/v18.0/145448711978153/photos", fdto, String.class).getBody();
+
+		System.out.println(result);
+
+		return "";
+	}
 
 }
