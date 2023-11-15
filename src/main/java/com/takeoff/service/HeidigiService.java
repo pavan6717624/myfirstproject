@@ -105,9 +105,11 @@ public class HeidigiService {
 		InputStream is = new ByteArrayInputStream(file.getBytes());
 		BufferedImage img = ImageIO.read(is);
 
-		//img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
+		if (!type.equals("Logo"))
+			img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
 
-		String extension = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length-1].toLowerCase();
+		String extension = file.getOriginalFilename().split("\\.")[file.getOriginalFilename().split("\\.").length - 1]
+				.toLowerCase();
 
 		ByteArrayOutputStream bos = new ByteArrayOutputStream();
 		if (extension.toLowerCase().equals("jpg"))
@@ -240,11 +242,34 @@ public class HeidigiService {
 		profileDTO.setLine2(profile.getLine2());
 		profileDTO.setLine3(profile.getLine3());
 		profileDTO.setLine4(profile.getLine4());
+		profileDTO.setTemplate(profile.getTemplate() == null ? "Template 1" : profile.getTemplate());
 
 		return profileDTO;
 	}
 
-	public String getImageUrl(String image) throws Exception {
+	public String getTemplate(String template) {
+
+		return heidigiImageRepository.getTemplateImages().stream().limit(1).map(o -> {
+			try {
+
+				return template(o, template);
+
+			} catch (Exception e) {
+				return "";
+			}
+		}).collect(Collectors.toList()).get(0);
+	}
+
+	public String template(String image, String template) throws Exception {
+		if (template == null || template.trim().length() == 0)
+			template = "Template 1";
+		if (template.equals("Template 1"))
+			return getImageUrl(image, true);
+		else
+			return getImageUrlTemplate2(image, true);
+	}
+
+	public String getImageUrl(String image, Boolean template) throws Exception {
 		String logoId = profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
 
 		String photoId = profileRepository.findByMobile(9449840144L).get().getPhoto().getPublicId();
@@ -260,8 +285,12 @@ public class HeidigiService {
 
 		System.out.println(logoId);
 
-		String imageUrl = cloudinary1.url().transformation(new Transformation().height(1080).width(1080).crop("scale")
-				.chain()
+		Transformation transformation = new Transformation();
+
+		if (template)
+			transformation = transformation.effect("blur:700");
+
+		String imageUrl = cloudinary1.url().transformation(transformation.height(1080).width(1080).crop("scale").chain()
 
 				// logo
 				.overlay(new Layer().publicId(logoId)).chain().flags("layer_apply", "relative").gravity("north_west")
@@ -329,13 +358,53 @@ public class HeidigiService {
 		return imageUrl;
 	}
 
+	public String getImageUrlTemplate2(String image, Boolean template) throws Exception {
+		String logoId = profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
+
+		String address = profileRepository.findByMobile(9449840144L).get().getAddress();
+		String website = profileRepository.findByMobile(9449840144L).get().getWebsite();
+
+		System.out.println(logoId);
+
+		Transformation transformation = new Transformation();
+
+		if (template)
+			transformation = transformation.effect("blur:700");
+
+		String imageUrl = cloudinary1.url().transformation(transformation.height(1080).width(1080).crop("scale").chain()
+
+				// logo
+				.overlay(new Layer().publicId(logoId)).chain().flags("layer_apply", "relative").gravity("north_east")
+				.opacity(100).radius(30).width(0.15).x(10).y(10).crop("scale").chain()
+
+				// 100% bottom background
+				.overlay(new Layer().publicId("v6s3p850kn4aozfltfjd")).chain().flags("layer_apply", "relative")
+				.gravity("south").width(1).height(0.04).y(30).opacity(50).chain()
+
+				.overlay(new TextLayer().fontFamily("montserrat").fontSize(25).textAlign("center")
+						.text("☎ 9449 840 144 | ☸ " + website + " | ⚲ " + address))
+				.flags("layer_apply", "relative").gravity("south").y(35).color("white").chain()
+
+		).imageTag(image + ".jpg");
+
+		imageUrl = imageUrl.substring(10, imageUrl.length() - 3);
+
+		return imageUrl;
+	}
+
 	public String downloadImage(String image) throws Exception {
 
-		
-		String imageUrl = URLDecoder.decode(getImageUrl(image), "UTF-8");
-		
-		System.out.println("Download :: "+imageUrl);
-		String imageStr = getImage(imageUrl);
+		String template = getProfile().getTemplate();
+
+		String imageUrl = "";
+
+		if (template.equals("Template 1"))
+			imageUrl = URLDecoder.decode(getImageUrl(image, false), "UTF-8");
+		else
+			imageUrl = URLDecoder.decode(getImageUrlTemplate2(image, false), "UTF-8");
+
+		System.out.println("Download :: " + imageUrl);
+		String imageStr = getImage(imageUrl, false);
 		return imageStr;
 
 	}
@@ -356,11 +425,19 @@ public class HeidigiService {
 
 	}
 
-	public String getImage(String url) {
+	public String getImage(String url, Boolean template) {
 
 		try {
 
 			byte[] imageBytes = restTemplate.getForObject(url, byte[].class);
+
+//
+//			if (template)
+//			{
+//				InputStream is = new ByteArrayInputStream(imageBytes);
+//				BufferedImage img = ImageIO.read(is);
+//				img = Scalr.resize(img, Scalr.Method.ULTRA_QUALITY, Scalr.Mode.FIT_EXACT, 300, 300);
+//			}
 
 			String image = new String(Base64.encodeBase64(imageBytes), "UTF-8");
 
@@ -403,11 +480,18 @@ public class HeidigiService {
 		fdto.setAccess_token(
 				"EAAEEWuiBKkIBO35ZAYc7Pz36ShOFZA5ysEMHkMGrdVHbRUZCEADVfWcRFUZBGUiHp8wrnN6RoP4RuVawMPXTlJtLNxCgx22YWFJErPZBx9wcypNyL7gQV8qjbXz0nZClcnFtd8slZBDA0kZBaj5l7B4GsMP7enkT6AaKZAbiDZAXPqgmvZArfwDsKZBQJ1En0F7I");
 		fdto.setMessage("This is Testing");
-		
-		String imageUrl=getImageUrl(image);
-		
-		System.out.println("Facebook :: "+imageUrl);
-		
+
+		String template = getProfile().getTemplate();
+
+		String imageUrl = "";
+
+		if (template.equals("Template 1"))
+			imageUrl = getImageUrl(image, false);
+		else
+			imageUrl = getImageUrlTemplate2(image, false);
+
+		System.out.println("Facebook :: " + imageUrl);
+
 		fdto.setUrl(imageUrl);
 
 		String result = new RestTemplate()
@@ -416,6 +500,25 @@ public class HeidigiService {
 		System.out.println(result);
 
 		return "";
+	}
+
+	public ProfileDTO changeTemplate(String template) throws Exception {
+
+		Optional<HeidigiProfile> profileOpt = profileRepository.findByMobile(9449840144L);
+		HeidigiProfile profile = null;
+
+		if (!profileOpt.isPresent()) {
+			profile = new HeidigiProfile();
+			profile.setUser(userRepository.findByMobile(9449840144L).get());
+		} else
+			profile = profileOpt.get();
+
+		profile.setTemplate(template);
+
+		profileRepository.save(profile);
+
+		return getProfile();
+
 	}
 
 }

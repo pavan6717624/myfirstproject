@@ -40,5 +40,7 @@ public class HeidigiProfile implements Serializable {/**
 	
 	String line1,line2,line3,line4,email,website,address;
 	
+	String template;
+	
 
 }

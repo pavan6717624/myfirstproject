@@ -14,5 +14,9 @@ public interface HeidigiImageRepository  extends JpaRepository<HeidigiImage,Long
 	
 	@Query("select h from HeidigiImage h where h.type='Image' and length(trim(h.imageText)) > 3")
 	List<HeidigiImage> getImageIds();
+	
+	@Query("select h.publicId from HeidigiImage h where h.type='Image' order by rand()")
+	List<String> getTemplateImages();
 
+	
 }

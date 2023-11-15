@@ -82,7 +82,20 @@ public class HeidigiController {
 
 		return service.getProfile();
 	}
+	
+	@RequestMapping(value = "changeTemplate")
+	public ProfileDTO changeTemplate(String template) throws Exception {
 
+		return service.changeTemplate(template);
+	}
+	
+	@RequestMapping(value = "getTemplate")
+	public String getTemplate(String template) throws Exception {
+
+		return "{\"img\":\""+service.getTemplate(template)+"\"}";
+	}
+	
+	
 	@RequestMapping(value = "uploadLogo")
 
 	public String uploadLogo(@RequestParam("file") MultipartFile file) throws Exception {
