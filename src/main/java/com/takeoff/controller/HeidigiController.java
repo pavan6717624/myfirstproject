@@ -1,25 +1,26 @@
 package com.takeoff.controller;
 
-import java.io.IOException;
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
-import com.takeoff.model.FacebookDTO;
-import com.takeoff.model.GMLoginStatusDTO;
 import com.takeoff.model.HeidigiLoginDTO;
 import com.takeoff.model.HeidigiSignupDTO;
 import com.takeoff.model.ImageDTO;
 import com.takeoff.model.ProfileDTO;
+import com.takeoff.service.FacebookService;
 import com.takeoff.service.HeidigiService;
 
 @RestController
@@ -29,14 +30,16 @@ public class HeidigiController {
 
 	@Autowired
 	HeidigiService service;
+	@Autowired
+	FacebookService fservice;
 
 	public static Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap("cloud_name", "hwlyozehf", "api_key",
 			"453395666963287", "api_secret", "Q-kgBVQlRlGtdccq-ATYRFSoR8s"));
 
 	@RequestMapping(value = "check")
-	public GMLoginStatusDTO check() {
-		System.out.println("came00000 ");
-		return null;
+	public String check() {
+		return fservice.createFacebookAuthorizationURL();
+		
 	}
 
 	@RequestMapping(value = "login")
@@ -54,6 +57,12 @@ public class HeidigiController {
 	public List<ImageDTO> getImages() {
 		return service.getImages();
 	}
+	
+	@RequestMapping(value = "getVideos")
+	public List<String> getVideos() {
+		return service.getVideos();
+	}
+
 
 //	@RequestMapping(value = "uploadLogo1")
 //	public String uploadLogo1(@RequestParam("file") MultipartFile file) throws IOException {
@@ -107,6 +116,11 @@ public class HeidigiController {
 		return service.uploadImage(file);
 	}
 	
+	@RequestMapping(value = "uploadVideo")
+	public String uploadVideo(@RequestParam("file") MultipartFile file) throws Exception {
+		return service.uploadVideo(file);
+	}
+	
 	@RequestMapping(value = "uploadPhoto")
 	public String uploadPhoto(@RequestParam("file") MultipartFile file) throws Exception {
 		return service.uploadPhoto(file);
@@ -117,6 +131,13 @@ public class HeidigiController {
 
 		return service.downloadImage(image);
 	}
+
+	
+	@RequestMapping(value = "downloadVideo")
+	public String downloadVideo() throws Exception {
+
+		return service.downloadVideo();
+	}
 	
 	@RequestMapping(value = "postToFacebook")
 	public String postToFacebook(@RequestParam("image") String image) throws Exception {
@@ -124,5 +145,11 @@ public class HeidigiController {
 		
 		return service.postToFacebook(image);
 	}
-
+	
+	@RequestMapping(value = "video/{tag}")
+	public ResponseEntity<Object> video(@PathVariable String tag) throws Exception {
+		
+		
+		return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(service.downloadVideo(tag))).build();
+    }
 }
