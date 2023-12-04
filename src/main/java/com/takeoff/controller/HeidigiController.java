@@ -139,11 +139,18 @@ public class HeidigiController {
 		return service.downloadVideo();
 	}
 	
-	@RequestMapping(value = "postToFacebook")
-	public String postToFacebook(@RequestParam("image") String image) throws Exception {
+	@RequestMapping(value = "postToFacebookImage")
+	public String postToFacebookImage(@RequestParam("image") String image) throws Exception {
 		
 		
-		return service.postToFacebook(image);
+		return service.postToFacebookImage(image);
+	}
+	
+	@RequestMapping(value = "postToFacebookVideo")
+	public String postToFacebookVideo(@RequestParam("video") String video) throws Exception {
+		
+		
+		return service.postToFacebookVideo(video);
 	}
 	
 	@RequestMapping(value = "video/{tag}")

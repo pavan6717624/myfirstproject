@@ -617,11 +617,42 @@ public class HeidigiService {
 
 	}
 
-	public String postToFacebook(String image) throws Exception {
+	
+	public String postToFacebookVideo(String video) throws Exception {
+		FacebookDTO fdto = new FacebookDTO();
+		fdto.setAccess_token(
+				"EAAarYZB0lCY8BOZCw7T49kIiDsjZCgJ3nMZCmHJeHNqCMB8xuQgOB7B4elk4jE1fvHEHgjB7kVBBlS7TIfbUVFKn8V5SbI9zDLcTeKTWAgZCZCA1MsVrfAGZBajSeARCXtmXjGPsW3USKXTTHZBTIAm6pf9Gpimxhet9IDkR6sJvzuXp0mmgG2bccdkZB7ZC8tuuVNBoR8ZBtZCYlV3Lp2n07QQn8uR9GlZALMHKljdUvJzwZD");
+		fdto.setMessage("This is Testing");
+
+		String template = getProfile().getTemplate();
+
+		String videoUrl = downloadVideo(video);
+//		if (template.equals("Template 1"))
+//			imageUrl = getImageUrl(image, false);
+//		else
+//			imageUrl = getImageUrlTemplate2(image, false);
+		
+		fdto.setFile_url(videoUrl);
+
+		System.out.println("Facebook :: " + videoUrl+"\n"+fdto);
+
+		fdto.setFile_url(videoUrl);
+		
+
+		String result = new RestTemplate()
+				.postForEntity("https://graph-video.facebook.com/v18.0/178235032042634/videos", fdto, String.class).getBody();
+
+		System.out.println(result);
+
+		return "";
+	}
+	
+	
+	public String postToFacebookImage(String image) throws Exception {
 
 		FacebookDTO fdto = new FacebookDTO();
 		fdto.setAccess_token(
-				"EAAI2JhdY6q0BO2MtULRZBjdhTEEvhsX6QXZASAzPMY7qgUkSjFsLTmRaZC2qYx7gn1dRzao0AmOUcToWXJVJujmuciVkpJozdiPsOnQh8OLWyzM41tFq2cGDu5lTkECYwyZAy2PZAAsuZAZCPKoCZCPbNoyRvMZAFxai6FY2admV5GmtNtBXIKccSFNy1YUkrRRBPHtBt6veOkGyF0XBnfIyT0N9zYgv9y6BX5JqL6LkZD");
+				"EAAarYZB0lCY8BOZCw7T49kIiDsjZCgJ3nMZCmHJeHNqCMB8xuQgOB7B4elk4jE1fvHEHgjB7kVBBlS7TIfbUVFKn8V5SbI9zDLcTeKTWAgZCZCA1MsVrfAGZBajSeARCXtmXjGPsW3USKXTTHZBTIAm6pf9Gpimxhet9IDkR6sJvzuXp0mmgG2bccdkZB7ZC8tuuVNBoR8ZBtZCYlV3Lp2n07QQn8uR9GlZALMHKljdUvJzwZD");
 		fdto.setMessage("This is Testing");
 
 		String template = getProfile().getTemplate();
@@ -637,8 +668,9 @@ public class HeidigiService {
 
 		fdto.setUrl(imageUrl);
 
+		
 		String result = new RestTemplate()
-				.postForEntity("https://graph.facebook.com/v18.0/106329764088557/photos", fdto, String.class).getBody();
+				.postForEntity("https://graph.facebook.com/v18.0/178235032042634/photos", fdto, String.class).getBody();
 
 		System.out.println(result);
 
