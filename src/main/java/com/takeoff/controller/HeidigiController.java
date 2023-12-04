@@ -54,7 +54,7 @@ public class HeidigiController {
 	}
 
 	@RequestMapping(value = "getImages")
-	public List<ImageDTO> getImages() {
+	public List<String> getImages() {
 		return service.getImages();
 	}
 	
@@ -159,4 +159,13 @@ public class HeidigiController {
 		
 		return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(service.downloadVideo(tag))).build();
     }
+	
+	
+	@RequestMapping(value = "image/{tag}")
+	public ResponseEntity<Object> image(@PathVariable String tag) throws Exception {
+		
+		
+		return ResponseEntity.status(HttpStatus.FOUND).location(URI.create(service.getImage(tag))).build();
+    }
+	
 }

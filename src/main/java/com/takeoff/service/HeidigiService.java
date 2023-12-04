@@ -257,11 +257,11 @@ public class HeidigiService {
 
 	}
 
-	public List<ImageDTO> getImages() {
+	public List<String> getImages() {
 
 		List<HeidigiImage> images = heidigiImageRepository.getImageIds();
 		return images.stream().map(
-				o -> new ImageDTO("data:image/" + o.getExtension() + ";base64," + o.getImageText(), o.getPublicId()))
+				o -> o.getPublicId())
 				.collect(Collectors.toList());
 	}
 
@@ -404,6 +404,11 @@ public class HeidigiService {
 		return imageUrl;
 	}
 
+	public String getImage(String image)
+	{
+		return "https://res.cloudinary.com/hwlyozehf/image/upload/"+image+".jpg";
+			
+	}
 	public String getImageUrlTemplate2(String image, Boolean template) throws Exception {
 		String logoId = profileRepository.findByMobile(9449840144L).get().getLogo().getPublicId();
 
