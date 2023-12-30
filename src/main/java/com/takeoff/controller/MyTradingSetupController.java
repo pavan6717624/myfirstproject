@@ -238,9 +238,17 @@ public class MyTradingSetupController {
 
 		
 
-		return sdata.stream().sorted(Comparator.comparing(Data::getName).reversed()).collect(Collectors.toList());
+		return sdata.stream().sorted(reverseComparator).collect(Collectors.toList());
 	}
-	
+	Comparator<Data> reverseComparator = new Comparator<Data>() {
+		  @Override
+		  public int compare(Data i1, Data i2) {
+			  Double callOi=i2.getData().getCalloi().get(i2.getData().getCalloi().size()-1);
+			  Double price=i2.getData().getPrice().get(i2.getData().getPrice().size()-1);
+			  return callOi.compareTo(price);
+		    	
+		  }
+		}; 
 	public LocalDate getExpiryDate(LocalDate date)
 	{
 		LocalDate lastThrusday = date.with(TemporalAdjusters.lastInMonth(DayOfWeek.THURSDAY));
