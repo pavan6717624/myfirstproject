@@ -243,9 +243,12 @@ public class MyTradingSetupController {
 	Comparator<Data> reverseComparator = new Comparator<Data>() {
 		  @Override
 		  public int compare(Data i1, Data i2) {
-			  Double callOi=i2.getData().getCalloi().get(i2.getData().getCalloi().size()-1);
-			  Double price=i2.getData().getPrice().get(i2.getData().getPrice().size()-1);
-			  return callOi.compareTo(price);
+			  Double callOi2=i2.getData().getCalloi().get(i2.getData().getCalloi().size()-1);
+			  Double price2=i2.getData().getPrice().get(i2.getData().getPrice().size()-1);
+			  
+			  Double callOi1=i1.getData().getCalloi().get(i2.getData().getCalloi().size()-1);
+			  Double price1=i1.getData().getPrice().get(i2.getData().getPrice().size()-1);
+			  return (callOi1-price1).compareTo(callOi2-price2);
 		    	
 		  }
 		}; 
