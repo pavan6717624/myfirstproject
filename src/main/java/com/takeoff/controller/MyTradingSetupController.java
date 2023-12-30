@@ -248,7 +248,7 @@ public class MyTradingSetupController {
 			  
 			  Double callOi1=i1.getData().getCalloi().get(i2.getData().getCalloi().size()-1);
 			  Double price1=i1.getData().getPrice().get(i2.getData().getPrice().size()-1);
-			  return (callOi1-price1).compareTo(callOi2-price2);
+			  return ((Double)(callOi1-price1)).compareTo(callOi2-price2);
 		    	
 		  }
 		}; 
