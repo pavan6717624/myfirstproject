@@ -79,7 +79,8 @@ public class MyTradingSetupController {
 		DateTimeFormatter formatter1 = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 		LocalDate localDate = LocalDate.now();
 		localDate = localDate.minusDays(1);
-		for (int d = 0; d < 10; d++) {
+		int days=15;
+		for (int d = 0; d < days; d++) {
 
 			// System.out.println(localDate.format(formatter1));
 
