@@ -50,11 +50,11 @@ public class Stock {
 		}
 		try
 		{
-		timestamp = LocalDate.parse(data[10].replace("-23", "-2023"), formatter);
+		timestamp = LocalDate.parse(data[10].replace("-24", "-2024"), formatter);
 		}
 		catch(Exception ex) 
 		{
-			timestamp = LocalDate.parse("0"+data[10].replace("-23", "-2023"), formatter);
+			timestamp = LocalDate.parse("0"+data[10].replace("-24", "-2024"), formatter);
 		}
 		isin = data[12];
 
@@ -111,9 +111,9 @@ public class Stock {
 //			totaltrades = 0d;
 //		}
 //		try {
-//			timestamp = LocalDate.parse(data[10].replace("-23", "-2023"), formatter);
+//			timestamp = LocalDate.parse(data[10].replace("-24", "-2024"), formatter);
 //		} catch (Exception ex) {
-//			timestamp = LocalDate.parse("0" + data[10].replace("-23", "-2023"), formatter);
+//			timestamp = LocalDate.parse("0" + data[10].replace("-24", "-2024"), formatter);
 //		}
 //		isin = data[12];
 //
