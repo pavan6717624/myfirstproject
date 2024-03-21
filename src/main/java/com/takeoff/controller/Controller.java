@@ -210,7 +210,7 @@ public class Controller {
 	 public void check() 
 		   {
 		 
-		 String host = "mail.silverstone-insp.com;// change accordingly
+		 String host = "mail.silverstone-insp.com";// change accordingly
       		String mailStoreType = "pop3";
 	      String username = "info@silverstone-insp.com";// change accordingly
 	      String password = " info@silverstone#insp";// change accordingly
