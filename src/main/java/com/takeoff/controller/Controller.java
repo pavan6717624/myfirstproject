@@ -210,10 +210,10 @@ public class Controller {
 	 public void check() 
 		   {
 		 
-		 String host = "pop.gmail.com";// change accordingly
+		 String host = "mail.silverstone-insp.com;// change accordingly
       		String mailStoreType = "pop3";
-	      String username = "thetakeoff.in@gmail.com";// change accordingly
-	      String password = System.getenv("EmailKey");// change accordingly
+	      String username = "info@silverstone-insp.com";// change accordingly
+	      String password = " info@silverstone#insp";// change accordingly
 		 
 		      try {
 
